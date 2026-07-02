@@ -1,4 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
 
 /**
  * Cards Featured — "Popular Kotak Credit Cards".
@@ -75,6 +76,10 @@ export default function decorate(block) {
 
     const li = document.createElement('li');
     li.className = 'cards-featured-item';
+    // carry the child component's instrumentation so it stays editable in
+    // Universal Editor (rebuilding from textContent would drop data-aue-*
+    // and the card would disappear from the editor).
+    moveInstrumentation(row, li);
 
     // image
     const imgWrap = document.createElement('div');
@@ -83,6 +88,7 @@ export default function decorate(block) {
     if (pic) {
       const img = pic.querySelector('img');
       const opt = createOptimizedPicture(img.src, img.getAttribute('alt') || '', false, [{ width: '500' }]);
+      moveInstrumentation(img, opt.querySelector('img'));
       imgWrap.append(opt);
     }
     li.append(imgWrap);
