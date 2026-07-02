@@ -1,5 +1,6 @@
 /* Cards Featured — "Popular Kotak Credit Cards".
-   Mobile-first single column; desktop 3-column grid. */
+   Mobile-first single column; desktop 3-column grid.
+   Featured Card items are authored as child components inside the block. */
 
 .cards-featured {
   --cc-red: #fa1432;
