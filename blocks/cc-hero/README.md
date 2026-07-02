@@ -6,8 +6,10 @@ Full-bleed banner with a background image and overlaid heading, subtext, and up 
 
 | Field | Type | Notes |
 |-------|------|-------|
-| Background Image | reference | LCP image; loaded eagerly with `fetchpriority="high"` |
+| Background Image (Desktop) | reference | LCP image; loaded eagerly with `fetchpriority="high"` |
 | Background Image Alt Text | text | Accessible alt for the background image |
+| Background Image (Mobile) | reference | Optional art-directed image shown below 900px via `<picture><source media="(max-width:899px)">`. If omitted, the desktop image is used at all sizes. |
+| Mobile Image Alt Text | text | Alt for the mobile image |
 | Heading & Text | richtext | `<h1>` red heading + subtext paragraph |
 | Primary CTA Link | aem-content | Target for the primary (red, filled) button |
 | Primary CTA Text | text | Label for the primary button |

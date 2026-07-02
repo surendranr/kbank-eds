@@ -14,9 +14,12 @@ export default function decorate(block) {
   const rows = [...block.children];
   const cells = rows.map((r) => r.querySelector(':scope > div') || r);
 
+  // the image group is one cell that may hold one or two <picture>s
+  // (desktop first, optional mobile second — they share the bg_ group).
   const imageCell = cells.find((c) => c.querySelector('picture'));
+  const pictures = imageCell ? [...imageCell.querySelectorAll('picture')] : [];
   const linkCells = cells.filter((c) => c !== imageCell && c.querySelector('a'));
-  // alt text = a short text-only cell (no links, no headings) right after image
+  // alt text = a short text-only cell (no links, no headings)
   const altCell = cells.find((c) => c !== imageCell
     && !c.querySelector('a, h1, h2, h3, h4, h5, h6, ul, ol')
     && c.textContent.trim()
@@ -29,25 +32,31 @@ export default function decorate(block) {
 
   const altText = altCell ? altCell.textContent.trim() : '';
 
-  // background image (LCP candidate)
+  // background image (LCP candidate). When a mobile image is authored, use a
+  // <picture> with a mobile <source>; otherwise a single responsive image.
   const media = document.createElement('div');
   media.className = 'cc-hero-image';
-  const picture = imageCell ? imageCell.querySelector('picture') : null;
-  if (picture) {
-    const img = picture.querySelector('img');
-    if (img) {
-      if (altText) img.setAttribute('alt', altText);
-      const optimized = createOptimizedPicture(
-        img.src,
-        img.getAttribute('alt') || '',
-        true,
-        [{ media: '(min-width: 900px)', width: '1600' }, { width: '750' }],
-      );
-      optimized.querySelector('img').setAttribute('fetchpriority', 'high');
-      media.append(optimized);
-    } else {
-      media.append(picture);
+  const desktopImg = pictures[0] ? pictures[0].querySelector('img') : null;
+  const mobileImg = pictures[1] ? pictures[1].querySelector('img') : null;
+  if (desktopImg) {
+    if (altText) desktopImg.setAttribute('alt', altText);
+    const optimized = createOptimizedPicture(
+      desktopImg.src,
+      desktopImg.getAttribute('alt') || '',
+      true,
+      [{ media: '(min-width: 900px)', width: '1600' }, { width: '750' }],
+    );
+    // art-directed mobile source: prepend so the browser picks it below 900px
+    if (mobileImg) {
+      const source = document.createElement('source');
+      source.setAttribute('media', '(max-width: 899px)');
+      source.setAttribute('srcset', mobileImg.src);
+      optimized.prepend(source);
     }
+    optimized.querySelector('img').setAttribute('fetchpriority', 'high');
+    media.append(optimized);
+  } else if (pictures[0]) {
+    media.append(pictures[0]);
   }
 
   // content overlay
