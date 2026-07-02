@@ -9,9 +9,13 @@ import { createOptimizedPicture } from '../../scripts/aem.js';
  * @param {Element} block the block element
  */
 export default function decorate(block) {
+  // Classify rows by CELL COUNT, not picture presence: header fields render as
+  // single-cell rows, while each Featured Card is a multi-cell row (image,
+  // content, compare, apply). Detecting by <picture> would drop image-less
+  // cards and make newly-added items disappear in Universal Editor.
   const rows = [...block.children];
-  const itemRows = rows.filter((r) => r.querySelector('picture'));
-  const chromeRows = rows.filter((r) => !r.querySelector('picture'));
+  const itemRows = rows.filter((r) => r.children.length > 1);
+  const chromeRows = rows.filter((r) => r.children.length <= 1);
 
   // header chrome: eyebrow, heading, description (text) + bottom CTA link
   const texts = [];
@@ -60,10 +64,13 @@ export default function decorate(block) {
 
   itemRows.forEach((row) => {
     const cells = [...row.children].map((c) => c.querySelector(':scope > div') || c);
-    const imageCell = cells.find((c) => c.querySelector('picture'));
+    // image is always the first cell (may be empty before an image is authored)
+    const [imageCell] = cells;
     const linkCells = cells.filter((c) => c.querySelector('a'));
-    // content group = remaining non-image, non-link cell
-    const contentCell = cells.find((c) => c !== imageCell && !c.querySelector('a'));
+    // content group = the non-image, non-link cell that carries text/lists
+    const contentCell = cells.find((c) => c !== imageCell
+      && !c.querySelector('a')
+      && c.textContent.trim());
 
     const li = document.createElement('li');
     li.className = 'cards-featured-item';
