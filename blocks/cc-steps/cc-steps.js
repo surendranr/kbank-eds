@@ -1,10 +1,15 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
 
 /**
  * CC Steps — "Apply online in 3 simple steps".
  * Heading + sub-heading + a row of step cards (icon + title + description)
  * and a CTA button. Step items carry an icon image; the container's own
  * heading/subtitle/CTA are icon-free rows.
+ *
+ * Child rows keep their data-aue-* instrumentation via moveInstrumentation so
+ * they remain editable in Universal Editor (rebuilding from textContent would
+ * drop the instrumentation and the child would disappear from the editor).
  * @param {Element} block the block element
  */
 export default function decorate(block) {
@@ -50,42 +55,33 @@ export default function decorate(block) {
   const list = document.createElement('ul');
   list.className = 'cc-steps-list';
   itemRows.forEach((row) => {
-    const cells = [...row.children].map((c) => c.querySelector(':scope > div') || c);
-    const iconCell = cells.find((c) => c.querySelector('picture'));
-    const rest = cells.filter((c) => c !== iconCell);
-    const titleCell = rest.find((c) => c.textContent.trim()
-      && !c.querySelector('p, ul, ol, h1, h2, h3, h4, h5, h6'));
-    const descCells = rest.filter((c) => c !== titleCell && c.textContent.trim());
-
     const li = document.createElement('li');
     li.className = 'cc-steps-item';
+    // preserve instrumentation and MOVE the authored cells into the <li>
+    moveInstrumentation(row, li);
+    while (row.firstElementChild) li.append(row.firstElementChild);
 
-    const icon = document.createElement('div');
-    icon.className = 'cc-steps-icon';
-    const pic = iconCell ? iconCell.querySelector('picture') : null;
-    if (pic) {
-      const img = pic.querySelector('img');
-      const opt = createOptimizedPicture(img.src, img.getAttribute('alt') || '', false, [{ width: '80' }]);
-      icon.append(opt);
-    }
-    li.append(icon);
-
-    if (titleCell) {
-      const h3 = document.createElement('h3');
-      h3.className = 'cc-steps-item-title';
-      h3.textContent = titleCell.textContent.trim();
-      li.append(h3);
-    }
-    descCells.forEach((c) => {
-      const p = document.createElement('p');
-      p.className = 'cc-steps-item-desc';
-      p.textContent = c.textContent.trim();
-      li.append(p);
+    // classify the moved cells: icon (picture) vs title vs description
+    [...li.children].forEach((cell) => {
+      if (cell.querySelector('picture')) {
+        cell.className = 'cc-steps-icon';
+      } else if (cell.querySelector('p, ul, ol')) {
+        cell.className = 'cc-steps-item-desc';
+      } else if (cell.textContent.trim()) {
+        cell.className = 'cc-steps-item-title';
+      }
     });
 
     list.append(li);
   });
   wrapper.append(list);
+
+  // optimise icon images while preserving their instrumentation
+  list.querySelectorAll('picture > img').forEach((img) => {
+    const opt = createOptimizedPicture(img.src, img.alt, false, [{ width: '80' }]);
+    moveInstrumentation(img, opt.querySelector('img'));
+    img.closest('picture').replaceWith(opt);
+  });
 
   if (ctaHref && ctaText) {
     const actions = document.createElement('div');

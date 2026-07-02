@@ -70,11 +70,21 @@
   font-weight: 700;
 }
 
+.cc-steps .cc-steps-item-title * {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
 .cc-steps .cc-steps-item-desc {
   margin: 0;
   color: var(--cc-muted);
   font-size: var(--body-font-size-xs);
   line-height: 1.5;
+}
+
+.cc-steps .cc-steps-item-desc p {
+  margin: 0;
 }
 
 /* CTA */
