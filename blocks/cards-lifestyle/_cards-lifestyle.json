@@ -66,14 +66,26 @@
         {
           "component": "text",
           "valueType": "string",
-          "name": "filters",
-          "label": "Filter Row 1 — optional 'Label | ' then comma-separated tabs (first is default)"
+          "name": "filter1_question",
+          "label": "Filter Row 1 Question (e.g. Which credit card rewards are best for me?)"
         },
         {
           "component": "text",
           "valueType": "string",
-          "name": "categories",
-          "label": "Filter Row 2 — optional 'Label | ' then comma-separated chips (optional row)"
+          "name": "filter1_tabs",
+          "label": "Filter Row 1 Tabs (comma-separated, first is default)"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "filter2_question",
+          "label": "Filter Row 2 Question (optional, e.g. What spend category am I looking for?)"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "filter2_chips",
+          "label": "Filter Row 2 Chips (comma-separated, optional)"
         }
       ]
     },
