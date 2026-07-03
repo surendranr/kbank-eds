@@ -156,17 +156,39 @@
   cursor: pointer;
 }
 
-/* result panel — best match: red panel, content left + card image right */
+/* result panel — best match: card image as full background, content on top */
 .savings-calculator .savings-calculator-best {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 44%;
+  display: flex;
   align-items: stretch;
   min-height: 260px;
   border-radius: 12px;
   overflow: hidden;
-  background: linear-gradient(90deg, var(--cc-red) 55%, #ff6b70 100%);
+  background: var(--cc-navy);
   color: #fff;
+  isolation: isolate;
+}
+
+.savings-calculator .savings-calculator-best-media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  line-height: 0;
+}
+
+.savings-calculator .savings-calculator-best-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* dark overlay so the text stays legible over the image */
+.savings-calculator .savings-calculator-best::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgb(0 0 40 / 85%) 35%, rgb(0 0 40 / 25%) 100%);
 }
 
 .savings-calculator .savings-calculator-best-body {
@@ -174,6 +196,7 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 28px;
+  max-width: 60%;
 }
 
 .savings-calculator .savings-calculator-best-flag {
@@ -200,16 +223,6 @@
   background: rgb(255 255 255 / 20%);
   font-size: 11px;
   font-weight: 700;
-}
-
-.savings-calculator .savings-calculator-best-media {
-  line-height: 0;
-}
-
-.savings-calculator .savings-calculator-best-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .savings-calculator .savings-calculator-apply:any-link {
