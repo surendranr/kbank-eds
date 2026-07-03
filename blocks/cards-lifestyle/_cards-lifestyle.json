@@ -30,6 +30,21 @@
           }
         }
       }
+    },
+    {
+      "title": "Lifestyle Card (Reference)",
+      "id": "cards-lifestyle-ref",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Lifestyle Card (Reference)",
+              "model": "cards-lifestyle-ref"
+            }
+          }
+        }
+      }
     }
   ],
   "models": [
@@ -115,13 +130,24 @@
           "label": "Apply Button Text"
         }
       ]
+    },
+    {
+      "id": "cards-lifestyle-ref",
+      "fields": [
+        {
+          "component": "aem-content",
+          "name": "cardRef",
+          "label": "Credit Card Fragment"
+        }
+      ]
     }
   ],
   "filters": [
     {
       "id": "cards-lifestyle",
       "components": [
-        "cards-lifestyle-item"
+        "cards-lifestyle-item",
+        "cards-lifestyle-ref"
       ]
     }
   ]

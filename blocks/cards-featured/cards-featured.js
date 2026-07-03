@@ -1,23 +1,126 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
+import { loadCreditCard, cardReferencePath } from '../../scripts/credit-card.js';
 
 /**
  * Cards Featured — "Popular Kotak Credit Cards".
  * Section header (eyebrow/heading/description + view-all) and a grid of
- * featured card tiles. Item cells (grouped/collapsed to 4):
- *   1) image, 2) content group (highlight, sub, name, features),
- *   3) compare link, 4) apply link.
- * Featured Card items are authored as child components inside the block.
+ * featured card tiles.
+ *
+ * A card item can be authored two ways:
+ *  - inline: multi-cell row (image, content group, compare link, apply link)
+ *  - reference: single-anchor row pointing at a Credit Card content fragment,
+ *    fetched and rendered client-side (data source of truth reused elsewhere).
  * @param {Element} block the block element
  */
-export default function decorate(block) {
+
+/* build the highlight banner (main + optional sub line) */
+function buildHighlight(highlight, highlightSub) {
+  if (!highlight) return null;
+  const hl = document.createElement('div');
+  hl.className = 'cards-featured-item-highlight';
+  const main = document.createElement('span');
+  main.className = 'cards-featured-item-highlight-main';
+  main.textContent = highlight;
+  hl.append(main);
+  if (highlightSub) {
+    const sub = document.createElement('span');
+    sub.className = 'cards-featured-item-highlight-sub';
+    sub.textContent = highlightSub;
+    hl.append(sub);
+  }
+  return hl;
+}
+
+/* render one card <li> from normalized data */
+function renderCard(data) {
+  const li = document.createElement('li');
+  li.className = 'cards-featured-item';
+
+  const imgWrap = document.createElement('div');
+  imgWrap.className = 'cards-featured-item-image';
+  if (data.imageSrc) {
+    imgWrap.append(createOptimizedPicture(data.imageSrc, data.imageAlt, false, [{ width: '500' }]));
+  }
+  li.append(imgWrap);
+
+  const hl = buildHighlight(data.highlight, data.highlightSub);
+  if (hl) li.append(hl);
+
+  const body = document.createElement('div');
+  body.className = 'cards-featured-item-body';
+  if (data.name) {
+    const h3 = document.createElement('h3');
+    h3.className = 'cards-featured-item-title';
+    h3.textContent = data.name;
+    body.append(h3);
+  }
+  if (data.featuresList) {
+    const feat = document.createElement('div');
+    feat.className = 'cards-featured-item-features';
+    feat.append(data.featuresList);
+    body.append(feat);
+  }
+
+  const actions = document.createElement('div');
+  actions.className = 'cards-featured-item-actions';
+  if (data.compareText) {
+    const c = document.createElement('a');
+    c.href = data.compareHref || '#';
+    c.className = 'cards-featured-compare';
+    c.textContent = data.compareText;
+    actions.append(c);
+  }
+  if (data.applyText) {
+    const a = document.createElement('a');
+    a.href = data.applyHref || '#';
+    a.className = 'cards-featured-apply';
+    a.textContent = data.applyText;
+    actions.append(a);
+  }
+  if (actions.children.length) body.append(actions);
+
+  li.append(body);
+  return li;
+}
+
+/* extract normalized card data from an inline-authored multi-cell row */
+function inlineCardData(row) {
+  const cells = [...row.children].map((c) => c.querySelector(':scope > div') || c);
+  const [imageCell] = cells;
+  const linkCells = cells.filter((c) => c.querySelector('a'));
+  const contentCell = cells.find((c) => c !== imageCell
+    && !c.querySelector('a')
+    && c.textContent.trim());
+
+  const pic = imageCell ? imageCell.querySelector('picture') : null;
+  const img = pic ? pic.querySelector('img') : null;
+  const paras = contentCell ? [...contentCell.querySelectorAll(':scope > p')] : [];
+  const [highlight, highlightSub, name] = paras.map((p) => p.textContent.trim());
+  const featureList = contentCell ? contentCell.querySelector('ul, ol') : null;
+  const [compareLink, applyLink] = linkCells.map((c) => c.querySelector('a'));
+
+  return {
+    imageSrc: img ? img.src : '',
+    imageAlt: img ? (img.getAttribute('alt') || '') : '',
+    highlight,
+    highlightSub,
+    name,
+    featuresList: featureList ? featureList.cloneNode(true) : null,
+    compareHref: compareLink ? compareLink.getAttribute('href') : '',
+    compareText: compareLink ? compareLink.textContent.trim() : '',
+    applyHref: applyLink ? applyLink.getAttribute('href') : '',
+    applyText: applyLink ? applyLink.textContent.trim() : '',
+  };
+}
+
+export default async function decorate(block) {
   // Classify rows by CELL COUNT, not picture presence: header fields render as
-  // single-cell rows, while each Featured Card is a multi-cell row (image,
-  // content, compare, apply). Detecting by <picture> would drop image-less
-  // cards and make newly-added items disappear in Universal Editor.
+  // single-cell rows, while each card is either a multi-cell inline row or a
+  // single-anchor reference row.
   const rows = [...block.children];
-  const itemRows = rows.filter((r) => r.children.length > 1);
-  const chromeRows = rows.filter((r) => r.children.length <= 1);
+  const itemRows = rows.filter((r) => r.children.length > 1 || cardReferencePath(r));
+  const chromeRows = rows.filter((r) => !(r.children.length > 1 || cardReferencePath(r)));
 
   // header chrome: eyebrow, heading, description (text) + bottom CTA link
   const texts = [];
@@ -64,89 +167,21 @@ export default function decorate(block) {
   const list = document.createElement('ul');
   list.className = 'cards-featured-list';
 
-  itemRows.forEach((row) => {
-    const cells = [...row.children].map((c) => c.querySelector(':scope > div') || c);
-    // image is always the first cell (may be empty before an image is authored)
-    const [imageCell] = cells;
-    const linkCells = cells.filter((c) => c.querySelector('a'));
-    // content group = the non-image, non-link cell that carries text/lists
-    const contentCell = cells.find((c) => c !== imageCell
-      && !c.querySelector('a')
-      && c.textContent.trim());
-
-    const li = document.createElement('li');
-    li.className = 'cards-featured-item';
-    // carry the child component's instrumentation so it stays editable in
-    // Universal Editor (rebuilding from textContent would drop data-aue-*
-    // and the card would disappear from the editor).
-    moveInstrumentation(row, li);
-
-    // image
-    const imgWrap = document.createElement('div');
-    imgWrap.className = 'cards-featured-item-image';
-    const pic = imageCell ? imageCell.querySelector('picture') : null;
-    if (pic) {
-      const img = pic.querySelector('img');
-      const opt = createOptimizedPicture(img.src, img.getAttribute('alt') || '', false, [{ width: '500' }]);
-      moveInstrumentation(img, opt.querySelector('img'));
-      imgWrap.append(opt);
-    }
-    li.append(imgWrap);
-
-    // parse the content group: leading paragraphs are highlight/sub/name;
-    // a nested list (or remaining paragraphs) are the features/fees.
-    if (contentCell) {
-      const paras = [...contentCell.querySelectorAll(':scope > p')];
-      const featureList = contentCell.querySelector('ul, ol');
-      const [highlight, highlightSub, name] = paras.map((p) => p.textContent.trim());
-
-      if (highlight) {
-        const hl = document.createElement('div');
-        hl.className = 'cards-featured-item-highlight';
-        const main = document.createElement('span');
-        main.className = 'cards-featured-item-highlight-main';
-        main.textContent = highlight;
-        hl.append(main);
-        if (highlightSub) {
-          const sub = document.createElement('span');
-          sub.className = 'cards-featured-item-highlight-sub';
-          sub.textContent = highlightSub;
-          hl.append(sub);
-        }
-        li.append(hl);
-      }
-
-      const body = document.createElement('div');
-      body.className = 'cards-featured-item-body';
-      if (name) {
-        const h3 = document.createElement('h3');
-        h3.className = 'cards-featured-item-title';
-        h3.textContent = name;
-        body.append(h3);
-      }
-      if (featureList) {
-        const feat = document.createElement('div');
-        feat.className = 'cards-featured-item-features';
-        feat.append(featureList);
-        body.append(feat);
-      }
-
-      // actions: first link = compare, second = apply
-      const actions = document.createElement('div');
-      actions.className = 'cards-featured-item-actions';
-      linkCells.forEach((c, i) => {
-        const link = c.querySelector('a');
-        if (!link) return;
-        link.className = i === 0 ? 'cards-featured-compare' : 'cards-featured-apply';
-        actions.append(link);
-      });
-      if (actions.children.length) body.append(actions);
-
-      li.append(body);
-    }
-
-    list.append(li);
+  // build cards in authored order; reference cards load async then fill in place
+  const pending = itemRows.map(async (row) => {
+    const refPath = cardReferencePath(row);
+    const li = refPath
+      ? await (async () => {
+        const data = await loadCreditCard(refPath);
+        return data ? renderCard(data) : null;
+      })()
+      : renderCard(inlineCardData(row));
+    if (li) moveInstrumentation(row, li);
+    return li;
   });
+
+  const cards = await Promise.all(pending);
+  cards.forEach((li) => { if (li) list.append(li); });
   wrapper.append(list);
 
   if (ctaHref && ctaText) {

@@ -114,6 +114,21 @@
           }
         },
         {
+          "title": "Featured Card (Reference)",
+          "id": "cards-featured-ref",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Featured Card (Reference)",
+                  "model": "cards-featured-ref"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Cards Lifestyle",
           "id": "cards-lifestyle",
           "plugins": {
@@ -139,6 +154,21 @@
                 "template": {
                   "name": "Lifestyle Card",
                   "model": "cards-lifestyle-item"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Lifestyle Card (Reference)",
+          "id": "cards-lifestyle-ref",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Lifestyle Card (Reference)",
+                  "model": "cards-lifestyle-ref"
                 }
               }
             }

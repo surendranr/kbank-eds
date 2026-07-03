@@ -37,13 +37,15 @@
   {
     "id": "cards-featured",
     "components": [
-      "cards-featured-item"
+      "cards-featured-item",
+      "cards-featured-ref"
     ]
   },
   {
     "id": "cards-lifestyle",
     "components": [
-      "cards-lifestyle-item"
+      "cards-lifestyle-item",
+      "cards-lifestyle-ref"
     ]
   },
   {

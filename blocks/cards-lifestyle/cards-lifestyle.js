@@ -1,17 +1,103 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+import { moveInstrumentation } from '../../scripts/scripts.js';
+import { loadCreditCard, cardReferencePath } from '../../scripts/credit-card.js';
 
 /**
  * Cards Lifestyle — "A Credit Card for every need".
  * Heading + sub-heading, a row of filter tabs, and a filterable card grid.
  * Each card carries comma-separated tags; clicking a tab shows only matching
- * cards ("All" shows everything). Item cells (grouped): image, content group
- * (name/badge/fees/features/tags), apply link.
+ * cards ("All" shows everything).
+ *
+ * A card item can be authored two ways:
+ *  - inline: multi-cell row (image, content group, apply link)
+ *  - reference: single-anchor row pointing at a Credit Card content fragment.
  * @param {Element} block the block element
  */
-export default function decorate(block) {
+
+/* render one card <li> from normalized data */
+function renderCard(data) {
+  const li = document.createElement('li');
+  li.className = 'cards-lifestyle-item';
+  if (data.tags) li.dataset.tags = data.tags.toLowerCase();
+
+  const imgWrap = document.createElement('div');
+  imgWrap.className = 'cards-lifestyle-item-image';
+  if (data.imageSrc) {
+    imgWrap.append(createOptimizedPicture(data.imageSrc, data.imageAlt, false, [{ width: '400' }]));
+  }
+  li.append(imgWrap);
+
+  const body = document.createElement('div');
+  body.className = 'cards-lifestyle-item-body';
+  if (data.badge) {
+    const b = document.createElement('span');
+    b.className = 'cards-lifestyle-item-badge';
+    b.textContent = data.badge;
+    body.append(b);
+  }
+  if (data.name) {
+    const h3 = document.createElement('h3');
+    h3.className = 'cards-lifestyle-item-title';
+    h3.textContent = data.name;
+    body.append(h3);
+  }
+  if (data.fees) {
+    const f = document.createElement('p');
+    f.className = 'cards-lifestyle-item-fees';
+    f.textContent = data.fees;
+    body.append(f);
+  }
+  if (data.featuresList) {
+    data.featuresList.classList.add('cards-lifestyle-item-features');
+    body.append(data.featuresList);
+  }
+  if (data.applyText) {
+    const actions = document.createElement('div');
+    actions.className = 'cards-lifestyle-item-actions';
+    const a = document.createElement('a');
+    a.href = data.applyHref || '#';
+    a.className = 'cards-lifestyle-apply';
+    a.textContent = data.applyText;
+    actions.append(a);
+    body.append(actions);
+  }
+
+  li.append(body);
+  return li;
+}
+
+/* extract normalized card data from an inline-authored multi-cell row */
+function inlineCardData(row) {
+  const cells = [...row.children].map((c) => c.querySelector(':scope > div') || c);
+  const imageCell = cells.find((c) => c.querySelector('picture'));
+  const linkCell = cells.find((c) => c.querySelector('a'));
+  const contentCell = cells.find((c) => c !== imageCell && c !== linkCell);
+
+  const pic = imageCell ? imageCell.querySelector('picture') : null;
+  const img = pic ? pic.querySelector('img') : null;
+  const paras = contentCell ? [...contentCell.querySelectorAll(':scope > p')] : [];
+  // paragraphs in order: name, badge, fees, tags
+  const [name, badge, fees, tags] = paras.map((p) => p.textContent.trim());
+  const featureList = contentCell ? contentCell.querySelector('ul, ol') : null;
+  const link = linkCell ? linkCell.querySelector('a') : null;
+
+  return {
+    imageSrc: img ? img.src : '',
+    imageAlt: img ? (img.getAttribute('alt') || '') : '',
+    name,
+    badge,
+    fees,
+    tags,
+    featuresList: featureList ? featureList.cloneNode(true) : null,
+    applyHref: link ? link.getAttribute('href') : '',
+    applyText: link ? link.textContent.trim() : '',
+  };
+}
+
+export default async function decorate(block) {
   const rows = [...block.children];
-  const itemRows = rows.filter((r) => r.querySelector('picture'));
-  const chromeRows = rows.filter((r) => !r.querySelector('picture'));
+  const itemRows = rows.filter((r) => r.querySelector('picture') || cardReferencePath(r));
+  const chromeRows = rows.filter((r) => !(r.querySelector('picture') || cardReferencePath(r)));
 
   // chrome: heading, sub-heading, filter list (plain text rows, in order)
   const texts = chromeRows
@@ -53,80 +139,24 @@ export default function decorate(block) {
   });
   wrapper.append(tabs);
 
-  // card grid
+  // card grid — reference cards load async then fill in authored order
   const list = document.createElement('ul');
   list.className = 'cards-lifestyle-list';
 
-  itemRows.forEach((row) => {
-    const cells = [...row.children].map((c) => c.querySelector(':scope > div') || c);
-    const imageCell = cells.find((c) => c.querySelector('picture'));
-    const linkCell = cells.find((c) => c.querySelector('a'));
-    const contentCell = cells.find((c) => c !== imageCell && c !== linkCell);
-
-    const li = document.createElement('li');
-    li.className = 'cards-lifestyle-item';
-
-    // image
-    const imgWrap = document.createElement('div');
-    imgWrap.className = 'cards-lifestyle-item-image';
-    const pic = imageCell ? imageCell.querySelector('picture') : null;
-    if (pic) {
-      const img = pic.querySelector('img');
-      const opt = createOptimizedPicture(img.src, img.getAttribute('alt') || '', false, [{ width: '400' }]);
-      imgWrap.append(opt);
-    }
-    li.append(imgWrap);
-
-    const body = document.createElement('div');
-    body.className = 'cards-lifestyle-item-body';
-
-    if (contentCell) {
-      const paras = [...contentCell.querySelectorAll(':scope > p')];
-      const featureList = contentCell.querySelector('ul, ol');
-      // paragraphs in order: name, badge, fees, tags (tags last, hidden)
-      const [name, badge, fees, tagsText] = paras.map((p) => p.textContent.trim());
-
-      if (badge) {
-        const b = document.createElement('span');
-        b.className = 'cards-lifestyle-item-badge';
-        b.textContent = badge;
-        body.append(b);
-      }
-      if (name) {
-        const h3 = document.createElement('h3');
-        h3.className = 'cards-lifestyle-item-title';
-        h3.textContent = name;
-        body.append(h3);
-      }
-      if (fees) {
-        const f = document.createElement('p');
-        f.className = 'cards-lifestyle-item-fees';
-        f.textContent = fees;
-        body.append(f);
-      }
-      if (featureList) {
-        featureList.classList.add('cards-lifestyle-item-features');
-        body.append(featureList);
-      }
-      // apply tags to the li for filtering
-      if (tagsText) {
-        li.dataset.tags = tagsText.toLowerCase();
-      }
-    }
-
-    // apply button
-    const link = linkCell ? linkCell.querySelector('a') : null;
-    if (link) {
-      const actions = document.createElement('div');
-      actions.className = 'cards-lifestyle-item-actions';
-      link.className = 'cards-lifestyle-apply';
-      actions.append(link);
-      body.append(actions);
-    }
-
-    li.append(body);
-    list.append(li);
+  const pending = itemRows.map(async (row) => {
+    const refPath = cardReferencePath(row);
+    const li = refPath
+      ? await (async () => {
+        const data = await loadCreditCard(refPath);
+        return data ? renderCard(data) : null;
+      })()
+      : renderCard(inlineCardData(row));
+    if (li) moveInstrumentation(row, li);
+    return li;
   });
+
+  const cards = await Promise.all(pending);
+  cards.forEach((li) => { if (li) list.append(li); });
   wrapper.append(list);
 
   // filtering behaviour

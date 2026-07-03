@@ -30,6 +30,21 @@
           }
         }
       }
+    },
+    {
+      "title": "Featured Card (Reference)",
+      "id": "cards-featured-ref",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Featured Card (Reference)",
+              "model": "cards-featured-ref"
+            }
+          }
+        }
+      }
     }
   ],
   "models": [
@@ -131,13 +146,24 @@
           "label": "Apply Button Text"
         }
       ]
+    },
+    {
+      "id": "cards-featured-ref",
+      "fields": [
+        {
+          "component": "aem-content",
+          "name": "cardRef",
+          "label": "Credit Card Fragment"
+        }
+      ]
     }
   ],
   "filters": [
     {
       "id": "cards-featured",
       "components": [
-        "cards-featured-item"
+        "cards-featured-item",
+        "cards-featured-ref"
       ]
     }
   ]
