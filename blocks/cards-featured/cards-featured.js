@@ -61,6 +61,12 @@ function renderCard(data) {
     feat.append(data.featuresList);
     body.append(feat);
   }
+  if (data.fees) {
+    const fees = document.createElement('p');
+    fees.className = 'cards-featured-item-fees';
+    fees.textContent = data.fees;
+    body.append(fees);
+  }
 
   const actions = document.createElement('div');
   actions.className = 'cards-featured-item-actions';
@@ -96,7 +102,7 @@ function inlineCardData(row) {
   const pic = imageCell ? imageCell.querySelector('picture') : null;
   const img = pic ? pic.querySelector('img') : null;
   const paras = contentCell ? [...contentCell.querySelectorAll(':scope > p')] : [];
-  const [highlight, highlightSub, name] = paras.map((p) => p.textContent.trim());
+  const [highlight, highlightSub, name, fees] = paras.map((p) => p.textContent.trim());
   const featureList = contentCell ? contentCell.querySelector('ul, ol') : null;
   const [compareLink, applyLink] = linkCells.map((c) => c.querySelector('a'));
 
@@ -106,6 +112,7 @@ function inlineCardData(row) {
     highlight,
     highlightSub,
     name,
+    fees,
     featuresList: featureList ? featureList.cloneNode(true) : null,
     compareHref: compareLink ? compareLink.getAttribute('href') : '',
     compareText: compareLink ? compareLink.textContent.trim() : '',

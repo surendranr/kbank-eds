@@ -180,6 +180,18 @@
   color: #fff;
 }
 
+/* know more link under the apply button */
+.cards-lifestyle .cards-lifestyle-item-footer {
+  padding-top: 10px;
+}
+
+.cards-lifestyle .cards-lifestyle-knowmore:any-link {
+  color: var(--cc-navy, #00005a);
+  font-size: var(--body-font-size-xs);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
 @media (width >= 600px) {
   .cards-lifestyle .cards-lifestyle-list {
     grid-template-columns: repeat(2, 1fr);

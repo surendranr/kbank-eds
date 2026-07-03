@@ -61,6 +61,16 @@ function renderCard(data) {
     actions.append(a);
     body.append(actions);
   }
+  if (data.knowMoreText) {
+    const foot = document.createElement('div');
+    foot.className = 'cards-lifestyle-item-footer';
+    const km = document.createElement('a');
+    km.href = data.knowMoreHref || '#';
+    km.className = 'cards-lifestyle-knowmore';
+    km.textContent = data.knowMoreText;
+    foot.append(km);
+    body.append(foot);
+  }
 
   li.append(body);
   return li;

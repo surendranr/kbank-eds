@@ -1,69 +1,90 @@
+/* eslint-disable no-underscore-dangle */
 /*
- * Credit Card fragment helper.
+ * Credit Card data source helper.
  * Shared by cards-featured and cards-lifestyle to render a card either from
- * inline-authored cells OR from a referenced Credit Card content fragment.
+ * inline-authored cells OR from a referenced Credit Card content fragment,
+ * resolved against a single JSON data source (GraphQL export committed at
+ * /data/credit-cards.json).
  *
- * CF delivery contract (produced by the json2html overlay Mustache template
- * configured in the AEM Configuration Service): fetching `${path}.plain.html`
- * returns markup that contains, anywhere in the tree, elements identified by
- * these classes — parsed by className, not by exact nesting:
- *   .card-image (img)      .card-highlight        .card-highlight-sub
- *   .card-name             .card-badge            .card-fees
- *   .card-features (ul/ol) .card-tags             .card-apply (a)
- *   .card-compare (a)
+ * A reference card item exposes an aem-content field whose value is the
+ * fragment path (e.g. /content/dam/kbank-eds/cards-content-fragments/...).
+ * That path is matched against each item's `_path` in the JSON.
  */
 
-const text = (root, sel) => {
-  const el = root.querySelector(sel);
-  return el ? el.textContent.trim() : '';
-};
+const DATA_URL = '/data/credit-cards.json';
+let cardsPromise;
 
-const linkOf = (root, sel) => {
-  const a = root.querySelector(`${sel} a`) || root.querySelector(sel);
-  if (a && a.tagName === 'A') return { href: a.getAttribute('href') || '', text: a.textContent.trim() };
-  return { href: '', text: '' };
-};
+/* strip an html-field wrapper down to plain text (e.g. filtertags <p>Fuel</p>) */
+function htmlToText(html) {
+  if (!html) return '';
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent.trim();
+}
 
-/**
- * Normalize a fetched credit-card fragment root into a plain data object.
- * @param {Element} root the fetched fragment root
- * @returns {object} normalized card fields
- */
-export function normalizeCreditCard(root) {
-  const img = root.querySelector('.card-image img, img');
-  const featuresList = root.querySelector('.card-features');
-  const apply = linkOf(root, '.card-apply');
-  const compare = linkOf(root, '.card-compare');
+/* parse a features html field into a <ul> element (or null) */
+function htmlToList(html) {
+  if (!html) return null;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const list = tmp.querySelector('ul, ol');
+  if (!list) return null;
+  // drop inline styles the RTE injected; the block CSS owns presentation
+  list.querySelectorAll('[style]').forEach((el) => el.removeAttribute('style'));
+  return list;
+}
+
+/* combine joining + annual fee fields into one line */
+function feesLine(item) {
+  return [item.joiningfee, item.annualfee].filter(Boolean).join('   ').trim();
+}
+
+/* map a raw JSON item to the normalized shape the blocks render */
+function normalize(item) {
   return {
-    imageSrc: img ? img.getAttribute('src') : '',
-    imageAlt: img ? (img.getAttribute('alt') || '') : '',
-    highlight: text(root, '.card-highlight'),
-    highlightSub: text(root, '.card-highlight-sub'),
-    name: text(root, '.card-name'),
-    badge: text(root, '.card-badge'),
-    fees: text(root, '.card-fees'),
-    featuresList: featuresList ? featuresList.cloneNode(true) : null,
-    tags: text(root, '.card-tags'),
-    applyHref: apply.href,
-    applyText: apply.text,
-    compareHref: compare.href,
-    compareText: compare.text,
+    path: item._path,
+    imageSrc: item.cardimage && item.cardimage._path ? item.cardimage._path : '',
+    imageAlt: item.cardname || '',
+    highlight: item.highlight || '',
+    highlightSub: item.highlightsub || '',
+    name: item.cardname || '',
+    badge: item.badge || '',
+    fees: feesLine(item),
+    featuresList: htmlToList(item.features && item.features.html),
+    tags: htmlToText(item.filtertags && item.filtertags.html),
+    applyHref: item.applylink || '#',
+    applyText: item.applytext || '',
+    compareHref: item.comparelink || '#',
+    compareText: item.comparetext || '',
+    knowMoreHref: item.knowmorelink || '#',
+    knowMoreText: item.knowmoretext || '',
   };
 }
 
+/* fetch + index the JSON data source once, keyed by fragment path */
+async function loadCardIndex() {
+  if (!cardsPromise) {
+    cardsPromise = (async () => {
+      const resp = await fetch(DATA_URL);
+      if (!resp.ok) return new Map();
+      const json = await resp.json();
+      const items = json?.data?.cardsFeaturedRefList?.items || [];
+      return new Map(items.map((it) => [it._path, normalize(it)]));
+    })().catch(() => new Map());
+  }
+  return cardsPromise;
+}
+
 /**
- * Fetch and normalize a referenced Credit Card content fragment.
- * @param {string} path the fragment path (from an aem-content reference)
- * @returns {Promise<object|null>} normalized card fields, or null if unavailable
+ * Resolve a referenced Credit Card fragment to normalized card data.
+ * @param {string} path fragment path from an aem-content reference
+ * @returns {Promise<object|null>} normalized card data, or null if not found
  */
 export async function loadCreditCard(path) {
-  if (!path || !path.startsWith('/') || path.startsWith('//')) return null;
-  const clean = path.replace(/(\.plain)?\.html/, '');
-  const resp = await fetch(`${clean}.plain.html`);
-  if (!resp.ok) return null;
-  const root = document.createElement('div');
-  root.innerHTML = await resp.text();
-  return normalizeCreditCard(root);
+  if (!path) return null;
+  const clean = path.replace(/(\.plain)?\.html$/, '');
+  const index = await loadCardIndex();
+  return index.get(clean) || null;
 }
 
 /**
