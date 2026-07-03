@@ -24,58 +24,75 @@ const inr = (n) => `₹${Math.round(n || 0).toLocaleString('en-IN')}`;
 export default function decorate(block) {
   const rows = [...block.children];
 
+  // Prefixed model fields (cat_*, card_*) collapse into one shared cell and
+  // render as sibling <p>/<picture> nodes, so parse each item POSITIONALLY from
+  // its flattened content rather than assuming one field per cell.
+  //   Category text order: iconAlt, label, default, range (icon is the image)
+  //   Card text order:     name, meta, rates (apply link is the anchor)
+  const flatten = (r) => {
+    const img = r.querySelector('img');
+    const link = r.querySelector('a');
+    // ordered text values: prefer inner paragraphs; fall back to cell text
+    let texts = [...r.querySelectorAll('p')]
+      .map((p) => p.textContent.trim())
+      .filter(Boolean);
+    if (!texts.length) {
+      texts = [...r.children]
+        .map((c) => (c.querySelector(':scope > div') || c).textContent.trim())
+        .filter(Boolean);
+    }
+    return { img, link, texts };
+  };
+
   const categories = [];
   const cards = [];
   const chrome = [];
   rows.forEach((r) => {
     const model = r.getAttribute('data-aue-model') || '';
-    const cells = [...r.children].map((c) => c.querySelector(':scope > div') || c);
-    const joined = cells.map((c) => c.textContent.trim());
-    const hasLink = cells.some((c) => c.querySelector('a'));
-    const hasRange = cells.some((c) => /^\s*\d+\s*,\s*\d+\s*,\s*\d+/.test(c.textContent));
-    const isCard = model === 'savings-calculator-card' || (!model && hasLink);
-    const isCategory = model === 'savings-calculator-category' || (!model && hasRange);
+    const { img, link, texts } = flatten(r);
+    const hasRange = texts.some((t) => /^\s*\d+\s*,\s*\d+/.test(t));
+    const isCard = model === 'savings-calculator-card' || (!model && !!link);
+    const isCategory = model === 'savings-calculator-category' || (!model && (hasRange || !!img));
 
     if (isCard) {
-      const link = cells.find((c) => c.querySelector('a'))?.querySelector('a');
-      const [name, meta, rates] = joined.filter((t) => t && !/^https?:/.test(t));
-      const [badge, fee] = (meta || '').split('|').map((s) => s.trim());
+      // text values, ignoring any that is a bare URL: name, meta, rates
+      const vals = texts.filter((t) => !/^https?:/.test(t));
+      const [name = '', meta = '', rates = ''] = vals;
+      const [badge, fee] = meta.split('|').map((s) => s.trim());
       cards.push({
         row: r,
-        name: name || '',
+        name,
         badge: badge || '',
         fee: fee || '',
-        rates: (rates || '').split(',').map((n) => parseFloat(n) || 0),
+        rates: rates.split(',').map((n) => parseFloat(n) || 0),
         href: link ? link.getAttribute('href') : '#',
-        applyText: link ? link.textContent.trim() : 'Apply Now',
+        applyText: link && link.textContent.trim() ? link.textContent.trim() : 'Apply Now',
       });
     } else if (isCategory) {
-      // icon is an uploaded image; a range cell holds "min,max[,step]"; a plain
-      // number cell is the default spend; the remaining text cell is the label.
-      const iconImg = cells.find((c) => c.querySelector('picture, img'));
-      const rangeCell = cells.find((c) => /^\s*\d+\s*,\s*\d+/.test(c.textContent));
-      const parts = rangeCell
-        ? rangeCell.textContent.split(',').map((n) => parseInt(n.trim(), 10))
-        : [];
+      // find the range value + default among the text values; the label is the
+      // first non-numeric, non-range text (skips iconAlt which is also text —
+      // iconAlt commonly duplicates the label; the label field follows it).
+      const rangeText = texts.find((t) => /^\s*\d+\s*,\s*\d+/.test(t)) || '';
+      const parts = rangeText.split(',').map((n) => parseInt(n.trim(), 10));
       const min = Number.isFinite(parts[0]) ? parts[0] : 0;
       const max = Number.isFinite(parts[1]) ? parts[1] : 30000;
       const step = Number.isFinite(parts[2]) ? parts[2] : 500;
-      const numCell = cells.find((c) => c !== rangeCell && /^\s*\d+\s*$/.test(c.textContent));
-      const labelCell = cells.find((c) => c !== iconImg && c !== rangeCell && c !== numCell
-        && c.textContent.trim() && !/^\s*[\d,]+\s*$/.test(c.textContent));
-      const img = iconImg ? iconImg.querySelector('img') : null;
+      const defText = texts.find((t) => /^\s*\d+\s*$/.test(t));
+      // non-numeric texts are [iconAlt, label] in order; label is the last one
+      const words = texts.filter((t) => !/^\s*[\d,]+\s*$/.test(t));
+      const label = words.length ? words[words.length - 1] : '';
       categories.push({
         row: r,
-        label: labelCell ? labelCell.textContent.trim() : '',
+        label,
         iconSrc: img ? img.getAttribute('src') : '',
         iconAlt: img ? (img.getAttribute('alt') || '') : '',
-        def: numCell ? parseInt(numCell.textContent.trim(), 10) : min,
+        def: defText ? parseInt(defText, 10) : min,
         min,
         max,
         step: step || 500,
       });
-    } else if (joined.some(Boolean)) {
-      chrome.push(joined.filter(Boolean)[0]);
+    } else if (texts.length) {
+      chrome.push(texts[0]);
     }
   });
 
