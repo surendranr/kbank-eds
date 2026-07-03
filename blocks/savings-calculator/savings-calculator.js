@@ -1,3 +1,4 @@
+import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
 /**
@@ -49,31 +50,25 @@ export default function decorate(block) {
         applyText: link ? link.textContent.trim() : 'Apply Now',
       });
     } else if (isCategory) {
-      const rangeCell = cells.find((c) => /\d+\s*,\s*\d+\s*,\s*\d+/.test(c.textContent));
-      let min = 0;
-      let max = 30000;
-      let step = 500;
-      if (rangeCell) {
-        const parts = rangeCell.textContent.split(',').map((n) => parseInt(n.trim(), 10));
-        [min, max, step] = [
-          Number.isFinite(parts[0]) ? parts[0] : 0,
-          Number.isFinite(parts[1]) ? parts[1] : 30000,
-          Number.isFinite(parts[2]) ? parts[2] : 500,
-        ];
-      }
+      // icon is an uploaded image; a range cell holds "min,max[,step]"; a plain
+      // number cell is the default spend; the remaining text cell is the label.
+      const iconImg = cells.find((c) => c.querySelector('picture, img'));
+      const rangeCell = cells.find((c) => /^\s*\d+\s*,\s*\d+/.test(c.textContent));
+      const parts = rangeCell
+        ? rangeCell.textContent.split(',').map((n) => parseInt(n.trim(), 10))
+        : [];
+      const min = Number.isFinite(parts[0]) ? parts[0] : 0;
+      const max = Number.isFinite(parts[1]) ? parts[1] : 30000;
+      const step = Number.isFinite(parts[2]) ? parts[2] : 500;
       const numCell = cells.find((c) => c !== rangeCell && /^\s*\d+\s*$/.test(c.textContent));
-      const textCells = cells.filter((c) => c !== rangeCell && c !== numCell
-        && c.textContent.trim());
-      let label = '';
-      let icon = '';
-      textCells.forEach((c) => {
-        const t = c.textContent.trim();
-        if ([...t].length <= 3) icon = t; else label = t;
-      });
+      const labelCell = cells.find((c) => c !== iconImg && c !== rangeCell && c !== numCell
+        && c.textContent.trim() && !/^\s*[\d,]+\s*$/.test(c.textContent));
+      const img = iconImg ? iconImg.querySelector('img') : null;
       categories.push({
         row: r,
-        label,
-        icon,
+        label: labelCell ? labelCell.textContent.trim() : '',
+        iconSrc: img ? img.getAttribute('src') : '',
+        iconAlt: img ? (img.getAttribute('alt') || '') : '',
         def: numCell ? parseInt(numCell.textContent.trim(), 10) : min,
         min,
         max,
@@ -136,7 +131,15 @@ export default function decorate(block) {
 
     const label = document.createElement('div');
     label.className = 'savings-calculator-field-label';
-    label.textContent = `${cat.icon} ${cat.label}`.trim();
+    if (cat.iconSrc) {
+      const iconWrap = document.createElement('span');
+      iconWrap.className = 'savings-calculator-field-icon';
+      iconWrap.append(createOptimizedPicture(cat.iconSrc, cat.iconAlt || cat.label, false, [{ width: '40' }]));
+      label.append(iconWrap);
+    }
+    const labelText = document.createElement('span');
+    labelText.textContent = cat.label;
+    label.append(labelText);
 
     const value = document.createElement('span');
     value.className = 'savings-calculator-field-value';

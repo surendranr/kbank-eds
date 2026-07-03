@@ -943,16 +943,23 @@
     "id": "savings-calculator-category",
     "fields": [
       {
-        "component": "text",
+        "component": "reference",
         "valueType": "string",
-        "name": "cat_label",
-        "label": "Category Label (e.g. Online Shopping)"
+        "name": "cat_icon",
+        "label": "Icon (upload from assets)",
+        "multi": false
       },
       {
         "component": "text",
         "valueType": "string",
-        "name": "cat_icon",
-        "label": "Emoji / Icon"
+        "name": "cat_iconAlt",
+        "label": "Icon Alt Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "cat_label",
+        "label": "Category Label (e.g. Online Shopping)"
       },
       {
         "component": "number",
@@ -964,7 +971,7 @@
         "component": "text",
         "valueType": "string",
         "name": "cat_range",
-        "label": "Min,Max,Step (comma-separated)"
+        "label": "Min,Max,Step (three numbers, e.g. 500,30000,500)"
       }
     ]
   },
