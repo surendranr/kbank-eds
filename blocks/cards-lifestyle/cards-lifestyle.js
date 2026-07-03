@@ -153,20 +153,19 @@ export default async function decorate(block) {
   const list = document.createElement('ul');
   list.className = 'cards-lifestyle-list';
 
+  // A reference card ALWAYS yields an <li> (empty if the fragment can't be
+  // resolved yet, e.g. in the editor) so the item keeps its data-aue-*
+  // instrumentation and stays visible/editable in Universal Editor.
   const pending = itemRows.map(async (row) => {
     const refPath = cardReferencePath(row);
-    const li = refPath
-      ? await (async () => {
-        const data = await loadCreditCard(refPath);
-        return data ? renderCard(data) : null;
-      })()
-      : renderCard(inlineCardData(row));
-    if (li) moveInstrumentation(row, li);
+    const data = refPath ? await loadCreditCard(refPath) : inlineCardData(row);
+    const li = renderCard(data || {});
+    moveInstrumentation(row, li);
     return li;
   });
 
   const cards = await Promise.all(pending);
-  cards.forEach((li) => { if (li) list.append(li); });
+  cards.forEach((li) => list.append(li));
   wrapper.append(list);
 
   // filtering behaviour
