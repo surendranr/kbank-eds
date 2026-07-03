@@ -118,6 +118,12 @@
     ]
   },
   {
+    "id": "help-links",
+    "components": [
+      "help-links-item"
+    ]
+  },
+  {
     "id": "rates-charges",
     "components": [
       "rates-charges-row"

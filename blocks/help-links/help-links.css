@@ -1,0 +1,101 @@
+/* Help Links — static contact/help strip.
+   Mobile-first stacked; desktop 3-across. Icon + heading + description +
+   optional red action link with a chevron. */
+
+.help-links {
+  --hl-red: #fa1432;
+  --hl-ink: #131313;
+  --hl-muted: #666;
+}
+
+.help-links .help-links-inner {
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+.help-links .help-links-title {
+  margin: 0 0 24px;
+  color: var(--hl-ink);
+  font-family: var(--body-font-family);
+  font-size: var(--heading-font-size-m);
+  font-weight: 700;
+}
+
+.help-links .help-links-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.help-links .help-links-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 16px;
+  align-items: start;
+}
+
+.help-links .help-links-icon {
+  line-height: 0;
+}
+
+.help-links .help-links-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.help-links .help-links-item-title {
+  margin: 0 0 8px;
+  color: var(--hl-ink);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  font-weight: 400;
+}
+
+.help-links .help-links-desc {
+  margin: 0 0 12px;
+  color: var(--hl-muted);
+  font-size: var(--body-font-size-xs);
+  line-height: 1.5;
+}
+
+.help-links .help-links-desc p {
+  margin: 0;
+}
+
+.help-links .help-links-action:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--hl-red);
+  font-size: var(--body-font-size-xs);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.help-links .help-links-action:any-link::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: center / contain no-repeat
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fa1432' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M10 8l4 4-4 4'/%3E%3C/svg%3E");
+}
+
+.help-links .help-links-action:any-link:hover {
+  text-decoration: underline;
+}
+
+@media (width >= 900px) {
+  .help-links .help-links-inner {
+    padding: 40px 0;
+  }
+
+  .help-links .help-links-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+  }
+}
