@@ -114,8 +114,12 @@ export default async function decorate(block) {
 
   // chrome rows in authored field order (empty rows preserved for positional
   // mapping): heading, sub-heading, filters, categories.
-  // Each filter field may be "Label | a, b, c" — the part before the optional
-  // pipe is the row label, the rest is a comma-separated chip list.
+  // Filters field: "Label | a, b, c" (label before the optional pipe).
+  // Categories field supports the same, PLUS an optional per-tab mapping so
+  // row 2 chips depend on the row 1 selection:
+  //   "Label | Cashback: Bills, Max Rewards; Travel: Premium, Most Popular"
+  // Use "All: ..." for the default tab. A plain comma list (no colons) shows
+  // the same chips for every tab.
   const chromeText = chromeRows
     .map((r) => (r.querySelector(':scope > div') || r).textContent.trim());
   const [heading, subtitle, filtersRaw, categoriesRaw] = chromeText;
@@ -127,12 +131,39 @@ export default async function decorate(block) {
       values: (listPart || '').split(',').map((t) => t.trim()).filter(Boolean),
     };
   };
+  const parseCategories = (s) => {
+    const raw = s || '';
+    const [labelPart, bodyPart] = raw.includes('|') ? raw.split('|') : ['', raw];
+    const label = labelPart.trim();
+    const body = (bodyPart || '').trim();
+    if (body.includes(':')) {
+      const map = {};
+      body.split(';').forEach((group) => {
+        const idx = group.indexOf(':');
+        if (idx < 0) return;
+        const key = group.slice(0, idx).trim().toLowerCase();
+        const chips = group.slice(idx + 1).split(',').map((t) => t.trim()).filter(Boolean);
+        if (key && chips.length) map[key] = chips;
+      });
+      return { label, map };
+    }
+    const flat = body.split(',').map((t) => t.trim()).filter(Boolean);
+    return { label, flat };
+  };
   const row1 = parseRow(filtersRaw);
-  const row2 = parseRow(categoriesRaw);
   const filtersLabel = row1.label;
   const filters = row1.values.length ? row1.values : ['All'];
-  const categoriesLabel = row2.label;
-  const categories = row2.values;
+  const cat = parseCategories(categoriesRaw);
+  const categoriesLabel = cat.label;
+  // chips shown for a given (lowercased) row-1 filter. With an explicit map,
+  // only tabs listed in the map show chips (a tab with no entry hides row 2);
+  // the "all" entry serves the default "All" tab. A flat list (no mapping)
+  // shows the same chips for every tab.
+  const chipsFor = (filterLower) => {
+    if (cat.map) return cat.map[filterLower] || [];
+    return cat.flat || [];
+  };
+  const hasCategories = !!(cat.map ? Object.keys(cat.map).length : (cat.flat && cat.flat.length));
 
   const wrapper = document.createElement('div');
   wrapper.className = 'cards-lifestyle-inner';
@@ -183,13 +214,33 @@ export default async function decorate(block) {
   const { row: tabsRow, group: tabs } = buildRow(filtersLabel, filters, 'cards-lifestyle-filter-primary', true);
   panel.append(tabsRow);
 
+  // secondary row: rebuilt whenever the primary selection changes, showing
+  // only the chips mapped to the active row-1 tab.
   let categoryGroup = null;
-  if (categories.length) {
-    const { row: catRow, group } = buildRow(categoriesLabel, categories, 'cards-lifestyle-filter-secondary', false);
+  if (hasCategories) {
+    const { row: catRow, group } = buildRow(categoriesLabel, [], 'cards-lifestyle-filter-secondary', false);
     categoryGroup = group;
     panel.append(catRow);
   }
   wrapper.append(panel);
+
+  // (re)populate the secondary chips for a given active row-1 filter
+  const renderCategoryChips = (filterLower) => {
+    if (!categoryGroup) return;
+    categoryGroup.textContent = '';
+    chipsFor(filterLower).forEach((label) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cards-lifestyle-tab';
+      btn.textContent = label;
+      btn.dataset.filter = label.toLowerCase();
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', 'false');
+      categoryGroup.append(btn);
+    });
+    // hide the whole row when there are no chips for this tab
+    categoryGroup.closest('.cards-lifestyle-filter-row').hidden = !chipsFor(filterLower).length;
+  };
 
   // card grid — reference cards load async then fill in authored order
   const list = document.createElement('ul');
@@ -235,6 +286,9 @@ export default async function decorate(block) {
     tabs.querySelectorAll('.cards-lifestyle-tab').forEach((b) => b.setAttribute('aria-selected', 'false'));
     btn.setAttribute('aria-selected', 'true');
     activeFilter = btn.dataset.filter;
+    // row 1 change resets row 2 selection and rebuilds its chips
+    activeCategory = '';
+    renderCategoryChips(activeFilter);
     applyFilters();
   });
 
@@ -250,6 +304,9 @@ export default async function decorate(block) {
       applyFilters();
     });
   }
+
+  // initialize row 2 chips for the default row-1 tab
+  renderCategoryChips(activeFilter);
 
   block.textContent = '';
   block.append(wrapper);

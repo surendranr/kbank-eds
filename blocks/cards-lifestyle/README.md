@@ -13,7 +13,17 @@ everything). Container + repeatable card items.
 |-------|------|-------|
 | Heading | text | Section title |
 | Sub-heading | text | Supporting line |
-| Filter Tabs | text | Comma-separated labels; first is the default (e.g. `All, Cashback, Points, Miles, Business, Lifetime Free`) |
+| Filter Row 1 | text | `Question \| tab1, tab2, …` — optional question label before the pipe; first tab is the default (e.g. `Which rewards are best for me? \| All, Cashback, Travel, Fuel`) |
+| Filter Row 2 | text | Optional second row. `Question \| chips`. Chips can **depend on the Row 1 selection** using `Tab: a, b; Tab2: c` (use `All:` for the default tab). A tab with no entry hides Row 2. A plain comma list shows the same chips for every tab. |
+
+**Cascading example (Row 2 depends on Row 1):**
+
+```
+What spend category am I looking for? | All: Premium, Bills, Most Popular, Max Rewards; Cashback: Bills, Max Rewards; Travel: Premium, Most Popular
+```
+
+Selecting "Cashback" in Row 1 shows only "Bills, Max Rewards" in Row 2;
+selecting a tab with no mapping hides Row 2. Changing Row 1 resets Row 2.
 
 **Lifestyle Card (item)** — grouped/collapsed to 3 cells
 

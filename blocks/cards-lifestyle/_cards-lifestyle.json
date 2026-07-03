@@ -73,7 +73,7 @@
           "component": "text",
           "valueType": "string",
           "name": "categories",
-          "label": "Filter Row 2 — optional 'Label | ' then comma-separated chips (optional row)"
+          "label": "Filter Row 2 — 'Label | chips'. Chips can depend on Row 1 via 'Tab: a, b; Tab2: c' (use All: for default)"
         }
       ]
     },
