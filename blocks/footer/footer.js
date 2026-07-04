@@ -148,7 +148,7 @@ function buildConnect(section) {
   if (socialList.children.length) social.append(socialList);
   wrap.append(social);
 
-  // --- App: QR + store badges from loose images ---
+  // --- App: store/trust badges from loose images (no QR) ---
   const looseImages = [...section.querySelectorAll('img')];
   const app = document.createElement('div');
   app.className = 'footer-app';
@@ -160,20 +160,50 @@ function buildConnect(section) {
     t.textContent = appLabel.textContent.trim();
     app.append(t);
   }
-  if (looseImages[0]) {
-    const qrWrap = document.createElement('div');
-    qrWrap.className = 'footer-qr';
-    qrWrap.append(looseImages[0]);
-    app.append(qrWrap);
-  }
-  const badgeImgs = looseImages.slice(1);
-  if (badgeImgs.length) {
+  if (looseImages.length) {
     const badges = document.createElement('div');
     badges.className = 'footer-badges';
-    badgeImgs.forEach((img) => badges.append(img));
+    looseImages.forEach((img) => badges.append(img));
     app.append(badges);
   }
   wrap.append(app);
+
+  // --- Group Companies dropdown: authored as a heading + link list ---
+  const groupHead = [...section.querySelectorAll('h1, h2, h3, h4, h5, h6, p')]
+    .find((el) => /group compan/i.test(el.textContent || ''));
+  // the dropdown options come from the first list that appears after the
+  // "Group Companies" heading in document order
+  let groupList = null;
+  if (groupHead) {
+    const nodes = [...section.querySelectorAll('h1, h2, h3, h4, h5, h6, p, ul')];
+    const headIdx = nodes.indexOf(groupHead);
+    groupList = nodes.slice(headIdx + 1).find((n) => n.tagName === 'UL') || null;
+  }
+  if (groupHead && groupList) {
+    const dd = document.createElement('div');
+    dd.className = 'footer-group-companies';
+    const select = document.createElement('select');
+    select.className = 'footer-group-select';
+    select.setAttribute('aria-label', groupHead.textContent.trim());
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = groupHead.textContent.trim();
+    placeholder.selected = true;
+    placeholder.disabled = true;
+    select.append(placeholder);
+    groupList.querySelectorAll('a').forEach((a) => {
+      const opt = document.createElement('option');
+      opt.value = a.getAttribute('href') || '#';
+      opt.textContent = a.textContent.trim();
+      select.append(opt);
+    });
+    select.addEventListener('change', () => {
+      if (select.value) window.open(select.value, '_blank', 'noopener');
+      select.selectedIndex = 0;
+    });
+    dd.append(select);
+    wrap.append(dd);
+  }
 
   return wrap;
 }
