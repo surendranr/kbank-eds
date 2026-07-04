@@ -65,31 +65,38 @@ async function fetchFooter(footerPath) {
   return doc;
 }
 
+// headings that render as full-width rows (inline links) above the grid
+const WIDE_TITLES = ['channel red', 'popular products', 'help center'];
+
 /**
- * Build the link-columns section: a sequence of heading + <ul> of links.
- * @param {Element} section the first fragment section
- * @returns {Element} columns element
+ * Build footer link columns from a section, splitting them into wide
+ * full-width rows (Channel Red / Popular Products / Help Center) and the
+ * standard grid columns.
+ * @param {Element} section the fragment section
+ * @returns {{ wide: Element[], columns: Element[] }}
  */
 function buildLinkColumns(section) {
-  const wrap = document.createElement('div');
-  wrap.className = 'footer-columns';
+  const wide = [];
+  const columns = [];
   // Headings/lists may be nested inside a content wrapper div, so find the
   // headings anywhere in the section and pair each with the next list.
   section.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((node) => {
+    const label = node.textContent.trim();
+    const isWide = WIDE_TITLES.includes(label.toLowerCase());
     const col = document.createElement('div');
-    col.className = 'footer-col';
+    col.className = isWide ? 'footer-wide' : 'footer-col';
     const title = document.createElement('p');
     title.className = 'footer-col-title';
-    title.textContent = node.textContent.trim();
+    title.textContent = label;
     col.append(title);
     const list = node.nextElementSibling;
     if (list && list.tagName === 'UL') {
-      list.classList.add('footer-col-links');
+      list.classList.add(isWide ? 'footer-wide-links' : 'footer-col-links');
       col.append(list);
     }
-    wrap.append(col);
+    (isWide ? wide : columns).push(col);
   });
-  return wrap;
+  return { wide, columns };
 }
 
 /**
@@ -223,12 +230,16 @@ export default async function decorate(block) {
     }
   });
 
+  const wideWrap = document.createElement('div');
+  wideWrap.className = 'footer-wide-group';
   const columnsWrap = document.createElement('div');
   columnsWrap.className = 'footer-columns';
   columnSections.forEach((sec) => {
-    const built = buildLinkColumns(sec);
-    while (built.firstChild) columnsWrap.append(built.firstChild);
+    const { wide, columns } = buildLinkColumns(sec);
+    wide.forEach((el) => wideWrap.append(el));
+    columns.forEach((el) => columnsWrap.append(el));
   });
+  if (wideWrap.children.length) footer.append(wideWrap);
   if (columnsWrap.children.length) footer.append(columnsWrap);
 
   if (connectSection) footer.append(buildConnect(connectSection));
