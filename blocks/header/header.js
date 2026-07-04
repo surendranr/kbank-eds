@@ -137,6 +137,20 @@ export default async function decorate(block) {
     brandLink.closest('.button-container').className = '';
   }
 
+  // If no dedicated tools section was authored, the utility links (e.g. Search,
+  // Login) are bundled in the brand section. Promote any non-logo link
+  // paragraphs into a right-aligned nav-tools area so they don't stack under
+  // the logo.
+  if (navBrand && !nav.querySelector('.nav-tools')) {
+    const navTools = document.createElement('div');
+    navTools.className = 'nav-tools';
+    navBrand.querySelectorAll(':scope p').forEach((p) => {
+      if (p.querySelector('picture, img')) return; // keep the logo in brand
+      if (p.querySelector('a')) navTools.append(p);
+    });
+    if (navTools.children.length) nav.append(navTools);
+  }
+
   const navSections = nav.querySelector('.nav-sections');
   if (navSections) {
     navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
