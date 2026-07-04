@@ -26,13 +26,24 @@ export default function decorate(block) {
       if (t) heading = t;
       return;
     }
+    // Classify by content type (robust to cell grouping/ordering):
+    //  - rating: a bare 1-5 number
+    //  - date:   contains "Reviewed" or a date-like digits/slash pattern
+    //  - review: the longest remaining text cell (a full sentence)
+    //  - author: the remaining short text cell (a name)
     const numCell = cells.find((c) => /^\s*[1-5]\s*$/.test(c.textContent));
     const rating = numCell ? parseInt(numCell.textContent.trim(), 10) : 5;
-    const rich = cells.find((c) => c !== numCell && c.querySelector('p, ul, ol'));
-    const plain = cells.filter((c) => c !== numCell && c !== rich && c.textContent.trim());
-    // author is the first plain text, date is the last (contains digits / "Reviewed")
-    const author = plain[0] ? plain[0].textContent.trim() : '';
-    const date = plain.length > 1 ? plain[plain.length - 1].textContent.trim() : '';
+    const dateCell = cells.find((c) => c !== numCell
+      && /reviewed|\d{1,4}[/-]\d{1,2}[/-]\d{1,4}/i.test(c.textContent));
+    const textCells = cells.filter((c) => c !== numCell && c !== dateCell
+      && c.textContent.trim());
+    // longest text = the review; the other = the author name
+    const rich = textCells
+      .slice()
+      .sort((a, b) => b.textContent.trim().length - a.textContent.trim().length)[0] || null;
+    const authorCell = textCells.find((c) => c !== rich) || null;
+    const author = authorCell ? authorCell.textContent.trim() : '';
+    const date = dateCell ? dateCell.textContent.trim() : '';
     items.push({
       row: r, author, rating, rich, date,
     });
