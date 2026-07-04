@@ -70,19 +70,26 @@ footer .footer-wide-links a:hover {
   text-decoration: underline;
 }
 
-/* ===== Link columns ===== */
+/* ===== Link columns =====
+   Multi-column flow so heading groups pack vertically within each column
+   (masonry-style), matching the Figma, instead of a sparse equal-cell grid. */
 footer .footer-columns {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px 30px;
+  column-count: 1;
+  column-gap: 30px;
 }
 
 @media (width >= 600px) {
-  footer .footer-columns { grid-template-columns: repeat(3, 1fr); }
+  footer .footer-columns { column-count: 3; }
 }
 
 @media (width >= 900px) {
-  footer .footer-columns { grid-template-columns: repeat(6, 1fr); }
+  footer .footer-columns { column-count: 6; }
+}
+
+/* keep a heading group intact within a column (never split across columns) */
+footer .footer-col {
+  break-inside: avoid;
+  margin-bottom: 28px;
 }
 
 footer .footer-col-title {
