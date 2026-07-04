@@ -11,12 +11,6 @@
   background: linear-gradient(90deg, var(--cc-orange), var(--cc-red));
 }
 
-/* full-bleed: cancel section padding for this block */
-.cta-banner-wrapper {
-  max-width: 100%;
-  padding: 0;
-}
-
 /* faint infinity/brand motif in the corner */
 .cta-banner::after {
   content: "";

@@ -10,12 +10,6 @@
   display: grid;
 }
 
-/* full-bleed: cancel section padding/max-width for this block */
-.cc-hero-wrapper {
-  max-width: 100%;
-  padding: 0;
-}
-
 .cc-hero .cc-hero-image {
   grid-area: 1 / 1;
   line-height: 0;
