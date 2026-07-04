@@ -168,44 +168,75 @@ function buildConnect(section) {
   }
   wrap.append(app);
 
-  // --- Group Companies dropdown: authored as a heading + link list ---
-  const groupHead = [...section.querySelectorAll('h1, h2, h3, h4, h5, h6, p')]
-    .find((el) => /group compan/i.test(el.textContent || ''));
-  // the dropdown options come from the first list that appears after the
-  // "Group Companies" heading in document order
-  let groupList = null;
-  if (groupHead) {
-    const nodes = [...section.querySelectorAll('h1, h2, h3, h4, h5, h6, p, ul')];
-    const headIdx = nodes.indexOf(groupHead);
-    groupList = nodes.slice(headIdx + 1).find((n) => n.tagName === 'UL') || null;
-  }
-  if (groupHead && groupList) {
-    const dd = document.createElement('div');
-    dd.className = 'footer-group-companies';
-    const select = document.createElement('select');
-    select.className = 'footer-group-select';
-    select.setAttribute('aria-label', groupHead.textContent.trim());
-    const placeholder = document.createElement('option');
-    placeholder.value = '';
-    placeholder.textContent = groupHead.textContent.trim();
-    placeholder.selected = true;
-    placeholder.disabled = true;
-    select.append(placeholder);
-    groupList.querySelectorAll('a').forEach((a) => {
-      const opt = document.createElement('option');
-      opt.value = a.getAttribute('href') || '#';
-      opt.textContent = a.textContent.trim();
-      select.append(opt);
-    });
-    select.addEventListener('change', () => {
-      if (select.value) window.open(select.value, '_blank', 'noopener');
-      select.selectedIndex = 0;
-    });
-    dd.append(select);
-    wrap.append(dd);
-  }
-
+  // eslint-disable-next-line no-use-before-define
+  buildGroupCompanies(section, wrap);
   return wrap;
+}
+
+/**
+ * Build the "Kotak Group Companies" dropdown from authored content. Handles two
+ * authoring shapes:
+ *   1) a heading/paragraph "…Group Companies" followed by a link list, and
+ *   2) a list item "…Group Companies" that nests its links in a child <ul>.
+ * The links become <option>s; the label becomes the placeholder.
+ * @param {Element} section the fragment section to search
+ * @param {Element} wrap the connect wrapper to append the dropdown to
+ */
+function buildGroupCompanies(section, wrap) {
+  // find the label element whose own text mentions "group compan"
+  const isLabel = (el) => {
+    const ownText = [...el.childNodes]
+      .filter((n) => n.nodeType === Node.TEXT_NODE || n.tagName === 'STRONG' || n.tagName === 'EM')
+      .map((n) => n.textContent)
+      .join(' ');
+    return /group compan/i.test(ownText);
+  };
+  const labelEl = [...section.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, strong')]
+    .find(isLabel);
+  if (!labelEl) return;
+
+  // links come from a nested <ul> (list-item shape) or the next <ul> sibling
+  let list = labelEl.querySelector(':scope ul');
+  if (!list) {
+    const nodes = [...section.querySelectorAll('h1, h2, h3, h4, h5, h6, p, li, ul')];
+    const idx = nodes.indexOf(labelEl);
+    list = nodes.slice(idx + 1).find((n) => n.tagName === 'UL') || null;
+  }
+  const anchors = list ? [...list.querySelectorAll('a')] : [];
+  if (!anchors.length) return;
+
+  // label = the element's own direct text (exclude the nested link list text)
+  const ownText = [...labelEl.childNodes]
+    .filter((n) => n.nodeType === Node.TEXT_NODE
+      || (n.nodeType === Node.ELEMENT_NODE && n.tagName !== 'UL' && n.tagName !== 'OL'))
+    .map((n) => n.textContent.trim())
+    .join(' ')
+    .trim();
+  const labelText = ownText || 'Kotak Group Companies';
+
+  const dd = document.createElement('div');
+  dd.className = 'footer-group-companies';
+  const select = document.createElement('select');
+  select.className = 'footer-group-select';
+  select.setAttribute('aria-label', labelText);
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.textContent = labelText;
+  placeholder.selected = true;
+  placeholder.disabled = true;
+  select.append(placeholder);
+  anchors.forEach((a) => {
+    const opt = document.createElement('option');
+    opt.value = a.getAttribute('href') || '#';
+    opt.textContent = a.textContent.trim();
+    select.append(opt);
+  });
+  select.addEventListener('change', () => {
+    if (select.value) window.open(select.value, '_blank', 'noopener');
+    select.selectedIndex = 0;
+  });
+  dd.append(select);
+  wrap.append(dd);
 }
 
 /**
