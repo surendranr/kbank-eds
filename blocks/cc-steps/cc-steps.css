@@ -52,7 +52,8 @@
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-  width: 2px;
+  width: 4px; /* thicker on mobile than the desktop 2px line */
+  border-radius: 2px;
   background: linear-gradient(180deg, #00005a, var(--cc-red));
   z-index: 0;
 }
@@ -112,9 +113,11 @@
 }
 
 .cc-steps .cc-steps-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%; /* full-width on mobile */
+  box-sizing: border-box;
   min-height: 44px;
   padding: 10px 28px;
   border: 1px solid var(--cc-red);
@@ -169,5 +172,11 @@
     align-items: flex-start;
     text-align: left;
     padding: 32px 28px;
+  }
+
+  /* compact centered button on desktop (full-width only on mobile) */
+  .cc-steps .cc-steps-btn {
+    display: inline-flex;
+    width: auto;
   }
 }
