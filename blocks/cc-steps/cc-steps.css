@@ -44,13 +44,14 @@
   list-style: none;
 }
 
-/* mobile: vertical connector running down between the stacked cards */
+/* mobile: vertical connector running down the middle of the stacked cards */
 .cc-steps .cc-steps-list::before {
   content: "";
   position: absolute;
   top: 40px;
   bottom: 40px;
-  left: 39px; /* ~ icon center inside card padding (24px pad + 20px half-icon) */
+  left: 50%;
+  transform: translateX(-50%);
   width: 2px;
   background: linear-gradient(180deg, #00005a, var(--cc-red));
   z-index: 0;
@@ -158,6 +159,7 @@
     inset: 60px 12% auto; /* icon-row height; horizontal band, no bottom */
     width: auto;
     height: 2px;
+    transform: none;
     background: linear-gradient(90deg, #00005a, var(--cc-red));
   }
 
