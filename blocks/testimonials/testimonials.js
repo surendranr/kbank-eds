@@ -105,8 +105,11 @@ export default function decorate(block) {
     track.append(li);
   });
 
-  viewport.append(track);
-  wrapper.append(viewport);
+  // carousel wraps the viewport so side arrows can be centered against the
+  // card row (on mobile they sit on the left/right edges of the card)
+  const carousel = document.createElement('div');
+  carousel.className = 'testimonials-carousel';
+  carousel.append(viewport);
 
   // prev / next controls
   if (items.length > 1) {
@@ -127,8 +130,9 @@ export default function decorate(block) {
     prev.addEventListener('click', () => track.scrollBy({ left: -scrollBy(), behavior: 'smooth' }));
     next.addEventListener('click', () => track.scrollBy({ left: scrollBy(), behavior: 'smooth' }));
     nav.append(prev, next);
-    wrapper.append(nav);
+    carousel.append(nav);
   }
+  wrapper.append(carousel);
 
   block.style.setProperty('--testimonials-star-img', STAR);
   block.textContent = '';

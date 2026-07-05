@@ -82,9 +82,13 @@ main > .section > .cta-banner-wrapper {
 }
 
 .cta-banner .cta-banner-btn:any-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
+  align-self: stretch; /* wider button on mobile */
+  width: 100%;
+  max-width: 320px;
+  box-sizing: border-box;
   min-height: 44px;
   padding: 12px 40px;
   border-radius: 6px;
@@ -107,5 +111,13 @@ main > .section > .cta-banner-wrapper {
 
   .cta-banner .cta-banner-title {
     font-size: var(--heading-font-size-m);
+  }
+
+  /* compact button on desktop */
+  .cta-banner .cta-banner-btn:any-link {
+    display: inline-flex;
+    align-self: center;
+    width: auto;
+    max-width: none;
   }
 }

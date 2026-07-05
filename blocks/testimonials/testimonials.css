@@ -97,22 +97,37 @@
   font-size: 12px;
 }
 
-/* nav arrows */
+/* carousel wrapper — anchors the side arrows on mobile */
+.testimonials .testimonials-carousel {
+  position: relative;
+}
+
+/* mobile: bare chevrons on the left/right, vertically centered on the card row */
 .testimonials .testimonials-nav {
   display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .testimonials .testimonials-nav button {
   position: relative;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--cc-card-border);
-  border-radius: 50%;
-  background: #fff;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: none;
   cursor: pointer;
+  pointer-events: auto;
+}
+
+.testimonials .testimonials-prev {
+  margin-left: -6px;
+}
+
+.testimonials .testimonials-next {
+  margin-right: -6px;
 }
 
 .testimonials .testimonials-nav button::after {
@@ -120,9 +135,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 9px;
-  height: 9px;
-  border: 2px solid var(--cc-ink);
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--cc-muted);
   border-bottom: 0;
   border-left: 0;
   transform: translate(-50%, -50%) rotate(-135deg);
@@ -132,7 +147,7 @@
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.testimonials .testimonials-nav button:hover {
+.testimonials .testimonials-nav button:hover::after {
   border-color: var(--cc-navy);
 }
 
@@ -149,5 +164,27 @@
 
   .testimonials .testimonials-card {
     flex-basis: calc(33.333% - 14px);
+  }
+
+  /* desktop: circular buttons below the row (not side-anchored) */
+  .testimonials .testimonials-nav {
+    position: static;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+    pointer-events: auto;
+  }
+
+  .testimonials .testimonials-nav button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--cc-card-border);
+    border-radius: 50%;
+    background: #fff;
+    margin: 0;
+  }
+
+  .testimonials .testimonials-nav button:hover {
+    border-color: var(--cc-navy);
   }
 }
