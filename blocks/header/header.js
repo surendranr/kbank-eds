@@ -40,17 +40,26 @@ function closeAllMenus(menu) {
  * @param {Element} section the first fragment section
  * @returns {Element} brand element
  */
+const HOME_URL = 'https://www.kotak.bank.in/en/home.html';
+
 function buildBrand(section) {
   const brand = document.createElement('div');
   brand.className = 'nav-brand';
   if (!section) return brand;
-  // prefer a linked logo (<a><img></a>); fall back to a bare image/picture
+  // prefer a logo link the author set (<a><img></a>); otherwise wrap the bare
+  // logo image in a link to the Kotak home page.
   const logoLink = section.querySelector('a img')?.closest('a');
   if (logoLink) {
     brand.append(logoLink);
   } else {
     const pic = section.querySelector('picture, img');
-    if (pic) brand.append(pic.closest('picture') || pic);
+    if (pic) {
+      const a = document.createElement('a');
+      a.href = HOME_URL;
+      a.setAttribute('aria-label', 'Kotak Mahindra Bank home');
+      a.append(pic.closest('picture') || pic);
+      brand.append(a);
+    }
   }
   return brand;
 }
