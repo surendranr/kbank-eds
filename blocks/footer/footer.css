@@ -237,14 +237,21 @@ footer .footer-seals img {
 
 /* ===== Copyright bar ===== */
 footer .footer-copyright {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 10px;
-  padding: 15px 24px;
+  padding: 15px 0;
   background: #e0e0e0;
   color: #333;
   font-size: 12px;
+}
+
+/* align content with the main footer column (same max-width + padding) */
+footer .footer-copyright-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
 footer .footer-copyright p {
@@ -253,11 +260,19 @@ footer .footer-copyright p {
 
 footer .footer-legal-links {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
+  align-items: center;
   gap: 6px 10px;
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+footer .footer-legal-links li {
+  display: inline-flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
 }
 
 footer .footer-legal-links li:not(:last-child)::after {
@@ -278,5 +293,5 @@ footer .footer-legal-links a:hover {
 
 @media (width >= 900px) {
   footer .footer-inner { padding: 40px 32px 24px; }
-  footer .footer-copyright { padding: 15px 32px; }
+  footer .footer-copyright-inner { padding: 0 32px; }
 }

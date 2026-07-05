@@ -247,13 +247,27 @@ function buildGroupCompanies(section, wrap) {
 function buildCopyright(section) {
   const bar = document.createElement('div');
   bar.className = 'footer-copyright';
+  // inner container so the content aligns with the main footer content column
+  const inner = document.createElement('div');
+  inner.className = 'footer-copyright-inner';
   const text = section.querySelector('p');
-  if (text) bar.append(text);
-  const links = section.querySelector('ul');
-  if (links) {
-    links.classList.add('footer-legal-links');
-    bar.append(links);
+  if (text) inner.append(text);
+  // rebuild the legal links as a clean flat list (authored lists may be nested)
+  const anchors = [...section.querySelectorAll('a')];
+  if (anchors.length) {
+    const links = document.createElement('ul');
+    links.className = 'footer-legal-links';
+    anchors.forEach((a) => {
+      const li = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = a.getAttribute('href') || '#';
+      link.textContent = a.textContent.trim();
+      li.append(link);
+      links.append(li);
+    });
+    inner.append(links);
   }
+  bar.append(inner);
   return bar;
 }
 
