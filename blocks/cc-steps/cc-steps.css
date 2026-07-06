@@ -229,7 +229,7 @@ main > .section:has(+ .section > .cc-steps-wrapper) {
 .cc-steps-modal {
   position: relative;
   width: 100%;
-  max-width: 860px;
+  max-width: 388px;
   padding: 40px 32px;
   border-radius: 12px;
   background: #fff;
