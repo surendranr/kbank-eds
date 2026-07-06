@@ -12,6 +12,14 @@
   padding: 0 24px;
 }
 
+/* full-bleed: let the grey band span the full section width, ignoring the
+   section max-width/padding. Scoped under main > .section to outweigh the
+   global section-div width rule. */
+main > .section > .cc-steps-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
 .cc-steps .cc-steps-inner {
   max-width: 1180px;
   margin: 0 auto;
