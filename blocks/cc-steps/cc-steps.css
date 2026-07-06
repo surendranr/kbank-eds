@@ -20,6 +20,16 @@ main > .section > .cc-steps-wrapper {
   padding: 0;
 }
 
+/* close the gap to the preceding section (e.g. cc-hero): drop this section's
+   top margin and the previous section's bottom margin */
+main > .section:has(> .cc-steps-wrapper) {
+  margin-top: 0;
+}
+
+main > .section:has(+ .section > .cc-steps-wrapper) {
+  margin-bottom: 0;
+}
+
 .cc-steps .cc-steps-inner {
   max-width: 1180px;
   margin: 0 auto;
