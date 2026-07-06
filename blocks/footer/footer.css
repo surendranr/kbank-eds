@@ -106,6 +106,48 @@ footer .footer-col-links {
   padding: 0;
 }
 
+/* ===== Mobile: collapse each column into a tappable accordion ===== */
+@media (width < 900px) {
+  footer .footer-col {
+    margin-bottom: 0;
+    border-bottom: 1px solid #d3d3d3;
+  }
+
+  footer .footer-col .footer-col-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 16px 0;
+    cursor: pointer;
+  }
+
+  /* chevron indicator */
+  footer .footer-col .footer-col-title::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid #666;
+    border-bottom: 2px solid #666;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  footer .footer-col[aria-expanded="true"] .footer-col-title::after {
+    transform: rotate(-135deg);
+  }
+
+  /* links hidden until the column is expanded */
+  footer .footer-col .footer-col-links {
+    display: none;
+    padding-bottom: 16px;
+  }
+
+  footer .footer-col[aria-expanded="true"] .footer-col-links {
+    display: block;
+  }
+}
+
 footer .footer-col-links li {
   margin: 0 0 8px;
 }
