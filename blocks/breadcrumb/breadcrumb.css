@@ -1,0 +1,44 @@
+/* Breadcrumb — Home > Cards > Current, grey links + red current page. */
+
+.breadcrumb {
+  --bc-muted: #666;
+  --bc-red: #fa1432;
+}
+
+.breadcrumb .breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--body-font-size-xs);
+}
+
+.breadcrumb .breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* separator ">" before every item except the first */
+.breadcrumb .breadcrumb-item:not(:first-child)::before {
+  content: "›";
+  margin-right: 8px;
+  color: var(--bc-muted);
+}
+
+.breadcrumb .breadcrumb-link:any-link {
+  color: var(--bc-muted);
+  text-decoration: none;
+}
+
+.breadcrumb .breadcrumb-link:any-link:hover {
+  color: var(--bc-red);
+  text-decoration: underline;
+}
+
+.breadcrumb .breadcrumb-current {
+  color: var(--bc-red);
+  font-weight: 700;
+}

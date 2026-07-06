@@ -1,0 +1,52 @@
+import { moveInstrumentation } from '../../scripts/scripts.js';
+
+/**
+ * Breadcrumb — a simple trail of links ending in the current page.
+ * Each crumb item is a multi-cell row: label + optional link. Crumbs with a
+ * link render as anchors; the last crumb (or any without a link) renders as
+ * plain current-page text. Items keep their data-aue-* so they stay editable.
+ * @param {Element} block the block element
+ */
+export default function decorate(block) {
+  const rows = [...block.children];
+
+  const nav = document.createElement('nav');
+  nav.className = 'breadcrumb-nav';
+  nav.setAttribute('aria-label', 'Breadcrumb');
+  const list = document.createElement('ol');
+  list.className = 'breadcrumb-list';
+
+  rows.forEach((row) => {
+    const cells = [...row.children].map((c) => c.querySelector(':scope > div') || c);
+    const link = row.querySelector('a');
+    const label = cells
+      .map((c) => (c.querySelector('a') ? '' : c.textContent.trim()))
+      .find(Boolean) || (link ? link.textContent.trim() : '');
+    if (!label && !link) return;
+
+    const li = document.createElement('li');
+    li.className = 'breadcrumb-item';
+    moveInstrumentation(row, li);
+
+    const href = link ? link.getAttribute('href') : '';
+    if (href) {
+      const a = document.createElement('a');
+      a.href = href;
+      a.className = 'breadcrumb-link';
+      a.textContent = label || link.textContent.trim();
+      li.append(a);
+    } else {
+      const span = document.createElement('span');
+      span.className = 'breadcrumb-current';
+      span.setAttribute('aria-current', 'page');
+      span.textContent = label;
+      li.append(span);
+    }
+
+    list.append(li);
+  });
+
+  nav.append(list);
+  block.textContent = '';
+  block.append(nav);
+}

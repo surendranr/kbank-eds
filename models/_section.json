@@ -67,7 +67,8 @@
         "testimonials",
         "cta-banner",
         "faq-accordion",
-        "help-links"
+        "help-links",
+        "breadcrumb"
       ]
     }
   ]

@@ -142,6 +142,22 @@
     ]
   },
   {
+    "id": "breadcrumb-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "label",
+        "label": "Label (e.g. Cards)"
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link (leave empty for current page)"
+      }
+    ]
+  },
+  {
     "id": "cards-featured",
     "fields": [
       {
