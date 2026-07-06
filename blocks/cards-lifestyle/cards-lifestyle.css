@@ -147,19 +147,28 @@
   padding: 16px 18px 18px;
 }
 
+/* title (left) + badge (right) in one row */
+.cards-lifestyle .cards-lifestyle-item-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
 .cards-lifestyle .cards-lifestyle-item-badge {
-  align-self: flex-start;
-  margin-bottom: 10px;
-  padding: 3px 10px;
-  border-radius: 4px;
-  background: #fff1f2;
-  color: var(--cc-red);
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #e7faf2;
+  color: #00bc7d;
   font-size: 11px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .cards-lifestyle .cards-lifestyle-item-title {
-  margin: 0 0 6px;
+  margin: 0;
   color: var(--cc-ink);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-xs);
@@ -195,7 +204,7 @@
   width: 13px;
   height: 13px;
   background: center / contain no-repeat
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fa1432' stroke-width='3'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300BC7D' stroke-width='3'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
 }
 
 .cards-lifestyle .cards-lifestyle-item-actions {
@@ -224,9 +233,13 @@
   color: #fff;
 }
 
-/* know more link under the apply button */
+/* footer: Know More on the left, Compare button on the right */
 .cards-lifestyle .cards-lifestyle-item-footer {
-  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
 }
 
 .cards-lifestyle .cards-lifestyle-knowmore:any-link {
@@ -234,6 +247,32 @@
   font-size: var(--body-font-size-xs);
   font-weight: 700;
   text-decoration: underline;
+}
+
+.cards-lifestyle .cards-lifestyle-compare:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border: 1px solid var(--cc-card-border);
+  border-radius: 6px;
+  color: var(--cc-ink);
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cards-lifestyle .cards-lifestyle-compare:any-link::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: center / contain no-repeat
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M8 12l3 3 5-6'/%3E%3C/svg%3E");
+}
+
+.cards-lifestyle .cards-lifestyle-compare:any-link:hover {
+  border-color: var(--cc-navy);
+  color: var(--cc-navy);
 }
 
 @media (width >= 600px) {

@@ -29,17 +29,23 @@ function renderCard(data) {
 
   const body = document.createElement('div');
   body.className = 'cards-lifestyle-item-body';
-  if (data.badge) {
-    const b = document.createElement('span');
-    b.className = 'cards-lifestyle-item-badge';
-    b.textContent = data.badge;
-    body.append(b);
-  }
-  if (data.name) {
-    const h3 = document.createElement('h3');
-    h3.className = 'cards-lifestyle-item-title';
-    h3.textContent = data.name;
-    body.append(h3);
+  // title on the left, badge on the right in a single row
+  if (data.name || data.badge) {
+    const head = document.createElement('div');
+    head.className = 'cards-lifestyle-item-head';
+    if (data.name) {
+      const h3 = document.createElement('h3');
+      h3.className = 'cards-lifestyle-item-title';
+      h3.textContent = data.name;
+      head.append(h3);
+    }
+    if (data.badge) {
+      const b = document.createElement('span');
+      b.className = 'cards-lifestyle-item-badge';
+      b.textContent = data.badge;
+      head.append(b);
+    }
+    body.append(head);
   }
   if (data.fees) {
     const f = document.createElement('p');
@@ -61,14 +67,24 @@ function renderCard(data) {
     actions.append(a);
     body.append(actions);
   }
-  if (data.knowMoreText) {
+  // footer: Know More on the left, Compare button on the right
+  if (data.knowMoreText || data.compareText) {
     const foot = document.createElement('div');
     foot.className = 'cards-lifestyle-item-footer';
-    const km = document.createElement('a');
-    km.href = data.knowMoreHref || '#';
-    km.className = 'cards-lifestyle-knowmore';
-    km.textContent = data.knowMoreText;
-    foot.append(km);
+    if (data.knowMoreText) {
+      const km = document.createElement('a');
+      km.href = data.knowMoreHref || '#';
+      km.className = 'cards-lifestyle-knowmore';
+      km.textContent = data.knowMoreText;
+      foot.append(km);
+    }
+    if (data.compareText) {
+      const cmp = document.createElement('a');
+      cmp.href = data.compareHref || '#';
+      cmp.className = 'cards-lifestyle-compare';
+      cmp.textContent = data.compareText;
+      foot.append(cmp);
+    }
     body.append(foot);
   }
 
