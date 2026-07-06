@@ -178,11 +178,19 @@ footer .footer-col-links {
 
   footer .footer-wide .footer-wide-links {
     display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
     padding-bottom: 16px;
   }
 
   footer .footer-wide[aria-expanded="true"] .footer-wide-links {
     display: flex;
+  }
+
+  /* one link per line — hide the inline "|" separators on mobile */
+  footer .footer-wide .footer-wide-links li:not(:last-child)::after {
+    content: none;
   }
 }
 
