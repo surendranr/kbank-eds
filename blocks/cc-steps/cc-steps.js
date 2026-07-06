@@ -155,6 +155,8 @@ function openEligibilityModal(applyHref) {
   bodyEl.className = 'cc-steps-modal-body';
 
   const renderQuestion = () => {
+    // header (Quick Check / title / subtitle) shows only on the first question
+    head.hidden = step > 0;
     const { q, options } = ELIGIBILITY_QUESTIONS[step];
     const pct = Math.round(((step + 1) / total) * 100);
     bodyEl.innerHTML = `
@@ -183,6 +185,7 @@ function openEligibilityModal(applyHref) {
   };
 
   function renderResult() {
+    head.hidden = true;
     bodyEl.innerHTML = `
       <div class="cc-steps-quiz-result">
         <span class="cc-steps-quiz-result-icon" aria-hidden="true"></span>

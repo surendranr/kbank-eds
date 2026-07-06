@@ -181,8 +181,15 @@
   }
 }
 
-/* ===== Eligibility quick-check modal ===== */
+/* ===== Eligibility quick-check modal =====
+   The overlay is appended to <body> (outside .cc-steps), so redeclare the
+   color tokens here or var() references below would be undefined. */
 .cc-steps-modal-overlay {
+  --cc-red: #fa1432;
+  --cc-ink: #131313;
+  --cc-muted: #666;
+  --cc-navy: #00005a;
+
   position: fixed;
   inset: 0;
   z-index: 1000;
