@@ -163,6 +163,7 @@
   appearance: none;
   width: 18px;
   height: 18px;
+
   /* center the 18px thumb on the 6px track: (6 - 18) / 2 */
   margin-top: -6px;
   border: 3px solid #fff;
