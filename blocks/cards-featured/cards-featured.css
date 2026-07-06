@@ -284,7 +284,7 @@ main > .section > .cards-featured-wrapper {
   .cards-featured .cards-featured-header {
     display: grid;
     grid-template-columns: 1fr auto;
-    align-items: start;
+    align-items: center;
     column-gap: 40px;
     margin-bottom: 28px;
   }
@@ -297,10 +297,10 @@ main > .section > .cards-featured-wrapper {
   .cards-featured .cards-featured-desc {
     grid-column: 2;
     grid-row: 1 / span 2;
-    align-self: end;
-    max-width: 420px;
+    align-self: center;
+    max-width: 340px;
     text-align: right;
-    font-size: var(--body-font-size-s);
+    font-size: var(--body-font-size-xs);
   }
 
   .cards-featured .cards-featured-title {
