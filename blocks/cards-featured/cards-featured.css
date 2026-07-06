@@ -236,8 +236,8 @@ main > .section > .cards-featured-wrapper {
 .cards-featured .cards-featured-apply:any-link {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
-  padding: 8px 12px;
+  min-height: 36px;
+  padding: 6px 12px;
   border-radius: 6px;
   background: var(--cc-red);
   color: #fff;
@@ -262,8 +262,8 @@ main > .section > .cards-featured-wrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 10px 28px;
+  min-height: 40px;
+  padding: 8px 28px;
   border: 1px solid var(--cc-red);
   border-radius: 6px;
   background: #fff;

@@ -230,8 +230,8 @@
   align-items: center;
   justify-content: center;
   margin-top: auto;
-  min-height: 44px;
-  padding: 10px 28px;
+  min-height: 40px;
+  padding: 8px 28px;
   border-radius: 6px;
   background: #fff;
   color: var(--cc-red);
