@@ -90,7 +90,7 @@ main > .section > .cta-banner-wrapper {
   max-width: 420px;
   box-sizing: border-box;
   min-height: 44px;
-  padding: 12px 40px;
+  padding: 12px 32px;
   border-radius: 6px;
   background: #fff;
   color: var(--cc-red);

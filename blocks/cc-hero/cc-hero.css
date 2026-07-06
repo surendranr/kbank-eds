@@ -75,7 +75,7 @@ main > .section > .cc-hero-wrapper {
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 10px 24px;
+  padding: 10px 19px;
   border-radius: 6px;
   font-size: var(--body-font-size-xs);
   font-weight: 600;
