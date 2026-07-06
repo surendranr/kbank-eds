@@ -131,9 +131,11 @@ export default async function decorate(block) {
   const chromeRows = rows.filter((r) => !isItem(r));
 
   // header chrome (in order): eyebrow, heading, description (richtext, may hold
-  // a "View all" link), and a standalone bottom CTA link cell. The description
-  // is a rich cell containing block content (p/ul); the bottom CTA is a cell
-  // whose only content is a single link.
+  // a "View all" link), and a standalone bottom CTA link cell. EDS wraps every
+  // text cell in <p>, so rows are classified by link semantics, not by markup:
+  //  - a cell that is ONLY a link (link text == cell text) -> bottom CTA
+  //  - a cell with an inline link (text + link, e.g. "... View all") -> desc
+  //  - a plain-text cell -> eyebrow then heading (document order)
   const texts = [];
   let descCell = null;
   let ctaHref = '';
@@ -141,20 +143,17 @@ export default async function decorate(block) {
   chromeRows.forEach((r) => {
     const cell = r.querySelector(':scope > div') || r;
     const link = cell.querySelector('a');
-    const hasBlock = cell.querySelector('p, ul, ol, h1, h2, h3, h4, h5, h6');
     const txt = cell.textContent.trim();
-    if (hasBlock) {
-      // richtext description (keep its markup, including any View all link)
-      if (!descCell) descCell = cell;
-    } else if (link) {
-      // standalone bottom CTA link
+    if (link && link.textContent.trim() === txt) {
       ctaHref = link.getAttribute('href');
-      if (link.textContent.trim()) ctaText = link.textContent.trim();
+      if (txt) ctaText = txt;
+    } else if (link) {
+      descCell = cell;
     } else if (txt) {
       texts.push(txt);
     }
   });
-  const [eyebrow, heading] = texts;
+  const [eyebrow, heading, descText] = texts;
 
   const wrapper = document.createElement('div');
   wrapper.className = 'cards-featured-inner';
@@ -173,10 +172,29 @@ export default async function decorate(block) {
     h.textContent = heading;
     header.append(h);
   }
-  if (descCell) {
+  if (descCell || descText) {
     const desc = document.createElement('div');
     desc.className = 'cards-featured-desc';
-    [...descCell.childNodes].forEach((n) => desc.append(n.cloneNode(true)));
+    if (descCell) {
+      // richtext with an inline link authored: keep markup, tag the anchor
+      [...descCell.childNodes].forEach((n) => desc.append(n.cloneNode(true)));
+      const link = desc.querySelector('a');
+      if (link) link.className = 'cards-featured-viewall';
+    } else {
+      // plain text; peel a trailing "View all" into a link + external icon
+      const m = descText.match(/^(.*?)\s*(view all)\s*$/i);
+      const [, descBody, viewAllLabel] = m || [];
+      const p = document.createElement('p');
+      p.textContent = m ? descBody.trim() : descText;
+      desc.append(p);
+      if (m) {
+        const link = document.createElement('a');
+        link.className = 'cards-featured-viewall';
+        link.href = ctaHref || '#';
+        link.textContent = viewAllLabel;
+        desc.append(link);
+      }
+    }
     header.append(desc);
   }
   wrapper.append(header);

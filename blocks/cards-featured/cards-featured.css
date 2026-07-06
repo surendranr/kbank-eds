@@ -17,6 +17,10 @@
 }
 
 /* header */
+.cards-featured .cards-featured-header {
+  margin-bottom: 24px;
+}
+
 .cards-featured .cards-featured-eyebrow {
   margin: 0 0 6px;
   color: var(--cc-red);
@@ -35,7 +39,7 @@
 }
 
 .cards-featured .cards-featured-desc {
-  margin: 0 0 24px;
+  margin: 0;
   max-width: 640px;
   color: var(--cc-muted);
   font-size: var(--body-font-size-xs);
@@ -45,13 +49,26 @@
   margin: 0;
 }
 
-.cards-featured .cards-featured-desc a:any-link {
+/* "View all" — navy link with a trailing external-link icon */
+.cards-featured .cards-featured-viewall:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
   color: var(--cc-navy, #00005a);
   font-weight: 700;
   text-decoration: none;
 }
 
-.cards-featured .cards-featured-desc a:any-link:hover {
+.cards-featured .cards-featured-viewall:any-link::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: center / contain no-repeat
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300005a' stroke-width='2'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpath d='M15 3h6v6'/%3E%3Cpath d='M10 14L21 3'/%3E%3C/svg%3E");
+}
+
+.cards-featured .cards-featured-viewall:any-link:hover {
   text-decoration: underline;
 }
 
@@ -251,12 +268,31 @@
 
 /* desktop: static 3-column grid (swipe carousel below 900px) */
 @media (width >= 900px) {
+  /* eyebrow+title on the left, description+View all on the right */
+  .cards-featured .cards-featured-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    column-gap: 40px;
+    margin-bottom: 28px;
+  }
+
+  .cards-featured .cards-featured-eyebrow,
   .cards-featured .cards-featured-title {
-    font-size: var(--heading-font-size-l);
+    grid-column: 1;
   }
 
   .cards-featured .cards-featured-desc {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: end;
+    max-width: 320px;
+    text-align: right;
     font-size: var(--body-font-size-s);
+  }
+
+  .cards-featured .cards-featured-title {
+    font-size: var(--heading-font-size-l);
   }
 
   .cards-featured .cards-featured-list {

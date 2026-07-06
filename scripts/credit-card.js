@@ -84,7 +84,15 @@ export async function loadCreditCard(path) {
   if (!path) return null;
   const clean = path.replace(/(\.plain)?\.html$/, '');
   const index = await loadCardIndex();
-  return index.get(clean) || null;
+  const cached = index.get(clean);
+  if (!cached) return null;
+  // return a fresh copy each call: the cached featuresList is a live DOM node,
+  // so multiple blocks (featured + lifestyle) sharing it would move it out of
+  // whichever rendered first. Clone it per consumer.
+  return {
+    ...cached,
+    featuresList: cached.featuresList ? cached.featuresList.cloneNode(true) : null,
+  };
 }
 
 /**
