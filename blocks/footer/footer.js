@@ -94,8 +94,9 @@ function buildLinkColumns(section) {
       list.classList.add(isWide ? 'footer-wide-links' : 'footer-col-links');
       col.append(list);
     }
-    // grid columns collapse on mobile: tap the title to reveal its links
-    if (!isWide && list && list.tagName === 'UL') {
+    // collapse on mobile: tap the title to reveal its links (both the grid
+    // columns and the wide full-width rows behave as accordions on mobile)
+    if (list && list.tagName === 'UL') {
       col.setAttribute('aria-expanded', 'false');
       title.setAttribute('role', 'button');
       title.setAttribute('tabindex', '0');

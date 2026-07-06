@@ -146,6 +146,44 @@ footer .footer-col-links {
   footer .footer-col[aria-expanded="true"] .footer-col-links {
     display: block;
   }
+
+  /* wide rows (Channel Red / Popular Products / Help Center) accordion too */
+  footer .footer-wide {
+    padding: 0;
+  }
+
+  footer .footer-wide .footer-col-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 16px 0;
+    cursor: pointer;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  footer .footer-wide .footer-col-title::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid #666;
+    border-bottom: 2px solid #666;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  footer .footer-wide[aria-expanded="true"] .footer-col-title::after {
+    transform: rotate(-135deg);
+  }
+
+  footer .footer-wide .footer-wide-links {
+    display: none;
+    padding-bottom: 16px;
+  }
+
+  footer .footer-wide[aria-expanded="true"] .footer-wide-links {
+    display: flex;
+  }
 }
 
 footer .footer-col-links li {

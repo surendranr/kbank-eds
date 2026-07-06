@@ -64,24 +64,48 @@ export default function decorate(block) {
 
     const body = document.createElement('div');
     body.className = 'help-links-body';
+    let titleEl = null;
     if (titleCell && titleCell.textContent.trim()) {
-      const h3 = document.createElement('h3');
-      h3.className = 'help-links-item-title';
-      h3.textContent = titleCell.textContent.trim();
-      body.append(h3);
+      titleEl = document.createElement('h3');
+      titleEl.className = 'help-links-item-title';
+      titleEl.textContent = titleCell.textContent.trim();
+      body.append(titleEl);
     }
+    // collapsible detail = description + action link (hidden on mobile until
+    // the heading is tapped)
+    const detail = document.createElement('div');
+    detail.className = 'help-links-detail';
     if (descCell) {
       const desc = document.createElement('div');
       desc.className = 'help-links-desc';
       [...descCell.childNodes].forEach((n) => desc.append(n.cloneNode(true)));
-      body.append(desc);
+      detail.append(desc);
     }
     const link = linkCell ? linkCell.querySelector('a') : null;
     if (link && link.textContent.trim()) {
       link.className = 'help-links-action';
-      body.append(link);
+      detail.append(link);
     }
+    if (detail.children.length) body.append(detail);
     li.append(body);
+
+    // mobile accordion: tap the heading to reveal the detail
+    if (titleEl && detail.children.length) {
+      li.setAttribute('aria-expanded', 'false');
+      titleEl.setAttribute('role', 'button');
+      titleEl.setAttribute('tabindex', '0');
+      const toggle = () => {
+        const open = li.getAttribute('aria-expanded') === 'true';
+        li.setAttribute('aria-expanded', open ? 'false' : 'true');
+      };
+      titleEl.addEventListener('click', toggle);
+      titleEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    }
 
     list.append(li);
   });
