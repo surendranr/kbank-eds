@@ -181,19 +181,19 @@ export default async function decorate(block) {
       const link = desc.querySelector('a');
       if (link) link.className = 'cards-featured-viewall';
     } else {
-      // plain text; peel a trailing "View all" into a link + external icon
+      // plain text; peel a trailing "View all" into an inline link + icon
       const m = descText.match(/^(.*?)\s*(view all)\s*$/i);
       const [, descBody, viewAllLabel] = m || [];
       const p = document.createElement('p');
-      p.textContent = m ? descBody.trim() : descText;
-      desc.append(p);
+      p.textContent = m ? `${descBody.trim()} ` : descText;
       if (m) {
         const link = document.createElement('a');
         link.className = 'cards-featured-viewall';
         link.href = ctaHref || '#';
         link.textContent = viewAllLabel;
-        desc.append(link);
+        p.append(link);
       }
+      desc.append(p);
     }
     header.append(desc);
   }
