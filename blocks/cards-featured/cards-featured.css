@@ -130,7 +130,7 @@ main > .section:has(+ .section > .cards-featured-wrapper) {
 .cards-featured .cards-featured-item-image img {
   display: block;
   width: 100%;
-  aspect-ratio: 20 / 20;
+  aspect-ratio: 497 / 230; /* wide banner crop matching the card-art source */
   object-fit: cover;
 }
 
