@@ -226,6 +226,11 @@ header nav .nav-tools .nav-login::before {
 
 /* ===== Desktop nav layout ===== */
 @media (width >= 900px) {
+  /* desktop: red login button (mobile keeps the navy #002f69) */
+  header nav .nav-tools .nav-login {
+    background-color: #fa1432;
+  }
+
   header nav .nav-menu {
     display: flex;
     align-items: center;
