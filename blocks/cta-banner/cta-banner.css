@@ -116,12 +116,12 @@ main > .section > .cta-banner-wrapper {
   .cta-banner::after,
   .cta-banner.cta-banner-has-image::after {
     display: block;
-    top: auto;
-    right: -30px;
-    bottom: -30px;
-    transform: none;
-    width: 200px;
-    height: 120px;
+    top: 50%;
+    right: -36px;
+    bottom: auto;
+    transform: translateY(-50%);
+    width: 240px;
+    height: 150px;
   }
 }
 
