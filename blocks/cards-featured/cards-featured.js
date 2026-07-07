@@ -64,7 +64,12 @@ function renderCard(data) {
   if (data.fees) {
     const fees = document.createElement('p');
     fees.className = 'cards-featured-item-fees';
-    fees.textContent = data.fees;
+    // emphasize the fee VALUE (a ₹ amount or "Nil") so it reads brighter than
+    // the "Joining fee:" / "Annual fee:" labels
+    fees.innerHTML = data.fees.replace(
+      /(₹\s*[\d,]+|₹\s*nil|\bnil\b)/gi,
+      '<span class="cards-featured-item-fees-value">$1</span>',
+    );
     body.append(fees);
   }
 

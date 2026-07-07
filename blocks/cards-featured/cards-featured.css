@@ -212,6 +212,11 @@ main > .section:has(+ .section > .cards-featured-wrapper) {
   font-weight: 700;
 }
 
+/* the ₹ amount / Nil value renders brighter than the label */
+.cards-featured .cards-featured-item-fees-value {
+  color: var(--cc-ink);
+}
+
 /* actions pinned to the bottom */
 .cards-featured .cards-featured-item-actions {
   display: flex;
