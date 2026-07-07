@@ -207,6 +207,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+  /* slight blur so the overlaid content reads more clearly */
+  filter: blur(2px);
 }
 
 /* dark overlay so the text stays legible over the image */
@@ -241,6 +244,12 @@
   font-size: var(--heading-font-size-s);
   font-weight: 800;
   line-height: 1.2;
+}
+
+/* the Cashback+ title is long — keep it narrow so it wraps to two lines and
+   doesn't run over the card artwork on the right */
+.savings-calculator .savings-calculator-best[data-card*="cashback"] .savings-calculator-best-name {
+  max-width: 12ch;
 }
 
 .savings-calculator .savings-calculator-best-badge {
@@ -311,6 +320,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: blur(2px);
 }
 
 /* dark overlay so the text stays legible over the image */

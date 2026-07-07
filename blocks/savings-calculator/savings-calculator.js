@@ -253,6 +253,9 @@ export default async function decorate(block) {
 
     const d = best.data;
     best.el.className = 'savings-calculator-best';
+    // expose the card name so CSS can special-case a specific card (e.g. the
+    // long "Cashback+" title needs to wrap to two lines to clear the artwork)
+    best.el.dataset.card = (d.name || '').toLowerCase();
     best.el.innerHTML = `
       <div class="savings-calculator-best-body">
         <p class="savings-calculator-best-flag">Best match for you</p>
