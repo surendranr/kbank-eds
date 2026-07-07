@@ -7,6 +7,15 @@
   --cc-muted: #888;
   --cc-star: #f5a623;
   --cc-card-border: #eaeaea;
+
+  background: #ececed;
+  padding: 48px 24px;
+}
+
+/* full-bleed: span the full section width, ignoring section max-width/padding */
+main > .section > .testimonials-wrapper {
+  max-width: none;
+  padding: 0;
 }
 
 .testimonials .testimonials-inner {

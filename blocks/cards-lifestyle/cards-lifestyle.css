@@ -8,6 +8,15 @@
   --cc-navy: #00005a;
   --cc-card-border: #eaeaea;
   --cc-chip-bg: #f4f4f6;
+
+  background: linear-gradient(180deg, #fdfefe, #dce5ec);
+  padding: 48px 24px;
+}
+
+/* full-bleed: span the full section width, ignoring section max-width/padding */
+main > .section > .cards-lifestyle-wrapper {
+  max-width: none;
+  padding: 0;
 }
 
 .cards-lifestyle .cards-lifestyle-inner {
