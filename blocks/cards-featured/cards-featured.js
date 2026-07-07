@@ -61,15 +61,17 @@ function renderCard(data) {
     feat.append(data.featuresList);
     body.append(feat);
   }
-  if (data.fees) {
+  let feesParts = [];
+  if (data.feesParts && data.feesParts.length) feesParts = data.feesParts;
+  else if (data.fees) feesParts = [data.fees];
+  if (feesParts.length) {
     const fees = document.createElement('p');
     fees.className = 'cards-featured-item-fees';
-    // emphasize the fee VALUE (a ₹ amount or "Nil") so it reads brighter than
-    // the "Joining fee:" / "Annual fee:" labels
-    fees.innerHTML = data.fees.replace(
-      /(₹\s*[\d,]+|₹\s*nil|\bnil\b)/gi,
-      '<span class="cards-featured-item-fees-value">$1</span>',
-    );
+    // render each fee part in its own span (16px gap between them) and
+    // emphasize the value (₹ amount or "Nil") brighter than the label
+    fees.innerHTML = feesParts.map((part) => `<span class="cards-featured-item-fee">${
+      part.replace(/(₹\s*[\d,]+|₹\s*nil|\bnil\b)/gi, '<span class="cards-featured-item-fees-value">$1</span>')
+    }</span>`).join('');
     body.append(fees);
   }
 

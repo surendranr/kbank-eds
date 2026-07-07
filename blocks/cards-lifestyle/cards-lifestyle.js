@@ -49,10 +49,16 @@ function renderCard(data) {
     }
     body.append(head);
   }
-  if (data.fees) {
+  let feesParts = [];
+  if (data.feesParts && data.feesParts.length) feesParts = data.feesParts;
+  else if (data.fees) feesParts = [data.fees];
+  if (feesParts.length) {
     const f = document.createElement('p');
     f.className = 'cards-lifestyle-item-fees';
-    f.textContent = data.fees;
+    // each fee part in its own span (16px gap); value (₹/Nil) bold + brighter
+    f.innerHTML = feesParts.map((part) => `<span class="cards-lifestyle-item-fee">${
+      part.replace(/(₹\s*[\d,]+|₹\s*nil|\bnil\b)/gi, '<span class="cards-lifestyle-item-fees-value">$1</span>')
+    }</span>`).join('');
     body.append(f);
   }
   if (data.featuresList) {

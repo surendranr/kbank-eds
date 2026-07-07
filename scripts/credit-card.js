@@ -50,6 +50,7 @@ function normalize(item) {
     name: item.cardname || '',
     badge: item.badge || '',
     fees: feesLine(item),
+    feesParts: [item.joiningfee, item.annualfee].filter(Boolean),
     featuresList: htmlToList(item.features && item.features.html),
     tags: htmlToText(item.filtertags && item.filtertags.html),
     applyHref: item.applylink || '#',

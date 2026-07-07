@@ -215,9 +215,18 @@ main > .section:has(+ .section > .cards-lifestyle-wrapper) {
 }
 
 .cards-lifestyle .cards-lifestyle-item-fees {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   margin: 0 0 10px;
   color: var(--cc-muted);
   font-size: 12px;
+}
+
+/* the ₹ amount / Nil value renders bold + brighter than the label */
+.cards-lifestyle .cards-lifestyle-item-fees-value {
+  color: var(--cc-ink);
+  font-weight: 700;
 }
 
 .cards-lifestyle .cards-lifestyle-item-features {

@@ -202,19 +202,23 @@ main > .section:has(+ .section > .cards-featured-wrapper) {
   font-size: 12px;
 }
 
-/* fees line (joining + annual) above the actions */
+/* fees line (joining + annual) above the actions — 16px gap between parts */
 .cards-featured .cards-featured-item-fees {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
   margin: 12px 0 0;
   padding-top: 12px;
   border-top: 1px solid var(--cc-card-border);
   color: var(--cc-muted);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
 }
 
-/* the ₹ amount / Nil value renders brighter than the label */
+/* the ₹ amount / Nil value renders bold + brighter than the label */
 .cards-featured .cards-featured-item-fees-value {
   color: var(--cc-ink);
+  font-weight: 700;
 }
 
 /* actions pinned to the bottom */
