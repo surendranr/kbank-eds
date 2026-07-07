@@ -21,6 +21,15 @@ main > .section > .savings-calculator-wrapper {
   padding: 0;
 }
 
+/* close the gap to the adjacent sections */
+main > .section:has(> .savings-calculator-wrapper) {
+  margin-top: 0;
+}
+
+main > .section:has(+ .section > .savings-calculator-wrapper) {
+  margin-bottom: 0;
+}
+
 .savings-calculator .savings-calculator-inner {
   max-width: 1170px;
   margin: 0 auto;

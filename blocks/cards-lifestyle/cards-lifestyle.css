@@ -19,6 +19,15 @@ main > .section > .cards-lifestyle-wrapper {
   padding: 0;
 }
 
+/* close the gap to the adjacent sections */
+main > .section:has(> .cards-lifestyle-wrapper) {
+  margin-top: 0;
+}
+
+main > .section:has(+ .section > .cards-lifestyle-wrapper) {
+  margin-bottom: 0;
+}
+
 .cards-lifestyle .cards-lifestyle-inner {
   max-width: 1170px;
   margin: 0 auto;
