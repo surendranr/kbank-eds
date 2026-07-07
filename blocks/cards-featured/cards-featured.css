@@ -244,6 +244,13 @@ main > .section:has(+ .section > .cards-featured-wrapper) {
   text-decoration: underline;
 }
 
+/* mobile: show just "Compare" (hide the " this Card" suffix) */
+@media (width < 900px) {
+  .cards-featured .cards-featured-compare-suffix {
+    display: none;
+  }
+}
+
 .cards-featured .cards-featured-apply:any-link {
   display: inline-flex;
   align-items: center;

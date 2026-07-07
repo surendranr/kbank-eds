@@ -74,9 +74,14 @@ function renderCard(data) {
     const c = document.createElement('a');
     c.href = data.compareHref || '#';
     c.className = 'cards-featured-compare';
-    // featured cards show the fuller label; the shared fragment field is
-    // just "Compare" (used verbatim by the lifestyle block)
-    c.textContent = /^compare$/i.test(data.compareText) ? 'Compare this Card' : data.compareText;
+    // featured cards show the fuller label ("Compare this Card"); the shared
+    // fragment field is just "Compare" (used verbatim by the lifestyle block).
+    // The extra words are wrapped so CSS can hide them on mobile -> "Compare".
+    if (/^compare$/i.test(data.compareText)) {
+      c.innerHTML = 'Compare<span class="cards-featured-compare-suffix"> this Card</span>';
+    } else {
+      c.textContent = data.compareText;
+    }
     actions.append(c);
   }
   if (data.applyText) {
