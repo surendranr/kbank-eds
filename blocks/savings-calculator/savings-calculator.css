@@ -225,9 +225,6 @@ main > .section:has(+ .section > .savings-calculator-wrapper) {
   width: 100%;
   height: 100%;
   object-fit: cover;
-
-  /* slight blur so the overlaid content reads more clearly */
-  filter: blur(2px);
 }
 
 /* dark overlay so the text stays legible over the image */
@@ -338,7 +335,6 @@ main > .section:has(+ .section > .savings-calculator-wrapper) {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(2px);
 }
 
 /* dark overlay so the text stays legible over the image */
