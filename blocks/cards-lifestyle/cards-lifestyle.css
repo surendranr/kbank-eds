@@ -94,7 +94,7 @@
   border-radius: 999px;
   background: var(--cc-chip-bg);
   color: var(--cc-ink);
-  font-size: var(--body-font-size-xs);
+  font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
