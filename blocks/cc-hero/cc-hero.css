@@ -56,7 +56,6 @@ main > .section > .cc-hero-wrapper {
 .cc-hero .cc-hero-content p {
   margin: 0 0 16px;
   color: var(--cc-navy);
-  font-family: var(--body-font-family); /* match the heading font */
   font-size: 16px;
   font-weight: 400;
 }
