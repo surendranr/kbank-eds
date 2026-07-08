@@ -136,6 +136,13 @@ header nav .nav-menu .nav-label {
   cursor: pointer;
 }
 
+/* dropdown sub-items use the same font as the top-level menu labels
+   (panel headings would otherwise pick up the global heading font) */
+header nav .nav-panel,
+header nav .nav-panel * {
+  font-family: var(--body-font-family, sans-serif);
+}
+
 /* chevron */
 header nav .nav-menu .nav-has-panel > .nav-label::after {
   content: '';
