@@ -19,6 +19,7 @@ main > .section > .cc-hero-wrapper {
 
 .cc-hero .cc-hero-image {
   grid-area: 1 / 1;
+  height: 100%;
   line-height: 0;
 }
 
@@ -26,10 +27,20 @@ main > .section > .cc-hero-wrapper {
 .cc-hero .cc-hero-image img {
   display: block;
   width: 100%;
-  height: auto;
 
-  /* show the full image (no crop) at its natural aspect ratio */
-  object-fit: contain;
+  /* mobile: fill the hero so the overlaid content always sits on the image
+     (the tall stacked content would otherwise spill below a letterboxed image) */
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (width >= 900px) {
+  .cc-hero .cc-hero-image picture,
+  .cc-hero .cc-hero-image img {
+    /* desktop: show the full image (no crop) at its natural aspect ratio */
+    height: auto;
+    object-fit: contain;
+  }
 }
 
 /* content overlay */
