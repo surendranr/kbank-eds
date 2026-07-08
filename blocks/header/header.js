@@ -88,20 +88,41 @@ function buildSearchControl(searchHref) {
   input.type = 'search';
   input.name = 'q';
   input.className = 'nav-search-input';
-  input.placeholder = 'Search';
+  input.placeholder = 'I am looking for...';
   input.setAttribute('aria-label', 'Search');
-  form.append(input);
+
+  // submit (magnifier) + close (X) buttons — only visible in the mobile overlay
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.className = 'nav-search-submit';
+  submit.setAttribute('aria-label', 'Submit search');
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.className = 'nav-search-close';
+  close.setAttribute('aria-label', 'Close search');
+  form.append(input, submit, close);
+
+  // full-screen dimmer behind the mobile search bar
+  const backdrop = document.createElement('div');
+  backdrop.className = 'nav-search-backdrop';
+
+  const closeSearch = () => {
+    wrapper.classList.remove('nav-search-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  };
 
   toggle.addEventListener('click', () => {
     const open = wrapper.classList.toggle('nav-search-open');
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) input.focus();
   });
+  close.addEventListener('click', closeSearch);
+  backdrop.addEventListener('click', closeSearch);
   form.addEventListener('submit', (e) => {
     if (!input.value.trim()) e.preventDefault();
   });
 
-  wrapper.append(toggle, form);
+  wrapper.append(toggle, form, backdrop);
   return wrapper;
 }
 
