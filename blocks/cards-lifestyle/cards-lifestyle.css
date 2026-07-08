@@ -281,13 +281,21 @@ main > .section:has(+ .section > .cards-lifestyle-wrapper) {
   color: #fff;
 }
 
-/* footer: Know More on the left, Compare button on the right */
+/* footer: Know More on the left, Compare button on the right.
+   margin-top:auto pins it to the card bottom so footers align across cards
+   with differing feature-list heights (when there's no Apply button above). */
 .cards-lifestyle .cards-lifestyle-item-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  margin-top: auto;
   padding-top: 12px;
+}
+
+/* when an Apply button precedes it, that already pins the group — avoid a gap */
+.cards-lifestyle .cards-lifestyle-item-actions + .cards-lifestyle-item-footer {
+  margin-top: 0;
 }
 
 .cards-lifestyle .cards-lifestyle-knowmore:any-link {
