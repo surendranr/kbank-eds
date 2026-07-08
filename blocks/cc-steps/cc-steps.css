@@ -172,10 +172,10 @@ main > .section:has(+ .section > .cc-steps-wrapper) {
     align-items: stretch;
   }
 
-  /* connector sits at the vertical center of the ~170px cards; cards (opaque)
-     mask it, leaving dark→red segments visible in the gaps */
+  /* connector aligns with the icon row; cards (opaque) mask it, leaving
+     dark→red segments visible in the gaps */
   .cc-steps .cc-steps-list::before {
-    inset: 85px 12% auto; /* card vertical center; horizontal band, no bottom */
+    inset: 44px 12% auto; /* icon vertical center; horizontal band, no bottom */
     width: auto;
     height: 2px;
     transform: none;
@@ -187,7 +187,6 @@ main > .section:has(+ .section > .cc-steps-wrapper) {
     z-index: 1; /* card paints over the connector */
     align-items: flex-start;
     text-align: left;
-    min-height: 170px;
     padding: 24px;
   }
 
