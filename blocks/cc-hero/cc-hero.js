@@ -1,4 +1,8 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
+import openEligibilityModal from '../../scripts/eligibility-modal.js';
+
+// application page the eligibility modal's "Apply Now" redirects to
+const APPLY_PAGE = '/content/kbank-eds/apply.html';
 
 /**
  * Emit media-scoped <link rel="preload" as="image"> tags into <head> for the
@@ -116,6 +120,14 @@ export default function decorate(block) {
     link.className = i === 0
       ? 'cc-hero-btn cc-hero-btn-primary'
       : 'cc-hero-btn cc-hero-btn-secondary';
+    // a "Check Eligibility" CTA opens the quick-check modal instead of
+    // navigating; its result panel's Apply Now goes to the application page
+    if (/eligibility/i.test(link.textContent)) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        openEligibilityModal(APPLY_PAGE);
+      });
+    }
     actions.append(link);
   });
   if (actions.children.length) content.append(actions);
