@@ -40,7 +40,7 @@ function closeAllMenus(menu) {
  * @param {Element} section the first fragment section
  * @returns {Element} brand element
  */
-const HOME_URL = 'https://www.kotak.bank.in/en/home.html';
+const HOME_URL = '/';
 
 function buildBrand(section) {
   const brand = document.createElement('div');
@@ -158,7 +158,7 @@ function buildTools(section) {
   if (hasLogin) {
     const a = loginLink || document.createElement('a');
     if (!loginLink) {
-      a.href = 'https://www.kotak.bank.in/en/login.html';
+      a.href = '/';
       a.textContent = 'Login';
     }
     a.className = 'nav-login';
