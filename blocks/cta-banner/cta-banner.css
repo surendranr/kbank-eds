@@ -94,7 +94,7 @@ main > .section:has(+ .section > .cta-banner-wrapper) {
   display: flex;
   align-items: center;
   justify-content: center;
-  align-self: stretch; /* wider button on mobile */
+  align-self: center; /* centered; full-width on narrow phones via max-width cap */
   width: 100%;
   max-width: 420px;
   box-sizing: border-box;
