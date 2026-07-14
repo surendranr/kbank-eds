@@ -1,0 +1,59 @@
+/*
+ * cards-benefits — 3-up "features / benefits" grid.
+ * Each item: a circular outline icon, a bold heading, and a short description.
+ * Derived from the vanilla `cards` block; icon-first, no cover images.
+ */
+
+.cards-benefits > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (width >= 900px) {
+  .cards-benefits > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.cards-benefits > ul > li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #dadada;
+  background-color: var(--background-color);
+  padding: 24px;
+  text-align: center;
+}
+
+.cards-benefits .cards-benefits-card-body {
+  margin: 0;
+}
+
+.cards-benefits .cards-benefits-card-image {
+  line-height: 0;
+  margin-bottom: 16px;
+}
+
+/* Circular outline icon treatment (icons are small SVG/PNG glyphs, not cover images) */
+.cards-benefits .cards-benefits-card-image img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 1px solid #dadada;
+  padding: 12px;
+  box-sizing: content-box;
+}
+
+.cards-benefits .cards-benefits-card-body h3,
+.cards-benefits .cards-benefits-card-body h4 {
+  margin: 0 0 8px;
+}
+
+.cards-benefits .cards-benefits-card-body p {
+  margin: 0;
+}
