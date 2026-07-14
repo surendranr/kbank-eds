@@ -142,6 +142,31 @@
     ]
   },
   {
+    "id": "api-demo",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "directUrl",
+        "label": "Direct API URL",
+        "value": "https://open.er-api.com/v6/latest/USD"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "bffUrl",
+        "label": "BFF Action URL (App Builder)"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "base",
+        "label": "Base Currency",
+        "value": "USD"
+      }
+    ]
+  },
+  {
     "id": "apply-form",
     "fields": [
       {

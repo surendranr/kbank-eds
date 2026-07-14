@@ -71,7 +71,8 @@
         "help-links",
         "breadcrumb",
         "apply-form",
-        "sub-nav"
+        "sub-nav",
+        "api-demo"
       ]
     }
   ]
