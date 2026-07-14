@@ -59,12 +59,20 @@ main > .section > .cc-hero-wrapper {
 }
 
 .cc-hero .cc-hero-content h1 {
+  /* hidden on mobile; the subtext + CTAs still show over the image */
+  display: none;
   margin: 0 0 8px;
   color: var(--cc-red);
   font-family: var(--body-font-family);
   font-size: 44px;
   font-weight: 700;
   line-height: 1.15;
+}
+
+@media (width >= 900px) {
+  .cc-hero .cc-hero-content h1 {
+    display: block;
+  }
 }
 
 .cc-hero .cc-hero-content p {
