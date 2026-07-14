@@ -3,7 +3,7 @@
     "cardsFeaturedRefList": {
       "items": [
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/biz-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/biz-credit-card",
           "_id": "faca78ed-d3ea-431f-89d0-5a073963fb90",
           "cardname": "Biz Credit Card",
           "highlight": null,
@@ -29,7 +29,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/corporate-gold-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/corporate-gold-credit-card",
           "_id": "8aecd1b2-5e19-4be2-bfd9-319ce6beac1a",
           "cardname": "Corporate Gold Credit Card",
           "highlight": null,
@@ -55,7 +55,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/corporate-platinum-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/corporate-platinum-credit-card",
           "_id": "a8c24f22-59cd-4d10-8c0b-fdf4714f050a",
           "cardname": "Corporate Platinum Credit Card",
           "highlight": null,
@@ -81,7 +81,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/corporate-wealth-signature-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/corporate-wealth-signature-credit-card",
           "_id": "7f5b8adc-bc43-4c61-bf40-74f508badff9",
           "cardname": "Corporate Wealth Signature Credit Card",
           "highlight": null,
@@ -107,7 +107,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/indianoil-kotak",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/indianoil-kotak",
           "_id": "7d0ee825-8a9c-4c01-bfdb-6d7a6db7dc06",
           "cardname": "IndianOil Kotak Credit Card",
           "highlight": null,
@@ -133,7 +133,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/kotak-air-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/kotak-air-card",
           "_id": "29d02668-949e-4593-87cb-5f47c721f9fc",
           "cardname": "Kotak Air+ Credit Card",
           "highlight": "Free lounge access",
@@ -159,7 +159,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/kotak-biz-edge-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/kotak-biz-edge-credit-card",
           "_id": "d0520424-2692-4069-9ca5-b0802318e734",
           "cardname": "Kotak Biz Edge Credit Card",
           "highlight": null,
@@ -185,7 +185,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/kotak-cashback--credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/kotak-cashback--credit-card",
           "_id": "6e10e30b-2cf4-4fa7-92cc-6d05727fd1c8",
           "cardname": "Kotak Cashback+ Credit Card",
           "highlight": "5% cashback",
@@ -211,7 +211,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/kotak-classic-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/kotak-classic-credit-card",
           "_id": "cd1d0f96-b004-49f0-b019-3d3f144c9ae2",
           "cardname": "Kotak 811 Credit Card",
           "highlight": null,
@@ -237,7 +237,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/kotak-infinite-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/kotak-infinite-credit-card",
           "_id": "437c27c4-c1af-41a6-b387-ead0f7acb5a3",
           "cardname": "Kotak Infinite Credit Card",
           "highlight": null,
@@ -263,7 +263,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/kotak-league-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/kotak-league-card",
           "_id": "507b2eff-301a-44f2-b1c2-946dd1501f16",
           "cardname": "Kotak League Card",
           "highlight": "4X reward points",
@@ -289,7 +289,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/kotak-solitaire-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/kotak-solitaire-credit-card",
           "_id": "13bb71c7-c983-4d89-9221-c0c82351e67b",
           "cardname": "Kotak Solitaire credit card",
           "highlight": "An invite-only card crafted exclusively for the select few",
@@ -315,7 +315,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/nri-royale-signature-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/nri-royale-signature-credit-card",
           "_id": "2099346f-0a68-4302-bda7-1311bcfc7979",
           "cardname": "NRI Royale Signature Credit Card",
           "highlight": "Indulge yourself as an NRI without limits with a credit card that makes every detail exceptional. ",
@@ -341,7 +341,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/pvr-kotak-platinum-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/pvr-kotak-platinum-credit-card",
           "_id": "9715644f-600a-40c0-8a82-2ebc6517bad8",
           "cardname": "PVR Kotak Platinum Credit Card",
           "highlight": null,
@@ -367,7 +367,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/solitaire-business-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/solitaire-business-credit-card",
           "_id": "be234897-2d2f-4b02-b538-83a32cf2cfd7",
           "cardname": "Solitaire Business Credit Card",
           "highlight": "Built to grow your business",
@@ -393,7 +393,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/urbane-gold-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/urbane-gold-credit-card",
           "_id": "e82ac26c-bd48-45f9-9286-4acf255169e5",
           "cardname": "Urbane Gold Credit Card",
           "highlight": "Discontinued for new applications",
@@ -419,7 +419,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/white-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/white-credit-card",
           "_id": "b16210f2-4d0c-4521-b5a4-b994190374c7",
           "cardname": "White Credit Card",
           "highlight": "A handcrafted exclusive rewards program designed for transparency, elegance and simplicity ",
@@ -445,7 +445,7 @@
           }
         },
         {
-          "_path": "/content/dam/kotakbank/cards-content-fragments/zen-credit-card",
+          "_path": "/content/dam/kbank-eds/cards-content-fragments/zen-credit-card",
           "_id": "51b13c0e-bfc8-4ea1-8b99-13fc30602000",
           "cardname": "Zen Credit Card",
           "highlight": "Get 10 Zen points for every ₹150 spent on shopping  with Kotak Zen Credit Card",
