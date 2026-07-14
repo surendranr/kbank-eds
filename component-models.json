@@ -1112,6 +1112,39 @@
     ]
   },
   {
+    "id": "sub-nav-item",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkText",
+        "label": "Link Text"
+      },
+      {
+        "component": "select",
+        "name": "state",
+        "label": "State",
+        "valueType": "string",
+        "value": "auto",
+        "options": [
+          {
+            "name": "Auto (highlight on current page)",
+            "value": "auto"
+          },
+          {
+            "name": "Force active",
+            "value": "active"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "testimonials",
     "fields": [
       {

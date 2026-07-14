@@ -70,7 +70,8 @@
         "faq-accordion",
         "help-links",
         "breadcrumb",
-        "apply-form"
+        "apply-form",
+        "sub-nav"
       ]
     }
   ]

@@ -35,7 +35,8 @@
       "faq-accordion",
       "help-links",
       "breadcrumb",
-      "apply-form"
+      "apply-form",
+      "sub-nav"
     ]
   },
   {
@@ -150,6 +151,12 @@
     "components": [
       "savings-calculator-category",
       "savings-calculator-ref"
+    ]
+  },
+  {
+    "id": "sub-nav",
+    "components": [
+      "sub-nav-item"
     ]
   },
   {
