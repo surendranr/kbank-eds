@@ -256,10 +256,17 @@
 
 .carousel-hero .carousel-hero-quicklinks {
   position: absolute;
-  left: 16px;
-  right: 16px;
+  left: 0;
+  right: 0;
   bottom: 0;
   z-index: 3;
+
+  /* align the bar's edges with the page content (and the cards below) */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
 }
 
 .carousel-hero .carousel-hero-quicklinks-list {
@@ -332,12 +339,6 @@
 @media (width >= 900px) {
   .carousel-hero.carousel-hero-has-quicklinks {
     padding-bottom: 40px;
-  }
-
-  .carousel-hero .carousel-hero-quicklinks {
-    left: 40px;
-    right: 40px;
-    bottom: 0;
   }
 
   .carousel-hero .carousel-hero-quicklinks-list {
