@@ -40,11 +40,21 @@ export default function decorate(block) {
   const banner = document.createElement('div');
   banner.className = 'resume-application-banner';
 
+  // inline icons (no author upload): a history/undo clock for the title and a
+  // schedule clock for the status line.
+  const HISTORY_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v5h5"/><path d="M3.05 13a9 9 0 1 0 2.6-6.36L3 8"/><path d="M12 7v5l3 2"/></svg>';
+  const SCHEDULE_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+
   const bar = document.createElement('div');
   bar.className = 'resume-application-bar';
   const barTitle = document.createElement('span');
   barTitle.className = 'resume-application-bar-title';
-  barTitle.textContent = bannerTitle;
+  const barIcon = document.createElement('span');
+  barIcon.className = 'resume-application-bar-icon';
+  barIcon.innerHTML = HISTORY_ICON;
+  const barLabel = document.createElement('span');
+  barLabel.textContent = bannerTitle;
+  barTitle.append(barIcon, barLabel);
   const close = document.createElement('button');
   close.type = 'button';
   close.className = 'resume-application-close';
@@ -73,7 +83,12 @@ export default function decorate(block) {
   if (meta) {
     const m = document.createElement('p');
     m.className = 'resume-application-meta';
-    m.textContent = meta;
+    const metaIcon = document.createElement('span');
+    metaIcon.className = 'resume-application-meta-icon';
+    metaIcon.innerHTML = SCHEDULE_ICON;
+    const metaLabel = document.createElement('span');
+    metaLabel.textContent = meta;
+    m.append(metaIcon, metaLabel);
     body.append(m);
   }
   if (hasProgress) {

@@ -27,8 +27,18 @@
 }
 
 .resume-application .resume-application-bar-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 16px;
   font-weight: 700;
+}
+
+.resume-application .resume-application-bar-icon,
+.resume-application .resume-application-meta-icon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
 }
 
 .resume-application .resume-application-close {
@@ -64,6 +74,9 @@
 }
 
 .resume-application .resume-application-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 0 0 12px;
   color: var(--ra-muted);
   font-size: 14px;
