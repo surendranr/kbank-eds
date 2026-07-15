@@ -1,3 +1,8 @@
+/* clear the fixed header so the search box isn't hidden behind it */
+.search {
+  padding-top: calc(var(--header-height, 64px) + 16px);
+}
+
 /* search box */
 .search .search-box {
   display: grid;
