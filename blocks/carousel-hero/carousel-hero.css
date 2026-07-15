@@ -244,3 +244,105 @@
     right: 10px;
   }
 }
+
+/* ---- bottom quick-links tab bar (overlaps the base of the carousel) ---- */
+.carousel-hero.carousel-hero-has-quicklinks {
+  /* reserve space so the overlapping bar doesn't cover slide content */
+  position: relative;
+  padding-bottom: 96px;
+}
+
+.carousel-hero .carousel-hero-quicklinks {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 3;
+}
+
+.carousel-hero .carousel-hero-quicklinks-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  list-style: none;
+  border-radius: 14px;
+  background: #fdeeee;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 12%);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.carousel-hero .carousel-hero-quicklinks-list::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-hero .carousel-hero-quicklink {
+  flex: 1 0 auto;
+}
+
+.carousel-hero .carousel-hero-quicklink-anchor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.carousel-hero .carousel-hero-quicklink-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #fbd9d9;
+  line-height: 0;
+}
+
+.carousel-hero .carousel-hero-quicklink .carousel-hero-quicklink-anchor .carousel-hero-quicklink-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.carousel-hero .carousel-hero-quicklink-label {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* active tab — solid red pill with white text/icon */
+.carousel-hero .carousel-hero-quicklink-active .carousel-hero-quicklink-anchor {
+  background: #e51a24;
+  color: #fff;
+}
+
+.carousel-hero .carousel-hero-quicklink-active .carousel-hero-quicklink-icon {
+  background: rgb(255 255 255 / 25%);
+}
+
+@media (width >= 900px) {
+  .carousel-hero.carousel-hero-has-quicklinks {
+    padding-bottom: 70px;
+  }
+
+  .carousel-hero .carousel-hero-quicklinks {
+    left: 40px;
+    right: 40px;
+    bottom: -36px;
+  }
+
+  .carousel-hero .carousel-hero-quicklinks-list {
+    justify-content: space-between;
+  }
+
+  .carousel-hero .carousel-hero-quicklink {
+    flex: 0 1 auto;
+  }
+}

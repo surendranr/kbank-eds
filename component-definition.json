@@ -416,6 +416,21 @@
           }
         },
         {
+          "title": "Quick Link",
+          "id": "carousel-hero-quicklink",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Quick Link",
+                  "model": "carousel-hero-quicklink"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Carousel Icons",
           "id": "carousel-icons",
           "plugins": {

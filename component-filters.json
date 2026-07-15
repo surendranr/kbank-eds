@@ -94,7 +94,8 @@
   {
     "id": "carousel-hero",
     "components": [
-      "carousel-hero-slide"
+      "carousel-hero-slide",
+      "carousel-hero-quicklink"
     ]
   },
   {

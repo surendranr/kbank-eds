@@ -578,6 +578,35 @@
     ]
   },
   {
+    "id": "carousel-hero-quicklink",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "icon",
+        "label": "Icon",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "iconAlt",
+        "label": "Icon Alt Text"
+      },
+      {
+        "component": "aem-content",
+        "name": "link",
+        "label": "Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkText",
+        "label": "Label"
+      }
+    ]
+  },
+  {
     "id": "carousel-icons-item",
     "fields": [
       {
