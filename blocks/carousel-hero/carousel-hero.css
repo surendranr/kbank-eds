@@ -265,7 +265,7 @@
 .carousel-hero .carousel-hero-quicklinks-list {
   display: flex;
   flex-wrap: nowrap;
-  gap: 2px;
+  gap: 16px;
   margin: 0;
   padding: 12px;
   list-style: none;
@@ -345,6 +345,6 @@
   }
 
   .carousel-hero .carousel-hero-quicklink {
-    flex: 0 0 auto;
+    flex: 1 1 0;
   }
 }
