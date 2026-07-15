@@ -50,42 +50,11 @@ const FIELDS = [
       ? '' : 'Enter a valid email address.'),
   },
   {
-    name: 'dob',
-    label: 'Date of Birth',
-    type: 'date',
+    name: 'message',
+    label: 'Message',
+    type: 'textarea',
     required: true,
-    validate: (v) => {
-      if (!v) return 'Please select your date of birth.';
-      const dob = new Date(v);
-      if (Number.isNaN(dob.getTime())) return 'Please select a valid date.';
-      const now = new Date();
-      let age = now.getFullYear() - dob.getFullYear();
-      const m = now.getMonth() - dob.getMonth();
-      if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) age -= 1;
-      return age >= 18 ? '' : 'You must be at least 18 years old.';
-    },
-  },
-  {
-    name: 'pan',
-    label: 'PAN Number',
-    type: 'text',
-    required: true,
-    maxlength: 10,
-    uppercase: true,
-    autocomplete: 'off',
-    validate: (v) => (/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(v.trim().toUpperCase())
-      ? '' : 'Enter a valid PAN (e.g. ABCDE1234F).'),
-  },
-  {
-    name: 'aadhaar',
-    label: 'Aadhaar Number ',
-    type: 'text',
-    required: false,
-    inputmode: 'numeric',
-    maxlength: 12,
-    autocomplete: 'off',
-    validate: (v) => (!v.trim() || /^\d{12}$/.test(v.trim())
-      ? '' : 'Aadhaar must be 12 digits.'),
+    validate: (v) => (v.trim() ? '' : 'Please enter a message.'),
   },
 ];
 
@@ -141,11 +110,15 @@ function buildField(field) {
     label.append(req);
   }
 
-  const input = document.createElement('input');
+  const input = document.createElement(field.type === 'textarea' ? 'textarea' : 'input');
   input.id = id;
   input.name = field.name;
-  input.type = field.type;
+  if (field.type !== 'textarea') input.type = field.type;
   input.className = 'apply-form-input';
+  if (field.type === 'textarea') {
+    input.classList.add('apply-form-textarea');
+    input.rows = 4;
+  }
   if (field.required) input.required = true;
   if (field.inputmode) input.inputMode = field.inputmode;
   if (field.maxlength) input.maxLength = field.maxlength;

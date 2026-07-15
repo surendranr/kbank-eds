@@ -79,6 +79,13 @@
   font-family: var(--body-font-family);
 }
 
+.apply-form .apply-form-textarea {
+  height: auto;
+  min-height: 110px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
 .apply-form .apply-form-input:focus {
   outline: none;
   border-color: var(--cc-navy);
