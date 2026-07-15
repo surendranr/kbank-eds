@@ -263,9 +263,9 @@
 
   /* slightly wider than the content cap so it reaches a little further left/right */
   width: 100%;
-  max-width: 1320px;
+  max-width: 1260px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 20px;
   box-sizing: border-box;
 }
 
