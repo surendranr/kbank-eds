@@ -124,6 +124,24 @@ main > .section:has(+ .section > .cards-lifestyle-wrapper) {
   color: #fff;
 }
 
+/* the "⋯" more toggle is mobile-only; hidden on desktop where all tabs fit */
+.cards-lifestyle .cards-lifestyle-tab-more {
+  display: none;
+}
+
+@media (width < 900px) {
+  .cards-lifestyle .cards-lifestyle-tab-more {
+    display: inline-flex;
+    align-items: center;
+    letter-spacing: 1px;
+  }
+
+  /* collapsed: hide the overflow tabs (beyond the first 3) */
+  .cards-lifestyle .cards-lifestyle-tabs-collapsed .cards-lifestyle-tab-overflow {
+    display: none;
+  }
+}
+
 /* grid */
 .cards-lifestyle .cards-lifestyle-list {
   display: grid;

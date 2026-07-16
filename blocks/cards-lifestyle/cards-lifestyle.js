@@ -179,6 +179,10 @@ export default async function decorate(block) {
   const row1 = parseRow(filtersRaw);
   const filtersLabel = row1.label;
   const filters = row1.values.length ? row1.values : ['All'];
+  // ensure a curated "Recommended" tab exists (shows only Cashback + Fuel cards)
+  if (!filters.some((f) => f.toLowerCase() === 'recommended')) {
+    filters.splice(1, 0, 'Recommended');
+  }
   const cat = parseCategories(categoriesRaw);
   const categoriesLabel = cat.label;
   // chips shown for a given (lowercased) row-1 filter. With an explicit map,
@@ -239,6 +243,30 @@ export default async function decorate(block) {
 
   const { row: tabsRow, group: tabs } = buildRow(filtersLabel, filters, 'cards-lifestyle-filter-primary', true);
   panel.append(tabsRow);
+
+  // mobile overflow: show only the first 3 tabs plus a "⋯" toggle that reveals
+  // the rest inline. Collapsed by default; the CSS hides the extra tabs when
+  // the group carries the -collapsed class.
+  const VISIBLE_TABS = 3;
+  const allTabs = [...tabs.querySelectorAll('.cards-lifestyle-tab')];
+  let moreBtn = null;
+  if (allTabs.length > VISIBLE_TABS) {
+    tabs.classList.add('cards-lifestyle-tabs-collapsed');
+    allTabs.forEach((t, i) => {
+      if (i >= VISIBLE_TABS) t.classList.add('cards-lifestyle-tab-overflow');
+    });
+    moreBtn = document.createElement('button');
+    moreBtn.type = 'button';
+    moreBtn.className = 'cards-lifestyle-tab cards-lifestyle-tab-more';
+    moreBtn.setAttribute('aria-label', 'Show more filters');
+    moreBtn.setAttribute('aria-expanded', 'false');
+    moreBtn.textContent = '···';
+    moreBtn.addEventListener('click', () => {
+      const collapsed = tabs.classList.toggle('cards-lifestyle-tabs-collapsed');
+      moreBtn.setAttribute('aria-expanded', String(!collapsed));
+    });
+    tabs.append(moreBtn);
+  }
 
   // secondary row: rebuilt whenever the primary selection changes, showing
   // only the chips mapped to the active row-1 tab.
@@ -319,10 +347,17 @@ export default async function decorate(block) {
   let activeFilter = (filters[0] || 'All').toLowerCase();
   let activeCategory = '';
   const cardTags = (li) => (li.dataset.tags || '').split(',').map((t) => t.trim()).filter(Boolean);
+  // "Recommended" is a curated tab: show only Cashback and Fuel cards.
+  const RECOMMENDED_TAGS = ['cashback', 'fuel'];
   const applyFilters = () => {
     list.querySelectorAll(':scope > li').forEach((li) => {
       const tags = cardTags(li);
-      const okPrimary = activeFilter === 'all' || tags.includes(activeFilter);
+      let okPrimary;
+      if (activeFilter === 'recommended') {
+        okPrimary = RECOMMENDED_TAGS.some((t) => tags.includes(t));
+      } else {
+        okPrimary = activeFilter === 'all' || tags.includes(activeFilter);
+      }
       const okCategory = !activeCategory || tags.includes(activeCategory);
       li.hidden = !(okPrimary && okCategory);
     });
