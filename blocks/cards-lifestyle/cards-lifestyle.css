@@ -203,9 +203,9 @@ main > .section:has(+ .section > .cards-lifestyle-wrapper) {
 /* title (left) + badge (right) in one row */
 .cards-lifestyle .cards-lifestyle-item-head {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 6px;
 }
 
@@ -241,7 +241,14 @@ main > .section:has(+ .section > .cards-lifestyle-wrapper) {
   color: #6a7282;
 }
 
+/* social-proof badge (curated cards) — red-tinted pill */
+.cards-lifestyle .cards-lifestyle-item-badge-proof {
+  background: #fdeeee;
+  color: #e51a24;
+}
+
 .cards-lifestyle .cards-lifestyle-item-title {
+  flex: 1 1 100%;
   margin: 0;
   color: var(--cc-ink);
   font-family: var(--body-font-family);

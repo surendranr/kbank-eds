@@ -60,6 +60,13 @@ function renderCard(data) {
       b.textContent = data.badge;
       head.append(b);
     }
+    // social-proof badge on the curated (cashback/fuel) cards
+    if (cardTagList.includes('cashback') || cardTagList.includes('fuel')) {
+      const proof = document.createElement('span');
+      proof.className = 'cards-lifestyle-item-badge cards-lifestyle-item-badge-proof';
+      proof.textContent = '300 people purchased it';
+      head.append(proof);
+    }
     body.append(head);
   }
   let feesParts = [];
