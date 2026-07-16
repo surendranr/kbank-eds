@@ -21,12 +21,7 @@
 }
 
 .apply-form .apply-form-title {
-  margin: 0 0 8px;
-  color: var(--cc-ink);
-  font-family: var(--body-font-family);
-  font-size: 28px;
-  font-weight: 800;
-  line-height: 1.2;
+  display: none;
 }
 
 .apply-form .apply-form-subtitle {
