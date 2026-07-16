@@ -78,6 +78,17 @@
           ]
         },
         {
+          "component": "select",
+          "name": "text_layout",
+          "label": "Layout",
+          "valueType": "string",
+          "value": "",
+          "options": [
+            { "name": "Default (overlay banner)", "value": "" },
+            { "name": "Detail (product-detail card)", "value": "detail" }
+          ]
+        },
+        {
           "component": "aem-content",
           "name": "primaryCta",
           "label": "Primary CTA Link"

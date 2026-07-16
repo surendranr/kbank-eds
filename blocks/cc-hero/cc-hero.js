@@ -68,14 +68,21 @@ export default function decorate(block) {
   // the "detail" variant (product-detail hero) can show a "Recommended" ribbon;
   // authored as a leading plain <p> with that exact text, pulled out like colours.
   let badgeText = '';
+  // the Layout select shares the copy field group, so its value ("detail") also
+  // renders as a trailing plain <p> — pull it out and apply it as a variant class.
+  const LAYOUTS = ['detail'];
   if (copyCell) {
     [...copyCell.querySelectorAll('p')].forEach((p) => {
       const token = p.textContent.trim().toLowerCase();
-      if (COLORS.includes(token) && !p.querySelector('a, strong, em, picture')) {
+      if (p.querySelector('a, strong, em, picture')) return;
+      if (COLORS.includes(token)) {
         colorValues.push(token);
         p.remove();
-      } else if (token === 'recommended' && !p.querySelector('a, strong, em, picture')) {
+      } else if (token === 'recommended') {
         badgeText = p.textContent.trim();
+        p.remove();
+      } else if (LAYOUTS.includes(token)) {
+        block.classList.add(token);
         p.remove();
       }
     });
