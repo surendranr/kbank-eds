@@ -218,6 +218,28 @@
     ]
   },
   {
+    "id": "cards-benefits",
+    "fields": [
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Layout",
+        "valueType": "string",
+        "value": "",
+        "options": [
+          {
+            "name": "Grid (icon above text)",
+            "value": ""
+          },
+          {
+            "name": "List (icon beside text, red icons)",
+            "value": "list"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "benefit-card",
     "fields": [
       {
