@@ -230,7 +230,7 @@
 
 .carousel-hero .carousel-hero-navigation-buttons button:hover::after,
 .carousel-hero .carousel-hero-navigation-buttons button:focus-visible::after {
-  border-color: #000;
+  border-color: #fff;
 }
 
 @media (width >= 900px) {
