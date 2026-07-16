@@ -8,6 +8,20 @@ header .nav-wrapper {
   box-shadow: 0 1px 4px rgb(0 0 0 / 16%);
 }
 
+/* mobile: dock the header to the bottom of the viewport */
+@media (width < 900px) {
+  header .nav-wrapper {
+    position: fixed;
+    inset: auto 0 0;
+    box-shadow: 0 -1px 4px rgb(0 0 0 / 16%);
+  }
+
+  /* reserve space so the bottom bar doesn't cover page content */
+  body {
+    padding-bottom: 82px;
+  }
+}
+
 /* UE may emit labels as <pre>; neutralise code-block styling inside the nav */
 header nav pre {
   margin: 0;
@@ -346,10 +360,11 @@ header nav .nav-tools .nav-login::before {
 
 /* ===== Mobile nav (accordion drawer) ===== */
 @media (width < 900px) {
+  /* opens upward from the bottom-docked bar (bar is 82px tall) */
   header nav .nav-menu {
     display: none;
     position: fixed;
-    inset: 82px 0 0;
+    inset: 0 0 82px;
     flex-direction: column;
     overflow-y: auto;
     background: #fff;
