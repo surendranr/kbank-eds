@@ -65,11 +65,17 @@ export default function decorate(block) {
   // those paragraphs so they don't show as body copy.
   const COLORS = ['orange', 'blue', 'white'];
   const colorValues = [];
+  // the "detail" variant (product-detail hero) can show a "Recommended" ribbon;
+  // authored as a leading plain <p> with that exact text, pulled out like colours.
+  let badgeText = '';
   if (copyCell) {
     [...copyCell.querySelectorAll('p')].forEach((p) => {
       const token = p.textContent.trim().toLowerCase();
       if (COLORS.includes(token) && !p.querySelector('a, strong, em, picture')) {
         colorValues.push(token);
+        p.remove();
+      } else if (token === 'recommended' && !p.querySelector('a, strong, em, picture')) {
+        badgeText = p.textContent.trim();
         p.remove();
       }
     });
@@ -127,6 +133,13 @@ export default function decorate(block) {
   content.className = 'cc-hero-content';
   if (headingColor) content.classList.add(`cc-hero-heading-${headingColor}`);
   if (textColor) content.classList.add(`cc-hero-text-${textColor}`);
+  // "Recommended" ribbon (detail variant) sits above the copy
+  if (badgeText) {
+    const badge = document.createElement('span');
+    badge.className = 'cc-hero-badge';
+    badge.textContent = badgeText;
+    content.append(badge);
+  }
   if (copyCell) {
     while (copyCell.firstChild) content.append(copyCell.firstChild);
   }

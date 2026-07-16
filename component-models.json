@@ -1263,6 +1263,29 @@
     ]
   },
   {
+    "id": "sticky-cta",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "message",
+        "value": "",
+        "label": "Message",
+        "valueType": "string"
+      },
+      {
+        "component": "aem-content",
+        "name": "cta",
+        "label": "CTA Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "ctaText",
+        "label": "CTA Text"
+      }
+    ]
+  },
+  {
     "id": "sub-nav-item",
     "fields": [
       {
