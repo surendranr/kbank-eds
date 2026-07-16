@@ -2,7 +2,7 @@
 
 .breadcrumb {
   --bc-muted: #666;
-  --bc-red: #fa1432;
+  --bc-red: #d1101f;
 
   /* hidden on mobile; revealed from tablet up */
   display: none;
