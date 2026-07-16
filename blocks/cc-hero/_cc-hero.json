@@ -89,6 +89,18 @@
           ]
         },
         {
+          "component": "select",
+          "name": "text_gradient",
+          "label": "Gradient",
+          "valueType": "string",
+          "value": "",
+          "options": [
+            { "name": "None", "value": "" },
+            { "name": "Red", "value": "gradient-red" },
+            { "name": "Dark", "value": "gradient-dark" }
+          ]
+        },
+        {
           "component": "aem-content",
           "name": "primaryCta",
           "label": "Primary CTA Link"

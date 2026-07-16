@@ -68,9 +68,11 @@ export default function decorate(block) {
   // the "detail" variant (product-detail hero) can show a "Recommended" ribbon;
   // authored as a leading plain <p> with that exact text, pulled out like colours.
   let badgeText = '';
-  // the Layout select shares the copy field group, so its value ("detail") also
-  // renders as a trailing plain <p> — pull it out and apply it as a variant class.
+  // the Layout and Gradient selects share the copy field group, so their values
+  // ("detail", "gradient-red", ...) also render as trailing plain <p>s — pull
+  // them out and apply them as variant classes.
   const LAYOUTS = ['detail'];
+  const GRADIENTS = ['gradient-red', 'gradient-dark'];
   if (copyCell) {
     [...copyCell.querySelectorAll('p')].forEach((p) => {
       const token = p.textContent.trim().toLowerCase();
@@ -81,7 +83,7 @@ export default function decorate(block) {
       } else if (token === 'recommended') {
         badgeText = p.textContent.trim();
         p.remove();
-      } else if (LAYOUTS.includes(token)) {
+      } else if (LAYOUTS.includes(token) || GRADIENTS.includes(token)) {
         block.classList.add(token);
         p.remove();
       }

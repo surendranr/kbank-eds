@@ -22,8 +22,27 @@ main > .section > .cc-hero-wrapper {
 
 .cc-hero .cc-hero-image {
   grid-area: 1 / 1;
+  position: relative;
   height: 100%;
   line-height: 0;
+}
+
+/* authored gradient overlays on the image (keep overlaid text legible) */
+.cc-hero.gradient-red .cc-hero-image::after,
+.cc-hero.gradient-dark .cc-hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cc-hero.gradient-red .cc-hero-image::after {
+  background: linear-gradient(90deg, #7a0d16 0%, #b3121f 45%, rgb(179 18 31 / 15%) 100%);
+}
+
+.cc-hero.gradient-dark .cc-hero-image::after {
+  background: linear-gradient(90deg, #0a0a0a 0%, rgb(10 10 10 / 75%) 45%, rgb(10 10 10 / 10%) 100%);
 }
 
 .cc-hero .cc-hero-image picture,
