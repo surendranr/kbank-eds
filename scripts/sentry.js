@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/browser';
+
 const DEFAULT_DSN = '';
 
 function getConfiguredValue(key) {
@@ -18,17 +20,17 @@ export function initSentry() {
   const replaysSessionSampleRate = toNumber(getConfiguredValue('SENTRY_REPLAYS_SESSION_SAMPLE_RATE'), 0.1);
   const replaysOnErrorSampleRate = toNumber(getConfiguredValue('SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE'), 1.0);
 
-  if (!dsn || typeof window.Sentry?.init !== 'function') {
+  if (!dsn) {
     return false;
   }
 
-  window.Sentry.init({
+  Sentry.init({
     dsn,
     environment,
     release,
     integrations: [
-      window.Sentry.browserTracingIntegration(),
-      window.Sentry.replayIntegration(),
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration(),
     ],
     tracesSampleRate,
     replaysSessionSampleRate,
@@ -44,8 +46,8 @@ export function initSentry() {
   });
 
   const params = new URLSearchParams(window.location.search);
-  if (params.get('sentry-test') === '1' && typeof window.Sentry.captureException === 'function') {
-    window.Sentry.captureException(new Error('Sentry test exception from QA'));
+  if (params.get('sentry-test') === '1') {
+    Sentry.captureException(new Error('Sentry test exception from QA'));
   }
 
   return true;
