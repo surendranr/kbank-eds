@@ -39,3 +39,18 @@ initBackToTop();
 
 // error/performance monitoring — delayed so it never affects LCP
 initSentry();
+
+/**
+ * Adobe Launch (Tags) — loaded in the delayed phase so the tag manager and the
+ * martech it pulls in never block LCP.
+ */
+function loadAdobeLaunch() {
+  const src = 'https://assets.adobedtm.com/4fa03d1212c6/54bdeb5cf391/launch-ae58bb97db41-development.min.js';
+  if (document.querySelector(`script[src="${src}"]`)) return;
+  const script = document.createElement('script');
+  script.src = src;
+  script.async = true;
+  document.head.append(script);
+}
+
+loadAdobeLaunch();
