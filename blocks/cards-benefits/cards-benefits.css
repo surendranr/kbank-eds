@@ -24,12 +24,16 @@
   flex-direction: column;
   align-items: flex-start;
   background-color: #f7f7f7;
-  padding: 40px 32px;
+  padding: 16px 20px;
   text-align: left;
 }
 
-/* thin vertical dividers between columns on desktop */
+/* thin vertical dividers between columns on desktop; roomier padding */
 @media (width >= 900px) {
+  .cards-benefits > ul > li {
+    padding: 40px 32px;
+  }
+
   .cards-benefits > ul > li + li {
     border-left: 1px solid #e2e2e2;
   }
