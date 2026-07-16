@@ -79,7 +79,7 @@ main > .section > .cc-hero-wrapper {
 
 .cc-hero .cc-hero-content h1 {
   margin: 0 0 8px;
-  color: var(--cc-red);
+  color: var(--cc-white);
   font-family: var(--body-font-family);
   font-size: 28px;
   font-weight: 700;
