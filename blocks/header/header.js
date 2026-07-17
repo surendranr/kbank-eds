@@ -71,6 +71,74 @@ function buildBrand(section) {
  * @param {Element} section the first fragment section
  * @returns {Element} tools element
  */
+/**
+ * Open the site search as a popup overlay on the current page. The search
+ * block's markup is pulled from the search page so its authored content
+ * (recent seed, most-searched links) is preserved, then decorated in place.
+ * @param {string} searchPath the search page path (no .html)
+ * @returns {Promise<void>}
+ */
+async function openSearchPopup(searchPath) {
+  if (document.querySelector('.search-popup')) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'search-popup';
+  const backdrop = document.createElement('div');
+  backdrop.className = 'search-popup-backdrop';
+  const panel = document.createElement('div');
+  panel.className = 'search-popup-panel';
+  overlay.append(backdrop, panel);
+
+  // load the search block's CSS once (it isn't on the page otherwise)
+  if (!document.querySelector('link[data-search-css]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/blocks/search/search.css';
+    link.setAttribute('data-search-css', '');
+    document.head.append(link);
+  }
+
+  // pull the authored search block from the search page; fall back to a
+  // minimal block if it can't be fetched
+  let blockEl = null;
+  try {
+    const resp = await fetch(`${searchPath}.plain.html`);
+    if (resp.ok) {
+      const doc = new DOMParser().parseFromString(await resp.text(), 'text/html');
+      blockEl = doc.querySelector('.search');
+    }
+  } catch (e) { /* ignore — use fallback below */ }
+  if (!blockEl) {
+    blockEl = document.createElement('div');
+    blockEl.className = 'search';
+    blockEl.innerHTML = '<div><div><a href="/query-index.json">/query-index.json</a></div></div>';
+  }
+  panel.append(blockEl);
+  document.body.append(overlay);
+  document.body.style.overflow = 'hidden';
+
+  const controller = new AbortController();
+  const { signal } = controller;
+  const close = () => {
+    overlay.remove();
+    document.body.style.overflow = '';
+    controller.abort();
+  };
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Escape') close();
+  }, { signal });
+  backdrop.addEventListener('click', close, { signal });
+  // the search block's red × closes the whole popup
+  blockEl.addEventListener('click', (e) => {
+    if (e.target.closest('.search-close')) close();
+  }, { signal });
+
+  const { default: decorateSearch } = await import('../search/search.js');
+  await decorateSearch(blockEl);
+  const input = blockEl.querySelector('.search-input');
+  if (input) input.focus();
+}
+
 function buildSearchControl(searchHref) {
   // treat a placeholder anchor (#) or empty value as "no real target" so the
   // control still points at the site search page
@@ -83,6 +151,18 @@ function buildSearchControl(searchHref) {
   link.href = searchPath;
   link.className = 'nav-search-toggle';
   link.setAttribute('aria-label', 'Search');
+
+  // clicking the icon toggles the search popup (open, or close if already open)
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const open = document.querySelector('.search-popup');
+    if (open) {
+      open.remove();
+      document.body.style.overflow = '';
+    } else {
+      openSearchPopup(searchPath);
+    }
+  });
 
   wrapper.append(link);
   return wrapper;
