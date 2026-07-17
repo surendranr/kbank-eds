@@ -197,10 +197,14 @@
   transition: background-color 0.2s;
 }
 
-.carousel-hero .carousel-hero-slide-indicator button:disabled,
 .carousel-hero .carousel-hero-slide-indicator button:hover,
 .carousel-hero .carousel-hero-slide-indicator button:focus-visible {
   background-color: rgb(255 255 255);
+}
+
+/* active dot — orange, matching the CTA button background */
+.carousel-hero .carousel-hero-slide-indicator button:disabled {
+  background-color: #ed4223;
 }
 
 /* nav arrows — subtle chevrons on the sides */
