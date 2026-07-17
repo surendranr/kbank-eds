@@ -20,6 +20,13 @@ main > .section > .cc-hero-wrapper {
   padding: 0;
 }
 
+/* mobile: remove the section margin so there's no top gap above the hero */
+@media (width < 900px) {
+  main > .section:has(> .cc-hero-wrapper) {
+    margin: 0;
+  }
+}
+
 .cc-hero .cc-hero-image {
   grid-area: 1 / 1;
   position: relative;
@@ -183,6 +190,18 @@ main > .section > .cc-hero-wrapper {
   .cc-hero .cc-hero-actions {
     flex-flow: row wrap;
     align-items: center;
+  }
+
+  /* on a red-gradient hero, the primary CTA switches to orange (desktop only)
+     so it stands out against the red background */
+  .cc-hero.gradient-red .cc-hero-btn-primary {
+    background-color: var(--cc-orange);
+    border-color: var(--cc-orange);
+  }
+
+  .cc-hero.gradient-red .cc-hero-btn-primary:hover {
+    background-color: #d9591a;
+    border-color: #d9591a;
   }
 }
 
