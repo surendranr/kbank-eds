@@ -239,6 +239,13 @@ header nav .nav-tools .nav-search-toggle {
   padding-top: 28px;
 }
 
+/* mobile: dock the sheet to the bottom of the screen (slides up from below) */
+@media (width < 900px) {
+  .search-popup {
+    justify-content: flex-end;
+  }
+}
+
 header nav .nav-tools .nav-login {
   display: inline-flex;
   align-items: center;
