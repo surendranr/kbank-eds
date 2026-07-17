@@ -223,6 +223,7 @@ header nav .nav-tools .nav-search-toggle {
 .search-popup-panel {
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
   width: 100%;
   max-width: 820px;
   margin: 0 auto;
