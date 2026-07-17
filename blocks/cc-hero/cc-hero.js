@@ -185,31 +185,42 @@ export default function decorate(block) {
   block.textContent = '';
   block.append(media, content);
 
-  // detail variant: on mobile the breadcrumb is hidden, so surface a
-  // "← <parent>" back button at the top of the hero. Prefer the page
-  // breadcrumb's last linked crumb for the label + destination; when that
-  // isn't a usable link, still render the button and fall back to browser
-  // history. Built here (not in the breadcrumb block) so it doesn't depend on
-  // section load order.
-  if (block.classList.contains('detail') && !block.querySelector('.cc-hero-back')) {
-    const crumbLinks = document.querySelectorAll(
-      '.breadcrumb a.breadcrumb-link, .breadcrumb-wrapper a[href], .breadcrumb a[href]',
-    );
-    const parent = crumbLinks[crumbLinks.length - 1];
-    const href = parent ? parent.getAttribute('href') : '';
-    const label = (parent ? parent.textContent.trim() : '');
-    const hasRealLink = !!href && href !== '#';
+  // Mobile back button at the top of the hero (the breadcrumb is hidden on
+  // mobile). Built here — not in the breadcrumb block — so it doesn't depend
+  // on section load order. Two sources:
+  //  - detail variant: label + link from the page breadcrumb's parent crumb
+  //    (falls back to browser-back when that isn't a usable link)
+  //  - apply page (page has an apply-form): fixed "Credit Cards" + browser-back
+  const isApplyPage = !!document.querySelector('.apply-form');
+  const wantsBack = block.classList.contains('detail') || isApplyPage;
+  if (wantsBack && !block.querySelector('.cc-hero-back')) {
+    let href = '#';
+    let text = 'Credit Cards';
+    let useHistory = true;
+    if (block.classList.contains('detail')) {
+      const crumbLinks = document.querySelectorAll(
+        '.breadcrumb a.breadcrumb-link, .breadcrumb-wrapper a[href], .breadcrumb a[href]',
+      );
+      const parent = crumbLinks[crumbLinks.length - 1];
+      const parentHref = parent ? parent.getAttribute('href') : '';
+      const parentLabel = parent ? parent.textContent.trim() : '';
+      if (parentHref && parentHref !== '#') {
+        href = parentHref;
+        useHistory = false;
+      }
+      if (parentLabel && parentLabel !== '#') text = parentLabel;
+    }
     const back = document.createElement('a');
     back.className = 'cc-hero-back';
-    back.href = hasRealLink ? href : '#';
-    const text = (label && label !== '#') ? label : 'Back';
+    back.href = href;
     back.innerHTML = `<span class="cc-hero-back-icon" aria-hidden="true"></span><span>${text}</span>`;
-    if (!hasRealLink) {
+    if (useHistory) {
       back.addEventListener('click', (e) => {
         e.preventDefault();
         window.history.back();
       });
     }
+    block.classList.add('cc-hero-has-back');
     block.prepend(back);
   }
 }
