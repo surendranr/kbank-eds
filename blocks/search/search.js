@@ -349,9 +349,12 @@ function parseLinks(raw) {
     .map((line) => line.trim())
     .filter(Boolean)
     .map((line) => {
-      const [label = '', href = '#', icon = ''] = line.split('|').map((p) => p.trim());
+      const [label = '', rawHref = '#', icon = ''] = line.split('|').map((p) => p.trim());
       const iconKey = LINK_ICONS[icon.toLowerCase()] ? icon.toLowerCase() : 'search';
-      return { iconKey, label, href: href || '#' };
+      // the credit-cards index is served at the site root ("/"), so a "/index"
+      // link (which 404s in the browser) is normalized to "/".
+      const href = /^\/index(\.html)?$/.test(rawHref) ? '/' : (rawHref || '#');
+      return { iconKey, label, href };
     })
     .filter((item) => item.label);
 }
