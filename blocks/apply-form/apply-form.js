@@ -25,6 +25,7 @@ const FIELDS = [
     label: 'Full Name',
     type: 'text',
     required: true,
+    placeholder: 'Enter full name',
     autocomplete: 'name',
     validate: (v) => (/^[A-Za-z][A-Za-z\s.'-]*$/.test(v.trim())
       ? '' : 'Please enter letters only.'),
@@ -36,6 +37,7 @@ const FIELDS = [
     required: true,
     inputmode: 'numeric',
     maxlength: 10,
+    placeholder: '10-digit mobile number',
     autocomplete: 'tel',
     validate: (v) => (/^\d{10}$/.test(v.trim())
       ? '' : 'Enter a valid 10-digit mobile number.'),
@@ -45,16 +47,39 @@ const FIELDS = [
     label: 'Email Address',
     type: 'email',
     required: true,
+    placeholder: 'name@example.com',
     autocomplete: 'email',
     validate: (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())
       ? '' : 'Enter a valid email address.'),
   },
   {
-    name: 'message',
-    label: 'Message',
-    type: 'textarea',
+    name: 'city',
+    label: 'City',
+    type: 'text',
     required: true,
-    validate: (v) => (v.trim() ? '' : 'Please enter a message.'),
+    placeholder: 'Enter city',
+    autocomplete: 'address-level2',
+    validate: (v) => (v.trim() ? '' : 'Please enter your city.'),
+  },
+  {
+    name: 'employment',
+    label: 'Employment Type',
+    type: 'select',
+    required: true,
+    placeholder: 'Select employment type',
+    options: ['Salaried', 'Self-employed', 'Business owner', 'Student', 'Retired'],
+    validate: (v) => (v.trim() ? '' : 'Please select your employment type.'),
+  },
+  {
+    name: 'income',
+    label: 'Monthly Income',
+    type: 'tel',
+    required: true,
+    inputmode: 'numeric',
+    maxlength: 9,
+    placeholder: 'Enter monthly income',
+    validate: (v) => (/^\d{3,}$/.test(v.trim())
+      ? '' : 'Please enter a valid monthly income.'),
   },
 ];
 
@@ -110,14 +135,35 @@ function buildField(field) {
     label.append(req);
   }
 
-  const input = document.createElement(field.type === 'textarea' ? 'textarea' : 'input');
+  let tag = 'input';
+  if (field.type === 'textarea') tag = 'textarea';
+  else if (field.type === 'select') tag = 'select';
+  const input = document.createElement(tag);
   input.id = id;
   input.name = field.name;
-  if (field.type !== 'textarea') input.type = field.type;
+  if (tag === 'input') input.type = field.type;
   input.className = 'apply-form-input';
   if (field.type === 'textarea') {
     input.classList.add('apply-form-textarea');
     input.rows = 4;
+  }
+  if (field.type === 'select') {
+    input.classList.add('apply-form-select');
+    // leading placeholder option (empty value so validation treats it as unset)
+    const ph = document.createElement('option');
+    ph.value = '';
+    ph.textContent = field.placeholder || 'Select an option';
+    ph.disabled = true;
+    ph.selected = true;
+    input.append(ph);
+    (field.options || []).forEach((opt) => {
+      const o = document.createElement('option');
+      o.value = opt;
+      o.textContent = opt;
+      input.append(o);
+    });
+  } else if (field.placeholder) {
+    input.placeholder = field.placeholder;
   }
   if (field.required) input.required = true;
   if (field.inputmode) input.inputMode = field.inputmode;
@@ -181,10 +227,13 @@ export default function decorate(block) {
     const built = buildField(field);
     form.append(built.wrap);
     // clear the error as soon as the user edits a previously-invalid field
-    built.input.addEventListener('input', () => {
+    // (selects fire "change" rather than "input")
+    const clear = () => {
       built.error.textContent = '';
       built.input.classList.remove('apply-form-input-invalid');
-    });
+    };
+    built.input.addEventListener('input', clear);
+    built.input.addEventListener('change', clear);
     return { field, ...built };
   });
 
