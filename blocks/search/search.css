@@ -55,12 +55,12 @@
   display: block;
   width: 100%;
   margin: 0;
-  padding: 14px 16px 14px 50px;
+  padding: 14px 12px 14px 46px;
   border-radius: 12px;
   border: 1px solid #e2e5ea;
   background-color: #f4f6f9;
   color: var(--text-color);
-  font-size: var(--body-font-size-m);
+  font-size: var(--body-font-size-s);
   transition: border-color 0.2s;
   scroll-margin-top: calc(var(--header-height, 64px) + 16px);
 }
