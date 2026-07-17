@@ -380,16 +380,19 @@ main > .section:has(+ .section > .cards-lifestyle-wrapper) {
   flex: 1 1 0;
 }
 
-.cards-lifestyle .cards-lifestyle-item-footer-split .cards-lifestyle-apply:any-link {
+/* both footer buttons share the same size so they sit perfectly equal */
+.cards-lifestyle .cards-lifestyle-item-footer-split .cards-lifestyle-apply:any-link,
+.cards-lifestyle .cards-lifestyle-item-footer-split .cards-lifestyle-knowmore-btn:any-link {
   width: auto;
+  min-height: 44px;
+  padding: 6px 16px;
+  text-align: center;
 }
 
 .cards-lifestyle a.cards-lifestyle-knowmore-btn:any-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 36px;
-  padding: 6px 22px;
   border: 1px solid var(--cc-red, #e51a24);
   border-radius: 6px;
   background: #fff;
@@ -421,7 +424,7 @@ main > .section:has(+ .section > .cards-lifestyle-wrapper) {
   }
 
   .cards-lifestyle .cards-lifestyle-list {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
   }
 }
