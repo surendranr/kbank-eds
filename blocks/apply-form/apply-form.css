@@ -11,8 +11,14 @@
 
 .apply-form .apply-form-inner {
   max-width: 560px;
-  margin: 0 auto;
+  margin: 0 16px;
   padding: 24px;
+}
+
+@media (width >= 600px) {
+  .apply-form .apply-form-inner {
+    margin: 0 auto;
+  }
 }
 
 .apply-form .apply-form-head {
