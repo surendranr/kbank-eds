@@ -66,15 +66,19 @@
 /* mobile: tighter spacing between fields and before the submit button */
 @media (width < 600px) {
   .apply-form .apply-form-form {
-    gap: 12px;
+    gap: 8px;
   }
 
   .apply-form .apply-form-submit {
-    margin-top: 4px;
+    margin-top: 2px;
   }
 
   .apply-form .apply-form-head {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+  }
+
+  .apply-form .apply-form-field {
+    gap: 4px;
   }
 }
 
