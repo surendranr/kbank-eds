@@ -250,10 +250,10 @@ main > .section > .cc-hero-wrapper {
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 12H5M12 19l-7-7 7-7'/%3E%3C/svg%3E");
   }
 
-  /* the apply hero's back button overlays the banner image (position:absolute
-     top-left) rather than pushing content down like the detail red band */
-  .cc-hero.gradient-red.cc-hero-has-back .cc-hero-back,
-  .cc-hero.gradient-dark.cc-hero-has-back .cc-hero-back {
+  /* overlay heroes (apply gradient, index banner) place the back button
+     absolutely at the top-left over the image; the detail red band instead
+     pushes content down. Everything except .detail overlays. */
+  .cc-hero.cc-hero-has-back:not(.detail) .cc-hero-back {
     position: absolute;
     top: 0;
     left: 0;
@@ -261,8 +261,7 @@ main > .section > .cc-hero-wrapper {
   }
 
   /* clear the overlaid content below the back button so they don't collide */
-  .cc-hero.gradient-red.cc-hero-has-back .cc-hero-content,
-  .cc-hero.gradient-dark.cc-hero-has-back .cc-hero-content {
+  .cc-hero.cc-hero-has-back:not(.detail) .cc-hero-content {
     align-self: start;
     padding-top: 56px;
   }

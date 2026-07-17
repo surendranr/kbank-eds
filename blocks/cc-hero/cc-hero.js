@@ -187,12 +187,14 @@ export default function decorate(block) {
 
   // Mobile back button at the top of the hero (the breadcrumb is hidden on
   // mobile). Built here — not in the breadcrumb block — so it doesn't depend
-  // on section load order. Two sources:
+  // on section load order. Three sources:
   //  - detail variant: label + link from the page breadcrumb's parent crumb
   //    (falls back to browser-back when that isn't a usable link)
   //  - apply page (page has an apply-form): fixed "Credit Cards" + browser-back
+  //  - index/cards listing page: fixed "Back to Home" linking to /home
   const isApplyPage = !!document.querySelector('.apply-form');
-  const wantsBack = block.classList.contains('detail') || isApplyPage;
+  const isIndexPage = /\/index(\.html)?$/.test(window.location.pathname);
+  const wantsBack = block.classList.contains('detail') || isApplyPage || isIndexPage;
   if (wantsBack && !block.querySelector('.cc-hero-back')) {
     let href = '#';
     let text = 'Credit Cards';
@@ -209,6 +211,10 @@ export default function decorate(block) {
         useHistory = false;
       }
       if (parentLabel && parentLabel !== '#') text = parentLabel;
+    } else if (isIndexPage) {
+      href = '/home';
+      text = 'Back to Home';
+      useHistory = false;
     }
     const back = document.createElement('a');
     back.className = 'cc-hero-back';
