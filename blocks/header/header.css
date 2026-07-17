@@ -239,10 +239,16 @@ header nav .nav-tools .nav-search-toggle {
   padding-top: 28px;
 }
 
-/* mobile: dock the sheet to the bottom of the screen (slides up from below) */
+/* mobile: dock the sheet just above the bottom header bar (82px) so the
+   fixed bottom nav stays visible */
 @media (width < 900px) {
   .search-popup {
     justify-content: flex-end;
+    padding-bottom: 82px;
+  }
+
+  .search-popup-panel {
+    max-height: calc(90vh - 82px);
   }
 }
 
