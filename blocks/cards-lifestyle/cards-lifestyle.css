@@ -170,7 +170,8 @@ main > .section:has(+ .section > .cards-lifestyle-wrapper) {
   line-height: 0;
 }
 
-/* "Recommended" pill over the top-left of the card image */
+/* "Recommended" pill over the top-left of the card image — white pill with
+   red text so it stands out against the red card artwork */
 .cards-lifestyle .cards-lifestyle-item-recommended {
   position: absolute;
   top: 12px;
@@ -178,8 +179,8 @@ main > .section:has(+ .section > .cards-lifestyle-wrapper) {
   z-index: 1;
   padding: 6px 16px;
   border-radius: 999px;
-  background: var(--cc-red, #e51a24);
-  color: #fff;
+  background: #fff;
+  color: var(--cc-red, #e51a24);
   font-size: 12px;
   font-weight: 700;
   line-height: 1.2;
