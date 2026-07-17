@@ -37,6 +37,12 @@
       "id": "cards-benefits",
       "fields": [
         {
+          "component": "text",
+          "name": "title",
+          "label": "Title",
+          "valueType": "string"
+        },
+        {
           "component": "select",
           "name": "classes",
           "label": "Layout",

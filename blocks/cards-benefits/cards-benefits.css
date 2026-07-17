@@ -4,6 +4,15 @@
  * Derived from the vanilla `cards` block; icon-first, no cover images.
  */
 
+/* authored block title — navy, bold */
+.cards-benefits .cards-benefits-title {
+  margin: 0 0 16px;
+  color: var(--cc-navy, #00005a);
+  font-family: var(--body-font-family);
+  font-size: 24px;
+  font-weight: 800;
+}
+
 .cards-benefits > ul {
   list-style: none;
   margin: 0;
@@ -62,7 +71,7 @@
 .cards-benefits .cards-benefits-card-body h3,
 .cards-benefits .cards-benefits-card-body h4 {
   margin: 0 0 12px;
-  color: #4a4a4a;
+  color: var(--cc-navy, #00005a);
   font-size: 20px;
   font-weight: 700;
 }
