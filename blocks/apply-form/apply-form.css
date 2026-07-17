@@ -21,7 +21,11 @@
 }
 
 .apply-form .apply-form-title {
-  display: none;
+  margin: 0 0 8px;
+  color: var(--cc-navy);
+  font-family: var(--body-font-family);
+  font-size: var(--heading-font-size-m);
+  font-weight: 800;
 }
 
 .apply-form .apply-form-subtitle {
