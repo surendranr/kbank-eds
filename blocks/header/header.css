@@ -211,6 +211,7 @@ header nav .nav-tools .nav-ai-search {
 }
 
 header nav .nav-tools .nav-ai-search-toggle {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -223,6 +224,7 @@ header nav .nav-tools .nav-ai-search-toggle {
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  overflow: visible;
 }
 
 header nav .nav-tools .nav-ai-search-toggle:hover {
@@ -238,36 +240,33 @@ header nav .nav-tools .nav-ai-search-icon {
   filter: drop-shadow(0 0 3px rgb(250 20 50 / 55%));
 }
 
+/* the whole sparkle spins continuously — the big star leads, the small star
+   follows since both share the rotating SVG */
 header nav .nav-tools .nav-ai-search-icon svg {
   width: 100%;
   height: 100%;
   overflow: visible;
-}
-
-/* the main star gently rotates and pulses */
-header nav .nav-tools .nav-ai-star-main {
   transform-origin: 50% 50%;
-  transform-box: fill-box;
-  animation: nav-ai-star-pulse 2.4s ease-in-out infinite;
+  animation: nav-ai-spin 4s linear infinite;
 }
 
-/* the small star twinkles (scale + fade) on an offset beat */
+/* the small star also twinkles (scale + fade) on top of the shared rotation */
 header nav .nav-tools .nav-ai-star-spark {
   transform-origin: 50% 50%;
   transform-box: fill-box;
   animation: nav-ai-star-twinkle 1.8s ease-in-out infinite;
 }
 
-@keyframes nav-ai-star-pulse {
-  0%, 100% { transform: rotate(0deg) scale(1); }
+@keyframes nav-ai-spin {
+  from { transform: rotate(0deg); }
 
-  50% { transform: rotate(20deg) scale(1.12); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes nav-ai-star-twinkle {
   0%, 100% {
     transform: scale(0.7);
-    opacity: 0.4;
+    opacity: 0.5;
   }
 
   50% {
@@ -276,11 +275,96 @@ header nav .nav-tools .nav-ai-star-spark {
   }
 }
 
+/* particle stars emanating from the button's bottom-right corner */
+header nav .nav-tools .nav-ai-particles {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+header nav .nav-tools .nav-ai-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, rgb(250 20 50 / 80%) 50%, rgb(250 20 50 / 0%) 100%);
+  box-shadow: 0 0 6px rgb(250 20 50 / 70%);
+  opacity: 0;
+  animation: nav-ai-particle-fly 2.6s ease-out infinite;
+}
+
+/* each particle drifts out to a different point past the bottom-right corner */
+header nav .nav-tools .nav-ai-particle-1 {
+  --px: 14px;
+  --py: 14px;
+
+  animation-delay: 0s;
+}
+
+header nav .nav-tools .nav-ai-particle-2 {
+  --px: 20px;
+  --py: 6px;
+
+  animation-delay: 0.4s;
+}
+
+header nav .nav-tools .nav-ai-particle-3 {
+  --px: 8px;
+  --py: 20px;
+
+  animation-delay: 0.8s;
+}
+
+header nav .nav-tools .nav-ai-particle-4 {
+  --px: 22px;
+  --py: 16px;
+
+  animation-delay: 1.2s;
+}
+
+header nav .nav-tools .nav-ai-particle-5 {
+  --px: 12px;
+  --py: 24px;
+
+  animation-delay: 1.6s;
+}
+
+header nav .nav-tools .nav-ai-particle-6 {
+  --px: 24px;
+  --py: 10px;
+
+  animation-delay: 2s;
+}
+
+@keyframes nav-ai-particle-fly {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.4);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(var(--px), var(--py)) scale(1);
+  }
+}
+
 /* respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  header nav .nav-tools .nav-ai-star-main,
-  header nav .nav-tools .nav-ai-star-spark {
+  header nav .nav-tools .nav-ai-search-icon svg,
+  header nav .nav-tools .nav-ai-star-spark,
+  header nav .nav-tools .nav-ai-particle {
     animation: none;
+  }
+
+  header nav .nav-tools .nav-ai-particle {
+    display: none;
   }
 }
 

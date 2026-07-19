@@ -275,8 +275,10 @@ function buildAiSearchControl() {
   btn.type = 'button';
   btn.className = 'nav-ai-search-toggle';
   btn.setAttribute('aria-label', 'AI Search');
-  // animated sparkle icon (two four-pointed stars) — the big star rotates and
-  // pulses, the small star twinkles, with a soft glow (see CSS)
+  // animated sparkle icon (two four-pointed stars) that spin together, plus a
+  // layer of little particle stars emanating from the button's bottom-right
+  // corner (see CSS). Six particles with staggered delays.
+  const particles = Array.from({ length: 6 }, (_, i) => `<span class="nav-ai-particle nav-ai-particle-${i + 1}"></span>`).join('');
   btn.innerHTML = `
     <span class="nav-ai-search-icon" aria-hidden="true">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -284,7 +286,8 @@ function buildAiSearchControl() {
         <path class="nav-ai-star-spark" d="M18 15L18.75 17.25L21 18L18.75 18.75L18 21L17.25 18.75L15 18L17.25 17.25L18 15Z" fill="currentColor"/>
       </svg>
     </span>
-    <span class="nav-ai-search-label">AI</span>`;
+    <span class="nav-ai-search-label">AI</span>
+    <span class="nav-ai-particles" aria-hidden="true">${particles}</span>`;
 
   btn.addEventListener('click', () => {
     const open = document.querySelector('.ai-search-popup');
