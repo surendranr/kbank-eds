@@ -275,7 +275,16 @@ function buildAiSearchControl() {
   btn.type = 'button';
   btn.className = 'nav-ai-search-toggle';
   btn.setAttribute('aria-label', 'AI Search');
-  btn.innerHTML = '<span class="nav-ai-search-icon" aria-hidden="true"></span><span class="nav-ai-search-label">AI</span>';
+  // animated sparkle icon (two four-pointed stars) — the big star rotates and
+  // pulses, the small star twinkles, with a soft glow (see CSS)
+  btn.innerHTML = `
+    <span class="nav-ai-search-icon" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="nav-ai-star-main" d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" fill="currentColor"/>
+        <path class="nav-ai-star-spark" d="M18 15L18.75 17.25L21 18L18.75 18.75L18 21L17.25 18.75L15 18L17.25 17.25L18 15Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="nav-ai-search-label">AI</span>`;
 
   btn.addEventListener('click', () => {
     const open = document.querySelector('.ai-search-popup');
