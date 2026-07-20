@@ -22,7 +22,10 @@ export default async function initSentry() {
     integrations: [
       // send console.log, console.warn, and console.error calls as logs to Sentry
       Sentry.consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
+      Sentry.replayIntegration()
     ],
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
     // enable logs to be sent to Sentry
     enableLogs: true,
     dataCollection: {
