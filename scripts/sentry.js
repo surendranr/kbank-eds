@@ -25,6 +25,12 @@ export default async function initSentry() {
     ],
     // enable logs to be sent to Sentry
     enableLogs: true,
+    dataCollection: {
+      // defaults (Sentry collects user data + HTTP bodies). To disable, set:
+      // userInfo: false,
+      // httpBodies: [],
+      // docs: https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection
+    },
   });
 
   // custom metrics (guarded — the metrics API may be absent in some SDK builds)
