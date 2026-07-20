@@ -184,7 +184,7 @@ function openAiSearchPopup() {
       <div class="ai-search-box">
         <div class="ai-search-field">
           <span class="ai-search-icon" aria-hidden="true"></span>
-          <input type="search" class="ai-search-input" placeholder="Ask Kotak AI…" aria-label="Ask Kotak AI">
+          <input type="search" class="ai-search-input" placeholder="Ask anything..." aria-label="Ask anything">
         </div>
         <button type="button" class="search-close ai-search-close" aria-label="Close">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e51a24" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
