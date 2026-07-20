@@ -43,5 +43,12 @@ export default async function initSentry() {
     Sentry.metrics.distribution('response_time', 200);
   }
 
+  // QA verification hook: append ?sentry-test=1 to any URL to force a test
+  // exception, confirming events reach the Sentry dashboard.
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('sentry-test') === '1') {
+    Sentry.captureException(new Error('Sentry test exception from QA'));
+  }
+
   return true;
 }
