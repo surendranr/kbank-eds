@@ -371,12 +371,13 @@ main > .section > .cc-hero-wrapper {
   }
 }
 
-/* ---- "metal" variant: light hero with card art on the right (kotak811-style)
-   Text sits on a light background with a dark heading + small top CTA; the
-   image is NOT an overlay background — it sits beside the copy. */
+/* ---- "metal" variant: DARK hero with metallic text + card art on the right
+   (kotak811 "Power of Metal" style). Dark background; the eyebrow is small
+   grey, the main heading is a white→grey metallic gradient, the subheading is
+   light grey, and the CTA has a rotating white/grey border. */
 .cc-hero.metal {
   display: block;
-  background: #fff;
+  background: #0a0a0a;
 }
 
 /* image is inline (right side), not an absolute background */
@@ -399,44 +400,99 @@ main > .section > .cc-hero-wrapper {
   object-fit: contain;
 }
 
-/* content: dark text on the light background, left-aligned */
 .cc-hero.metal .cc-hero-content {
   grid-area: auto;
   position: static;
-  align-self: start;
+  align-self: center;
   width: 100%;
   max-width: 1170px;
   margin: 0 auto;
-  padding: 28px 24px 8px;
+  padding: 32px 24px 20px;
   text-align: left;
 }
 
-/* heading + subtext default to dark ink on the light bg; author colour tokens
-   still override via the cc-hero-heading and cc-hero-text classes */
-.cc-hero.metal .cc-hero-content h1 {
-  color: var(--cc-navy);
-  font-size: 30px;
-  font-weight: 800;
-  line-height: 1.15;
-}
-
+/* subheading (paragraphs): light grey */
 .cc-hero.metal .cc-hero-content p {
-  color: #333;
+  max-width: none;
+  color: #e3e3e3;
   font-size: 16px;
 }
 
-/* small red pill CTA at the top-left (compact, not full-width) */
+/* eyebrow (first paragraph): small, spaced, grey */
+.cc-hero.metal .cc-hero-content p:first-of-type {
+  margin: 0 0 6px;
+  color: #9e9e9e;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* main heading: metallic white→grey gradient text */
+.cc-hero.metal .cc-hero-content h1 {
+  margin: 0 0 6px;
+  max-width: none;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(0deg, #737373, #fff 60%, #fff);
+  background-clip: text;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #fff; /* fallback where background-clip:text isn't supported */
+}
+
+/* CTA: black pill with a rotating white/grey metallic border */
 .cc-hero.metal .cc-hero-actions {
   flex-flow: row wrap;
-  margin-top: 4px;
+  margin-top: 16px;
 }
 
 .cc-hero.metal .cc-hero-btn-primary {
-  height: 40px;
-  padding: 0 24px;
-  background-color: var(--cc-red);
-  border-color: var(--cc-red);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  height: 44px;
+  padding: 0 28px;
+  border: 0;
+  background: #000;
   color: #fff;
+}
+
+/* rotating conic gradient sits behind everything (the visible "border") */
+.cc-hero.metal .cc-hero-btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: -150%;
+  z-index: -2;
+  background: conic-gradient(from 0deg, #737373, #fff, #737373, #fff, #737373);
+  animation: cc-hero-metal-spin 3s linear infinite;
+}
+
+/* inner black fill, inset 2px, leaves a 2px animated ring around the edge */
+.cc-hero.metal .cc-hero-btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: #000;
+}
+
+.cc-hero.metal .cc-hero-btn-primary:hover {
+  background: #000;
+  color: #fff;
+}
+
+@keyframes cc-hero-metal-spin {
+  to { transform: rotate(1turn); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-hero.metal .cc-hero-btn-primary::before {
+    animation: none;
+  }
 }
 
 @media (width >= 900px) {
@@ -452,7 +508,7 @@ main > .section > .cc-hero-wrapper {
 
   .cc-hero.metal .cc-hero-content {
     margin: 0;
-    padding: 40px 0;
+    padding: 48px 0;
   }
 
   .cc-hero.metal .cc-hero-content h1,
@@ -462,7 +518,7 @@ main > .section > .cc-hero-wrapper {
   }
 
   .cc-hero.metal .cc-hero-content h1 {
-    font-size: 44px;
+    font-size: 48px;
   }
 
   /* image column sits to the right of the copy */
