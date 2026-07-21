@@ -756,6 +756,10 @@
           {
             "name": "Detail (product-detail card)",
             "value": "detail"
+          },
+          {
+            "name": "Metal (light, card art on right)",
+            "value": "metal"
           }
         ]
       },

@@ -370,3 +370,103 @@ main > .section > .cc-hero-wrapper {
     display: none;
   }
 }
+
+/* ---- "metal" variant: light hero with card art on the right (kotak811-style)
+   Text sits on a light background with a dark heading + small top CTA; the
+   image is NOT an overlay background — it sits beside the copy. */
+.cc-hero.metal {
+  display: block;
+  background: #fff;
+}
+
+/* image is inline (right side), not an absolute background */
+.cc-hero.metal .cc-hero-image {
+  grid-area: auto;
+  position: static;
+  height: auto;
+  line-height: 0;
+}
+
+.cc-hero.metal .cc-hero-image::after {
+  content: none;
+}
+
+.cc-hero.metal .cc-hero-image picture,
+.cc-hero.metal .cc-hero-image img {
+  position: static;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* content: dark text on the light background, left-aligned */
+.cc-hero.metal .cc-hero-content {
+  grid-area: auto;
+  position: static;
+  align-self: start;
+  width: 100%;
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 28px 24px 8px;
+  text-align: left;
+}
+
+/* heading + subtext default to dark ink on the light bg; author colour tokens
+   still override via the cc-hero-heading and cc-hero-text classes */
+.cc-hero.metal .cc-hero-content h1 {
+  color: var(--cc-navy);
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.cc-hero.metal .cc-hero-content p {
+  color: #333;
+  font-size: 16px;
+}
+
+/* small red pill CTA at the top-left (compact, not full-width) */
+.cc-hero.metal .cc-hero-actions {
+  flex-flow: row wrap;
+  margin-top: 4px;
+}
+
+.cc-hero.metal .cc-hero-btn-primary {
+  height: 40px;
+  padding: 0 24px;
+  background-color: var(--cc-red);
+  border-color: var(--cc-red);
+  color: #fff;
+}
+
+@media (width >= 900px) {
+  /* desktop: copy on the left, card art on the right */
+  .cc-hero.metal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .cc-hero.metal .cc-hero-content {
+    margin: 0;
+    padding: 40px 0;
+  }
+
+  .cc-hero.metal .cc-hero-content h1,
+  .cc-hero.metal .cc-hero-content p,
+  .cc-hero.metal .cc-hero-actions {
+    max-width: 100%;
+  }
+
+  .cc-hero.metal .cc-hero-content h1 {
+    font-size: 44px;
+  }
+
+  /* image column sits to the right of the copy */
+  .cc-hero.metal .cc-hero-image {
+    order: 2;
+  }
+}

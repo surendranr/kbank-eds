@@ -71,7 +71,7 @@ export default function decorate(block) {
   // the Layout and Gradient selects share the copy field group, so their values
   // ("detail", "gradient-red", ...) also render as trailing plain <p>s — pull
   // them out and apply them as variant classes.
-  const LAYOUTS = ['detail'];
+  const LAYOUTS = ['detail', 'metal'];
   const GRADIENTS = ['gradient-red', 'gradient-dark'];
   if (copyCell) {
     [...copyCell.querySelectorAll('p')].forEach((p) => {

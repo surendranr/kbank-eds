@@ -85,7 +85,8 @@
           "value": "",
           "options": [
             { "name": "Default (overlay banner)", "value": "" },
-            { "name": "Detail (product-detail card)", "value": "detail" }
+            { "name": "Detail (product-detail card)", "value": "detail" },
+            { "name": "Metal (light, card art on right)", "value": "metal" }
           ]
         },
         {
