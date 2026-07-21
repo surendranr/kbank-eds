@@ -6,6 +6,19 @@
 const SENTRY_MODULE_URL = 'https://esm.sh/@sentry/browser@10.65.0';
 const DSN = 'https://8f3c99cccbfab19dc79a2a7801501512@o4511738502512640.ingest.us.sentry.io/4511767734255616';
 
+/**
+ * Derive the Sentry environment from the host so events are tagged correctly:
+ *  - live site (.aem.live or the production domain) -> "production"
+ *  - preview (.aem.page)                            -> "qa"
+ *  - localhost / anything else                      -> "development"
+ */
+function resolveEnvironment() {
+  const host = window.location.hostname;
+  if (host.endsWith('.aem.live') || host.endsWith('kotak.com')) return 'production';
+  if (host.endsWith('.aem.page')) return 'qa';
+  return 'development';
+}
+
 export default async function initSentry() {
   let Sentry;
   try {
@@ -17,12 +30,12 @@ export default async function initSentry() {
 
   Sentry.init({
     dsn: DSN,
-    environment: 'qa',
+    environment: resolveEnvironment(),
     release: 'eds-banking-1.0.0',
     integrations: [
       // send console.log, console.warn, and console.error calls as logs to Sentry
       Sentry.consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
-      Sentry.replayIntegration()
+      Sentry.replayIntegration(),
     ],
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
@@ -43,11 +56,13 @@ export default async function initSentry() {
     Sentry.metrics.distribution('response_time', 200);
   }
 
-  // QA verification hook: append ?sentry-test=1 to any URL to force a test
-  // exception, confirming events reach the Sentry dashboard.
+  // Verification hook: append ?sentry-test=1 to any URL to force a test
+  // exception, confirming events reach the Sentry dashboard. The event is
+  // tagged with whichever environment the host resolves to (e.g. production
+  // when fired on the live site), so QA can verify prod delivery too.
   const params = new URLSearchParams(window.location.search);
   if (params.get('sentry-test') === '1') {
-    Sentry.captureException(new Error('Sentry test exception from QA'));
+    Sentry.captureException(new Error(`Sentry test exception (${resolveEnvironment()})`));
   }
 
   return true;
