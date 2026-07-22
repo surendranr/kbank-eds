@@ -124,7 +124,6 @@
   padding: 14px 30px;
   border-radius: 999px;
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .k811-card-selector-apply:any-link:hover {
