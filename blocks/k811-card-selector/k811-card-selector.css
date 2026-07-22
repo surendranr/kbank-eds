@@ -9,14 +9,19 @@
   padding: 24px;
 }
 
-/* "CHOOSE YOUR METAL" — gray section eyebrow heading */
+/* "CHOOSE YOUR METAL" — gray, centered eyebrow heading. The title is authored
+   as section default content (sibling h2), not inside the block, so target the
+   section's default-content-wrapper heading to match the live page. */
 .k811-card-selector .k811-card-selector-title,
-.kotak811 .section.dark .k811-card-selector .k811-card-selector-title {
+.kotak811 .section.dark .k811-card-selector .k811-card-selector-title,
+.kotak811 .section.k811-card-selector-container .default-content-wrapper :is(h1, h2, h3) {
   text-align: center;
   font-size: 30px;
   font-weight: 500;
   color: #959595;
-  margin: 0 0 32px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0 auto 40px;
 }
 
 .k811-card-selector-stage {
@@ -145,6 +150,9 @@
   order: 1;
   position: relative;
   min-height: 300px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
 }
 
 /* Every card is anchored to the same bottom-center point; JS sets its
@@ -156,7 +164,7 @@
   bottom: 0;
   width: 100%;
   transform-origin: center bottom;
-  transform: translate(-50%, -8%);
+  transform: translate(-50%, -10%);
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease;
   will-change: transform, filter;
 }

@@ -144,9 +144,9 @@ export default function decorate(block) {
   // Fan geometry (percentages/scale per depth step), tuned to the live deck:
   // depth 0 = active card in front; deeper cards peek only slightly above it,
   // barely shrinking — a tight stack, not a wide fan.
-  const BASE_Y = 8; // active card's upward shift (% of its own height)
-  const STEP_Y = 5; // extra upward shift per depth step (small peek)
-  const STEP_SCALE = 0.04; // gentle shrink per depth step
+  const BASE_Y = 10; // active card's upward shift (% of its own height)
+  const STEP_Y = 8; // extra upward shift per depth step (visible peek)
+  const STEP_SCALE = 0.05; // shrink per depth step
   const applyFan = (activeIdx) => {
     mediaEls.forEach((el, idx) => {
       const depth = (idx - activeIdx + n) % n; // 0 = active, then wraps
@@ -169,9 +169,15 @@ export default function decorate(block) {
     mediaItem.className = 'k811-card-selector-card';
     if (v.picture) {
       const img = v.picture.matches?.('img') ? v.picture : v.picture.querySelector('img');
-      if (img && img.src) {
-        mediaItem.append(createOptimizedPicture(img.src, v.name, i === 0, [{ width: '750' }]));
-      } else {
+      // Use the raw attribute and reject broken placeholders (e.g. about:error,
+      // nullerror) that the authoring pipeline emits for a missing asset.
+      const rawSrc = img && (img.getAttribute('src') || '');
+      const validSrc = rawSrc && /^(https?:\/\/|\/|\.\/)/.test(rawSrc) && !/^about:/.test(rawSrc);
+      if (validSrc) {
+        mediaItem.append(createOptimizedPicture(rawSrc, v.name, i === 0, [{ width: '750' }]));
+      } else if (img) {
+        // keep the original <img>/<picture> so the alt text still conveys the
+        // variant, without a doubly-broken optimized <picture>.
         mediaItem.append(v.picture);
       }
     }
