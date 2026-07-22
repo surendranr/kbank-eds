@@ -204,7 +204,6 @@
     border-radius: 12px;
   }
 
-
   /* Virtual-card feature (the LIGHT feature with a static image, no Lottie) is
      full-screen and flush, matching the adjacent full-screen promo bands. Dark
      feature sections (credit-cards, download-app) and the light Lottie security
@@ -287,7 +286,8 @@
 }
 
 /* app-download shows only QR + headings — hide the CTA link (per reference) */
-.k811-feature.k811-feature-qr .k811-feature-text-col a:any-link {
+/* stylelint-disable-next-line no-descending-specificity */
+.section.k811-feature-container:has(.k811-feature-qr) .k811-feature-text-col a:any-link {
   display: none;
 }
 
