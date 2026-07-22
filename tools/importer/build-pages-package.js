@@ -90,9 +90,13 @@ function buildZip(entries) {
   return Buffer.concat([...chunks, centralBuf, end]);
 }
 
+// mode="replace" so reinstalling OVERWRITES existing page nodes. The default
+// FileVault mode is "merge", which leaves already-present property values
+// (e.g. an old applyCta/primaryCta) untouched — so a reinstall would appear to
+// do nothing. "replace" makes each page root an authoritative overwrite.
 const filterXml = `<?xml version="1.0" encoding="UTF-8"?>
 <workspaceFilter version="1.0">
-${PAGES.map((p) => `  <filter root="/content/kotakbank/${p}"/>`).join('\n')}
+${PAGES.map((p) => `  <filter root="/content/kotakbank/${p}" mode="replace"/>`).join('\n')}
 </workspaceFilter>
 `;
 
