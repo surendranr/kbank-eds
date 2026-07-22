@@ -54,16 +54,16 @@
   line-height: 1.4;
 }
 
-/* ---- mobile: photo on top, text below --------------------------------- */
-@media (width < 900px) {
+/* ---- mobile (<600px): photo on top, text below ------------------------ */
+@media (width < 600px) {
   .k811-benefits-story .k811-benefits-story-media {
     height: 60vh;
     min-height: 320px;
   }
 }
 
-/* ---- desktop: full-viewport split panels ------------------------------ */
-@media (width >= 900px) {
+/* ---- tablet + desktop (>=600px): full-viewport split panels ----------- */
+@media (width >= 600px) {
   .k811-benefits-story .k811-benefits-story-panel {
     min-height: 100vh;
     display: flex;
@@ -81,21 +81,37 @@
   .k811-benefits-story .k811-benefits-story-content {
     position: relative;
     z-index: 1;
-    width: 50%;
+    width: 55%;
     max-width: 550px;
     margin-left: max(24px, calc((100% - var(--k811-content-max, 1120px)) / 2));
-    gap: 20px;
+    gap: 16px;
     padding: 0 24px;
   }
 
   .k811-benefits-story .k811-benefits-story-content :is(h1, h2, h3, h4) {
-    font-size: 39px;
+    font-size: 30px;
     line-height: 1.1;
   }
 
   .k811-benefits-story .k811-benefits-story-content p {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.4;
+  }
+}
+
+/* ---- desktop (>=900px): larger overlay type --------------------------- */
+@media (width >= 900px) {
+  .k811-benefits-story .k811-benefits-story-content {
+    width: 50%;
+    gap: 20px;
+  }
+
+  .k811-benefits-story .k811-benefits-story-content :is(h1, h2, h3, h4) {
+    font-size: 39px;
+  }
+
+  .k811-benefits-story .k811-benefits-story-content p {
+    font-size: 20px;
   }
 }
 

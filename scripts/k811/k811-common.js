@@ -4,8 +4,10 @@
  * - Marks <main> with `.kotak811` so the scoped design guide (styles/kotak811.css)
  *   applies only to these migrated pages.
  * - Loads the design guide + Manrope once.
- * - Provides an AOS-faithful "fade-in" reveal (pure opacity, 400ms ease-in,
- *   re-triggers on scroll into view) matching the source site's AOS config.
+ * - Scroll reveal uses the real AOS library (self-hosted scripts/k811/aos.js +
+ *   aos.css), initialised with the source site's config (fade / 400ms /
+ *   ease-in / once:false). A lightweight IntersectionObserver stands in as a
+ *   failsafe only if AOS fails to load, so content can never stay hidden.
  */
 
 let stylesLoaded = false;
@@ -24,7 +26,46 @@ function loadDesignGuide() {
   }
 }
 
-// Single shared observer: re-triggers (matches AOS `once: false`).
+// ---- AOS (self-hosted) --------------------------------------------------
+// Loaded lazily so it never blocks LCP. UMD build → attaches window.AOS.
+let aosPromise;
+function loadAOS() {
+  if (aosPromise) return aosPromise;
+  aosPromise = new Promise((resolve) => {
+    if (window.AOS) { resolve(window.AOS); return; }
+    // stylesheet
+    if (!document.querySelector('link[data-k811-aos-css]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/scripts/k811/aos.css';
+      link.setAttribute('data-k811-aos-css', '');
+      document.head.append(link);
+    }
+    // script (classic; UMD sets window.AOS with `this` = window)
+    const s = document.createElement('script');
+    s.src = '/scripts/k811/aos.min.js';
+    s.async = true;
+    s.addEventListener('load', () => {
+      if (window.AOS) {
+        window.AOS.init({
+          duration: 400,
+          easing: 'ease-in',
+          delay: 0,
+          once: false, // re-trigger on scroll in/out, matching the source
+          offset: 80,
+          disableMutationObserver: true,
+        });
+      }
+      resolve(window.AOS);
+    });
+    s.addEventListener('error', () => resolve(null));
+    document.head.append(s);
+  });
+  return aosPromise;
+}
+
+// Failsafe observer, used only if AOS fails to load: re-triggers (matches AOS
+// `once: false`) by toggling the class as elements enter/leave the viewport.
 let observer;
 function getObserver() {
   if (observer) return observer;
@@ -37,21 +78,37 @@ function getObserver() {
   return observer;
 }
 
+let refreshQueued = false;
+
 /**
- * Register an element (or elements) for the fade-in reveal.
+ * Register an element (or elements) for the fade-in reveal, driven by the real
+ * AOS library. Falls back to the IntersectionObserver reveal if AOS is
+ * unavailable so content is never left hidden.
  * @param {Element|Element[]} targets
  */
 export function revealOnScroll(targets) {
-  const list = Array.isArray(targets) ? targets : [targets];
-  const io = getObserver();
+  const list = (Array.isArray(targets) ? targets : [targets]).filter(Boolean);
+  // AOS's built-in "fade" = pure opacity 0->1 (the source's fade-in effect).
+  // `data-k811-aos` drives our failsafe IntersectionObserver reveal if AOS
+  // can't load.
   list.forEach((el) => {
-    if (!el) return;
+    el.setAttribute('data-aos', 'fade');
     el.setAttribute('data-k811-aos', 'fade-in');
-    if (io) {
-      el.classList.add('k811-aos-ready');
-      io.observe(el);
+  });
+
+  loadAOS().then((AOS) => {
+    if (AOS && typeof AOS.refreshHard === 'function') {
+      if (!refreshQueued) {
+        refreshQueued = true;
+        requestAnimationFrame(() => { refreshQueued = false; AOS.refreshHard(); });
+      }
+      return;
     }
-    // no observer -> element stays visible (no ready class, no hidden state)
+    // Failsafe: AOS didn't load — use the IntersectionObserver reveal.
+    const io = getObserver();
+    list.forEach((el) => {
+      if (io) { el.classList.add('k811-aos-ready'); io.observe(el); }
+    });
   });
 }
 

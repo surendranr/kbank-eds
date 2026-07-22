@@ -154,14 +154,12 @@
   height: auto;
 }
 
-@media (width >= 900px) {
-  .k811-card-selector {
-    padding: 64px 40px;
-  }
-
+/* tablet + up: info left, card deck right (matches live from ~600px) */
+@media (width >= 600px) {
   .k811-card-selector-stage {
     grid-template-columns: 1fr 1fr;
-    gap: 56px;
+    gap: 40px;
+    align-items: center;
   }
 
   .k811-card-selector-info {
@@ -170,6 +168,20 @@
 
   .k811-card-selector-media {
     order: 2;
+    min-height: 300px;
+  }
+}
+
+@media (width >= 900px) {
+  .k811-card-selector {
+    padding: 64px 40px;
+  }
+
+  .k811-card-selector-stage {
+    gap: 56px;
+  }
+
+  .k811-card-selector-media {
     min-height: 340px;
   }
 }
