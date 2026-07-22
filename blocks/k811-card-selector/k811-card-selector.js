@@ -144,9 +144,9 @@ export default function decorate(block) {
   // Fan geometry (percentages/scale per depth step), tuned to the live deck:
   // depth 0 = active card in front; deeper cards peek only slightly above it,
   // barely shrinking — a tight stack, not a wide fan.
-  const BASE_Y = 8; // active card's upward shift (% of its own height)
-  const STEP_Y = 5; // extra upward shift per depth step (small peek)
-  const STEP_SCALE = 0.04; // gentle shrink per depth step
+  const BASE_Y = 10; // active card's upward shift (% of its own height)
+  const STEP_Y = 8; // extra upward shift per depth step (visible peek)
+  const STEP_SCALE = 0.05; // shrink per depth step
   const applyFan = (activeIdx) => {
     mediaEls.forEach((el, idx) => {
       const depth = (idx - activeIdx + n) % n; // 0 = active, then wraps
