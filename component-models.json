@@ -1380,7 +1380,26 @@
     ]
   },
   {
-    "id": "benefit-card",
+    "id": "k811-offer-overlap-card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Icon",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "k811-offer-card",
     "fields": [
       {
         "component": "reference",
