@@ -122,8 +122,16 @@ main > .section:has(> .k811-promo-band-wrapper) {
    centered CTA (matches the reference). The copy sits over the empty top of
    the photo rather than over the subject's face. ---- */
 @media (width < 900px) {
+  /* taller band + top-anchored image so the empty ceiling shows at the top and
+     the subject's head sits BELOW the copy (matches the reference — the current
+     340px band cropped her face up into the text). */
   .k811-promo-band {
     align-items: flex-start;
+    min-height: 540px;
+  }
+
+  .k811-promo-band .k811-promo-band-media img {
+    object-position: 50% 0%;
   }
 
   .k811-promo-band .k811-promo-band-content {
