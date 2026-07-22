@@ -1,0 +1,52 @@
+/*
+ * k811-offers-overlap — homepage offers strip that overlaps the metal hero.
+ *
+ * Card styling is inherited from the shared k811-offers block. EDS only loads
+ * a block's own CSS by block name, so we @import the shared stylesheet here to
+ * reuse the exact card treatment from a single source of truth (the block also
+ * carries the .k811-offers class via JS). We then add ONLY the overlap: the
+ * offers wrapper is pulled up over the preceding hero banner per the design.
+ */
+@import url('../k811-offers/k811-offers.css');
+
+/*
+ * Overlap notes:
+ * Mobile-first — no overlap on small screens (hero is short, cards stack under
+ * it cleanly). The pull-up is introduced from tablet up, growing on desktop
+ * where the hero has tall empty space below the copy — exactly as referenced.
+ * The negative margin is applied to the SECTION wrapper so the whole offers
+ * band lifts over the hero; z-index keeps the cards above the hero background.
+ */
+
+/* the offers section wrapper (EDS wraps blocks in .<block>-wrapper inside .section) */
+.kotak811 .section:has(> .k811-offers-overlap-wrapper) {
+  position: relative;
+  z-index: 2; /* sit above the hero section */
+}
+
+.k811-offers-overlap-wrapper {
+  position: relative;
+}
+
+/* keep the cards themselves above any hero imagery once lifted */
+.k811-offers-overlap {
+  position: relative;
+  z-index: 2;
+}
+
+/* Tablet: begin the overlap */
+@media (width >= 600px) {
+  .kotak811 .section:has(> .k811-offers-overlap-wrapper) {
+    margin-top: -80px;
+  }
+}
+
+/* Desktop: full overlap as in the reference (cards straddle hero / next band) */
+@media (width >= 900px) {
+  .kotak811 .section:has(> .k811-offers-overlap-wrapper) {
+    margin-top: -140px;
+  }
+}
+
+/* Reduce hero bottom padding contribution is not needed: the negative margin
+   on the offers section handles the pull-up without touching the hero block. */

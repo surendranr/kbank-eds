@@ -158,6 +158,12 @@
     ]
   },
   {
+    "id": "k811-offers-overlap",
+    "components": [
+      "k811-offer-overlap-card"
+    ]
+  },
+  {
     "id": "k811-offers",
     "components": [
       "k811-offer-card"

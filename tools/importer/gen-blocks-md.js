@@ -124,14 +124,16 @@ function home() {
     [['<!-- field:primaryCta -->', '', `[Apply Now](${url('/open-zero-balance-savings-account/mdc-2?utm_source=kotak811_website_hp&utm_medium=organic&utm_campaign=account_open')})`]],
   ]) + '\n\n' + sectionMeta('metal'));
 
-  // K811 Offers (container, grid)
+  // K811 Offers Overlap (homepage-only variant that overlaps the hero).
+  // Uses the dedicated overlap block so the shared K811 Offers used on the
+  // infinity-metal page is unaffected.
   const offers = [
     ['Complimentary Lounge Access', '4 free domestic lounge access', 'complimentary_lounge_airport_access160_X94_bcdae6da57_c7004f3c39.png'],
     ['₹6,000 Cashback with 811 Super', 'Enjoy cashback on Debit Card spends', 'cashback_160_X94_b68a419db2_f10090fccc.png'],
     ['20% off on Zomato Dining', 'Experience dining like never before', 'zomato_dining_160_X94_6a2b137cc1_62e03a8e92.png'],
     ['1+1 Movie tickets on BookMyShow', 'Your ultimate movie nights start here', 'movie_offer_160_X94_f9106641be_fd074532a5.png'],
   ];
-  parts.push(container('K811 Offers',
+  parts.push(container('K811 Offers Overlap',
     '',
     offers.map(([h, t, ic]) => [
       ['<!-- field:image -->', '', im.ref(`${CDN}/${ic}`)],
