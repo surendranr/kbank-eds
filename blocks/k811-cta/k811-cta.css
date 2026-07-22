@@ -71,15 +71,15 @@
     line-height: 52px;
   }
 
-  /* the phone illustration breaks out of the black box (per the source):
-     a small icon that bleeds past the box's right and bottom edges. */
+  /* the phone illustration is a small, vertically-centered icon on the right
+     (per the source), bleeding slightly past the box's right edge. */
   .k811-cta .k811-cta-media {
     flex: 0 0 auto;
-    align-self: flex-end;
-    margin: -40px -24px -56px 0;
+    align-self: center;
+    margin: 0 -20px 0 0;
   }
 
   .k811-cta .k811-cta-media img {
-    max-height: 200px;
+    max-height: 150px;
   }
 }
