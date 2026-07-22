@@ -50,6 +50,13 @@
   height: auto;
 }
 
+/* mobile: text-only banner (no phone illustration), matching the reference */
+@media (width < 900px) {
+  .k811-cta .k811-cta-media {
+    display: none;
+  }
+}
+
 @media (width >= 900px) {
   .k811-cta .k811-cta-inner {
     flex-direction: row;

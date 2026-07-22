@@ -298,3 +298,16 @@
 .section.k811-feature-container:has(.k811-feature-qr) .k811-feature p {
   color: #fff;
 }
+
+/* mobile: center the app-download copy (QR on top, centered headings below),
+   matching the reference */
+@media (width < 900px) {
+  .k811-feature-qr > div {
+    align-items: center;
+    text-align: center;
+  }
+
+  .k811-feature-qr .k811-feature-text-col {
+    text-align: center;
+  }
+}
