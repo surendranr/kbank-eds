@@ -42,11 +42,9 @@ export default function decorate(block) {
 
   // Per-panel latched progress: while a panel is in/around the viewport it only
   // ever increases, so the animation plays forward on scroll-down and holds its
-  // rested state on scroll-up (no reverse). The latch resets once the panel is
-  // fully below the animation zone (raw = 0, i.e. off-screen below the fold) —
-  // that's invisible to the user and self-heals any premature high reading taken
-  // before the page below has finished laying out.
-  const maxProgress = new WeakMap();
+  // rested state on scroll-up (no reverse). The latch also resets once a panel is
+  // fully below the animation zone (raw = 0, i.e. off-screen below the fold).
+  let maxProgress = new WeakMap();
 
   // Progress model: as a panel travels from entering the viewport bottom to
   // reaching the top, progress goes 0 -> 1. Recomputed from the panel's live
@@ -77,5 +75,15 @@ export default function decorate(block) {
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
-  update();
+
+  // Discard any latched values and recompute from live geometry. The first
+  // update() during decoration can read stale positions (the sections above
+  // this block may not have laid out yet), which on mobile — where the block
+  // starts partly in view and never scrolls fully below the fold — would latch
+  // a bogus progress of 1 and freeze the reveal. Re-seeding after layout (and
+  // again on window load, once fonts/images settle) fixes that.
+  function reseed() { maxProgress = new WeakMap(); update(); }
+  reseed();
+  requestAnimationFrame(reseed);
+  if (document.readyState !== 'complete') window.addEventListener('load', reseed, { once: true });
 }
