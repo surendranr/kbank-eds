@@ -71,8 +71,18 @@ export default function decorate(block) {
     tab.type = 'button';
     tab.className = 'k811-pillars-tab';
     tab.setAttribute('role', 'tab');
-    const descHtml = p.desc ? `<span class="k811-pillars-tab-desc">${p.desc}</span>` : '';
-    tab.innerHTML = `<span class="k811-pillars-tab-title">${p.title}</span>${descHtml}`;
+    // Build with textContent (not innerHTML) so authored text is never
+    // interpreted as HTML (avoids XSS).
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'k811-pillars-tab-title';
+    titleSpan.textContent = p.title;
+    tab.append(titleSpan);
+    if (p.desc) {
+      const descSpan = document.createElement('span');
+      descSpan.className = 'k811-pillars-tab-desc';
+      descSpan.textContent = p.desc;
+      tab.append(descSpan);
+    }
 
     const stageItem = document.createElement('div');
     stageItem.className = 'k811-pillars-stage-item';

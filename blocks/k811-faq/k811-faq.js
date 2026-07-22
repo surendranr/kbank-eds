@@ -43,7 +43,10 @@ export default function decorate(block) {
     details.className = 'k811-faq-item';
     const summary = document.createElement('summary');
     summary.className = 'k811-faq-q';
-    summary.innerHTML = `<span>${q.textContent.trim()}</span>`;
+    // textContent (not innerHTML) so authored question text can't inject HTML
+    const qSpan = document.createElement('span');
+    qSpan.textContent = q.textContent.trim();
+    summary.append(qSpan);
     const answer = document.createElement('div');
     answer.className = 'k811-faq-a';
     if (a) while (a.firstChild) answer.append(a.firstChild);

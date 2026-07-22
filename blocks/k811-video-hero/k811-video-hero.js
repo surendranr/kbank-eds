@@ -65,13 +65,22 @@ export default function decorate(block) {
   let copyCell = null;
   const linkCells = [];
 
+  // A video cell's content is a single .mp4/.webm/.mov URL. The authoring
+  // system may auto-wrap a bare URL in an <a>, so resolve the URL from the
+  // anchor href OR the plain text and test that — never gate on "no link".
+  const videoUrlOf = (c) => {
+    const link = c.querySelector('a');
+    const candidate = (link ? (link.getAttribute('href') || link.textContent) : cellText(c)).trim();
+    return URL_RE.test(candidate) ? candidate : '';
+  };
+
   cells.forEach((c) => {
     const txt = cellText(c);
     const hasPicture = !!c.querySelector('picture, img');
-    const hasLink = !!c.querySelector('a');
-    if (URL_RE.test(txt) && !hasLink) {
-      videoUrls.push(txt);
-    } else if (hasLink) {
+    const videoUrl = videoUrlOf(c);
+    if (videoUrl) {
+      videoUrls.push(videoUrl);
+    } else if (c.querySelector('a')) {
       linkCells.push(c);
     } else if (hasPicture && !posterCell) {
       posterCell = c;
