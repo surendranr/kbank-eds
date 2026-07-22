@@ -291,7 +291,7 @@ function infinity() {
   parts.push(container('K811 Card Selector',
     'CHOOSE YOUR METAL',
     variants.map(([name, ic, issue, best, strike, dep]) => [
-      ['<!-- field:name -->', '', name],
+      ['<!-- field:variant -->', '', name],
       ['<!-- field:image -->', '', im.ref(`${CDN}/${ic}`, name)],
       ['<!-- field:panel -->', '',
         '### Fees & eligibility',
