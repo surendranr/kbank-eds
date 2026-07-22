@@ -30,11 +30,20 @@
   text-align: center;
 }
 
-.kotak811 .section.k811-faq-container .default-content-wrapper :is(h1, h2, h3) {
-  font-size: 34px;
+/* title (first heading) — large white */
+.kotak811 .section.k811-faq-container .default-content-wrapper :is(h1, h2) {
+  font-size: 40px;
   font-weight: 700;
   color: #fff;
   margin: 0 0 8px;
+}
+
+/* subtitle (h3) — smaller gray, matching the live "Frequently Asked Questions" */
+.kotak811 .section.k811-faq-container .default-content-wrapper h3 {
+  font-size: 22px;
+  font-weight: 400;
+  color: #aeafae;
+  margin: 0 0 24px;
 }
 
 .k811-faq-list {
@@ -92,7 +101,7 @@
 
 /* subtitle paragraph under the "Ask Kotak811" title */
 .kotak811 .section.k811-faq-container .default-content-wrapper p {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 400;
   color: #aeafae;
   margin: 0 0 24px;
