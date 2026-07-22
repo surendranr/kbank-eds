@@ -116,8 +116,12 @@ main > .section:has(> .k811-promo-band-wrapper) {
 }
 
 @media (width >= 900px) {
+  /* full-screen band: the photo fills the viewport below the nav, matching the
+     live site where each promo section occupies a full screen. dvh keeps it
+     correct with mobile/desktop browser chrome; svh is the safe fallback. */
   .k811-promo-band {
-    min-height: 460px;
+    min-height: 100svh;
+    min-height: 100dvh;
   }
 
   .k811-promo-band .k811-promo-band-content {
