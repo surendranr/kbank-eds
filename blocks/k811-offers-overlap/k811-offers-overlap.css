@@ -44,19 +44,17 @@
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0;
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 20px 50px rgb(0 0 0 / 12%);
-  overflow: hidden;
+  gap: 24px;
 }
 
-/* individual column: transparent, thin divider between columns */
+/* individual card: its own white rounded card with a soft shadow */
 .k811-offers-overlap > ul > li {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background: transparent;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgb(0 0 0 / 10%);
   padding: 28px 26px;
   text-align: left;
 }
@@ -107,39 +105,18 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  /* horizontal + vertical dividers on the 2x2 grid */
-  .k811-offers-overlap > ul > li:nth-child(even) {
-    border-left: 1px solid #ececec;
-  }
-
-  .k811-offers-overlap > ul > li:nth-child(n + 3) {
-    border-top: 1px solid #ececec;
-  }
-
   .kotak811 .section:has(> .k811-offers-overlap-wrapper) {
     margin-top: -70px;
   }
 }
 
-/* ---- Desktop: four columns in one row, straddling the hero ---- */
+/* ---- Desktop: four separate cards in one row, straddling the hero ---- */
 @media (width >= 900px) {
   .k811-offers-overlap > ul {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  /* single row: only vertical dividers between adjacent columns */
-  /* stylelint-disable-next-line no-descending-specificity */
-  .k811-offers-overlap > ul > li:nth-child(even),
-  .k811-offers-overlap > ul > li:nth-child(n + 3) {
-    border-top: 0;
-    border-left: 1px solid #ececec;
-  }
-
-  .k811-offers-overlap > ul > li:first-child {
-    border-left: 0;
-  }
-
-  /* lift the panel so ~half of it overlaps the black hero above */
+  /* lift the cards so ~half of each overlaps the black hero above */
   .kotak811 .section:has(> .k811-offers-overlap-wrapper) {
     margin-top: -120px;
   }
