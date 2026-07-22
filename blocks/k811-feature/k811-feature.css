@@ -181,4 +181,34 @@
   .section.light.k811-feature-container .k811-feature > div {
     min-height: inherit;
   }
+
+  /* reference layout: text on the LEFT, phone/card image on the RIGHT
+     (overrides the automatic alternation for this section only) */
+  .section.light.k811-feature-container .k811-feature .k811-feature-text-col {
+    order: 0;
+  }
+
+  .section.light.k811-feature-container .k811-feature .k811-feature-img-col {
+    order: 1;
+  }
+}
+
+/* CTA on the light (virtual-card) feature is a solid blue pill button per the
+   reference, unlike the plain inline links on the dark feature sections. */
+.section.light.k811-feature-container .k811-feature .k811-feature-text-col a:any-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 10px 28px;
+  border-radius: 8px;
+  background: #3b63fb;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.section.light.k811-feature-container .k811-feature .k811-feature-text-col a:any-link:hover {
+  background: #2d4fe0;
+  text-decoration: none;
 }
