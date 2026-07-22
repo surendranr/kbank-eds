@@ -1380,7 +1380,7 @@
     ]
   },
   {
-    "id": "benefit-card",
+    "id": "k811-offer-card",
     "fields": [
       {
         "component": "reference",

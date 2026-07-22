@@ -160,7 +160,7 @@
   {
     "id": "k811-offers",
     "components": [
-      "benefit-card"
+      "k811-offer-card"
     ]
   },
   {

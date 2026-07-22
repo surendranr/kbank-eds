@@ -811,15 +811,15 @@
           }
         },
         {
-          "title": "Benefit Card",
-          "id": "benefit-card",
+          "title": "K811 Offer Card",
+          "id": "k811-offer-card",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block/item",
                 "template": {
-                  "name": "Benefit Card",
-                  "model": "benefit-card"
+                  "name": "K811 Offer Card",
+                  "model": "k811-offer-card"
                 }
               }
             }
