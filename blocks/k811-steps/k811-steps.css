@@ -73,8 +73,15 @@
 .k811-steps-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   align-items: center;
+}
+
+/* "Existing customer? Click here" — one line, below the Apply button */
+.k811-steps-actions-note {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
 .k811-steps-btn.k811-steps-btn-primary {
@@ -120,11 +127,5 @@
   .k811-steps-list {
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
-  }
-
-  .k811-steps-actions {
-    flex-direction: row;
-    justify-content: center;
-    align-items: baseline;
   }
 }
