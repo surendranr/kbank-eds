@@ -19,6 +19,16 @@
   max-width: none;
 }
 
+/* Let the card media bleed to the very bottom edge of the hero section (no
+   black padding strip below it), so the cards animate up from the bottom edge
+   exactly like the live page. Extra .metal/.dark qualifier keeps this ahead of
+   the section's own `padding: 40px 0` regardless of stylesheet order. */
+.kotak811 .section.metal:has(> .k811-video-hero-wrapper),
+.kotak811 .section.dark:has(> .k811-video-hero-wrapper),
+.kotak811 .section:has(> .k811-video-hero-wrapper) {
+  padding-bottom: 0;
+}
+
 /* video band, below the copy, in normal flow. The band owns one fixed height
    (from the source clip's ~1920x598 ratio); the poster and the lazily-attached
    video are OVERLAID inside it (both absolutely positioned, object-fit: cover)
