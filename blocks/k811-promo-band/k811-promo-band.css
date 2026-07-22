@@ -1,0 +1,143 @@
+/* k811-promo-band — full-bleed lifestyle photo with overlaid copy.
+   Source: kotak811.bank.in "nearest bank" / "811 Current Account" bands.
+   The photo covers the full page width; a heading + paragraph + optional CTA
+   are confined to one side (left or right) and overlaid on the image.
+   Left variant = white copy over the darker left of the photo;
+   right variant = dark copy over the lighter right of the photo. */
+
+.k811-promo-band {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 340px;
+}
+
+/* full-bleed: span the full page width, ignoring section max-width/padding.
+   Scoped under main > .section to outweigh the global section-div width rule. */
+main > .section > .k811-promo-band-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+/* remove the section vertical margin so the band sits flush */
+main > .section:has(> .k811-promo-band-wrapper) {
+  margin: 0;
+}
+
+.k811-promo-band .k811-promo-band-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  line-height: 0;
+}
+
+.k811-promo-band .k811-promo-band-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.k811-promo-band .k811-promo-band-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--k811-content-max, 1120px);
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.k811-promo-band .k811-promo-band-content h2 {
+  margin: 0 0 12px;
+  font-family: var(--heading-font-family, manrope, sans-serif);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.k811-promo-band .k811-promo-band-content p {
+  margin: 0 0 16px;
+  font-family: var(--body-font-family, manrope, sans-serif);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.k811-promo-band .k811-promo-band-actions {
+  margin: 20px 0 0;
+}
+
+.k811-promo-band .k811-promo-band-btn:any-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 28px;
+  border-radius: 8px;
+  background: var(--k811-link, #d1101f);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.k811-promo-band .k811-promo-band-btn:any-link:hover {
+  filter: brightness(0.92);
+}
+
+/* left variant: white copy over the darker left side of the photo */
+.k811-promo-band-left .k811-promo-band-content {
+  color: #fff;
+  text-align: left;
+}
+
+.k811-promo-band-left .k811-promo-band-content :is(h1, h2, h3, h4, p) {
+  color: #fff;
+}
+
+/* right variant: dark copy over the lighter right side of the photo */
+.k811-promo-band-right .k811-promo-band-content {
+  color: var(--k811-text, #222);
+  text-align: left;
+}
+
+/* AOS-faithful reveal */
+.k811-promo-band .k811-promo-band-content.k811-aos-ready {
+  opacity: 0;
+  transition: opacity var(--k811-fade-duration, 400ms) var(--k811-fade-easing, ease-in);
+}
+
+.k811-promo-band .k811-promo-band-content.k811-aos-ready.k811-aos-in {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k811-promo-band .k811-promo-band-content.k811-aos-ready {
+    opacity: 1;
+    transition: none;
+  }
+}
+
+@media (width >= 900px) {
+  .k811-promo-band {
+    min-height: 460px;
+  }
+
+  .k811-promo-band .k811-promo-band-content {
+    padding: 48px 40px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 40px;
+  }
+
+  .k811-promo-band .k811-promo-band-content h2 {
+    font-size: 44px;
+  }
+
+  /* confine copy to the left 5 columns */
+  .k811-promo-band-left .k811-promo-band-content > * {
+    grid-column: 1 / span 5;
+  }
+
+  /* confine copy to the right 5 columns */
+  .k811-promo-band-right .k811-promo-band-content > * {
+    grid-column: 8 / span 5;
+  }
+}

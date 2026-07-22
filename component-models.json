@@ -1515,6 +1515,57 @@
     ]
   },
   {
+    "id": "k811-promo-band",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Background Image (upload from assets)",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Background Image Alt Text"
+      },
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "copy",
+        "label": "Copy (heading + paragraph)"
+      },
+      {
+        "component": "aem-content",
+        "name": "ctaLink",
+        "label": "CTA Link"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "ctaLinkText",
+        "label": "CTA Text"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "align",
+        "label": "Copy Alignment",
+        "options": [
+          {
+            "name": "Left",
+            "value": "left"
+          },
+          {
+            "name": "Right",
+            "value": "right"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "k811-step",
     "fields": [
       {
