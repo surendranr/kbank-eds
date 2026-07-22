@@ -204,12 +204,6 @@
     border-radius: 12px;
   }
 
-  /* app-download CTA is a brand-red inline link, per the source */
-  .k811-feature.k811-feature-qr .k811-feature-text-col a:any-link {
-    color: var(--k811-link, #d1101f);
-    font-weight: 600;
-  }
-
   /* Virtual-card feature (the LIGHT feature with a static image, no Lottie) is
      full-screen and flush, matching the adjacent full-screen promo bands. Dark
      feature sections (credit-cards, download-app) and the light Lottie security
@@ -279,4 +273,35 @@
 .section.light.k811-feature-container:not(:has(.k811-feature-has-lottie), :has(.k811-feature-qr)) .k811-feature .k811-feature-text-col a:any-link:hover {
   background: #2d4fe0;
   text-decoration: none;
+}
+
+/* ---- App-download section: dark navy band with white text ----------
+   The QR download promo sits on a dark navy background (matches the
+   source). Applies at all widths; scoped to the section wrapping the QR
+   feature so no other feature/section is affected. */
+.section.k811-feature-container:has(.k811-feature-qr) {
+  background-color: #253844;
+  margin: 0;
+  padding: 56px 0 72px;
+}
+
+/* app-download shows only QR + headings — hide the CTA link (per reference) */
+/* stylelint-disable-next-line no-descending-specificity */
+.section.k811-feature-container:has(.k811-feature-qr) .k811-feature-text-col a:any-link {
+  display: none;
+}
+
+/* overlap: the toll-free CTA band above extends ~half of its box down over
+   this section. Pull this section up and add matching top padding so the QR
+   content still clears the overlapping black box. */
+@media (width >= 900px) {
+  .section.k811-feature-container:has(.k811-feature-qr) {
+    margin-top: -160px;
+    padding-top: 220px;
+  }
+}
+
+.section.k811-feature-container:has(.k811-feature-qr) .k811-feature h2,
+.section.k811-feature-container:has(.k811-feature-qr) .k811-feature p {
+  color: #fff;
 }

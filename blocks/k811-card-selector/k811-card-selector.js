@@ -5,17 +5,33 @@ import { initK811, revealOnScroll } from '../../scripts/k811/k811-common.js';
  * K811 Card Selector — "Choose Your Metal" click-to-swap variant selector.
  *
  * Content model: optional leading single-cell title row, then one row per
- * variant with cells (in order):
- *   1. name (e.g. "Gold")
- *   2. card image (<picture>)
- *   3. fees & eligibility rich text (issuance fee, best value, deposit, etc.)
- *   4. (optional) Apply CTA link
- *   5. (optional) T&C link
+ * variant. The cells are matched by CONTENT, not fixed position, because the
+ * xwalk block renderer may drop or reorder the plain-text "variant name" cell:
+ *   - variant name  — a text-only cell (no picture/link); if absent we fall
+ *                     back to the card image's alt text, then its filename.
+ *   - card image    — the cell containing a <picture>/<img>.
+ *   - fees panel    — the cell with the "Fees & eligibility" rich text.
+ *   - Apply CTA / T&C — link cells (Apply = first .../mdc link, T&C = the other).
  *
  * Interaction: a left-hand list of variant names; clicking one swaps the
  * displayed card image and the fees panel (custom, no library — mirrors the
  * source's React state toggle). First variant active by default.
  */
+
+// Derive a human name from an image when the name cell was dropped: prefer the
+// alt text, else prettify the (possibly hash-suffixed) filename.
+function nameFromImage(picture) {
+  const img = picture && picture.querySelector('img');
+  const alt = img && img.getAttribute('alt');
+  if (alt && alt.trim()) return alt.trim();
+  const src = (img && (img.getAttribute('src') || '')) || '';
+  const file = src.split('/').pop() || '';
+  const base = file.replace(/\.[a-z0-9]+(\?.*)?$/i, '') // drop extension + query
+    .replace(/_[a-f0-9]{6,}$/i, '') // drop trailing content hash
+    .replace(/[_-]+/g, ' ') // separators -> spaces
+    .trim();
+  return base ? base.replace(/\b\w/g, (c) => c.toUpperCase()) : '';
+}
 // Metal swatch gradients, matched to the source site (linear-gradient 0deg).
 const SWATCH_GRADIENTS = {
   gold: 'linear-gradient(0deg, #dda94a, #f6e085 46.63%, #dda94a)',
@@ -45,13 +61,27 @@ export default function decorate(block) {
       titleText = cells[0].textContent.trim();
       return;
     }
-    const name = (cells[0]?.textContent || '').trim();
-    const picture = cells[1]?.querySelector('picture') || cells.find((c) => c.querySelector('picture'))?.querySelector('picture');
-    const panelCell = cells[2] || null;
+
+    // Match cells by content, not position (the name cell may be dropped).
+    const picCell = cells.find((c) => c.querySelector('picture, img'));
+    const picture = picCell ? picCell.querySelector('picture') || picCell.querySelector('img') : null;
+    // Panel = the cell that holds the fees rich text (a heading/paragraph but
+    // no picture and not purely a link).
+    const panelCell = cells.find((c) => c !== picCell
+      && !c.querySelector('picture, img')
+      && c.querySelector('h1, h2, h3, h4, p, ul, ol')
+      && (c.textContent || '').trim().length > 20);
+    // Name = a text-only cell that is neither the picture nor the panel and has
+    // no link; fall back to the image alt / filename when it was dropped.
+    const nameCell = cells.find((c) => c !== picCell && c !== panelCell
+      && !c.querySelector('picture, img, a')
+      && (c.textContent || '').trim());
+    const name = (nameCell && nameCell.textContent.trim()) || nameFromImage(picture);
+
     const links = row.querySelectorAll('a');
-    if (name) {
+    if (picture || panelCell || name) {
       variants.push({
-        name,
+        name: name || 'Card',
         picture,
         panel: panelCell,
         applyLink: links[0] || null,
@@ -114,8 +144,8 @@ export default function decorate(block) {
     const mediaItem = document.createElement('div');
     mediaItem.className = 'k811-card-selector-card';
     if (v.picture) {
-      const img = v.picture.querySelector('img');
-      if (img) {
+      const img = v.picture.matches?.('img') ? v.picture : v.picture.querySelector('img');
+      if (img && img.src) {
         mediaItem.append(createOptimizedPicture(img.src, v.name, i === 0, [{ width: '750' }]));
       } else {
         mediaItem.append(v.picture);

@@ -1182,7 +1182,7 @@
     "fields": [
       {
         "component": "text",
-        "name": "name",
+        "name": "variant",
         "label": "Variant name",
         "valueType": "string"
       },

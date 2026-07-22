@@ -4,7 +4,8 @@
 
 .k811-cta {
   position: relative;
-  max-width: 1120px;
+  z-index: 2; /* float above the app-download section its bottom overlaps into */
+  max-width: 1040px;
   margin: 0 auto;
   border-radius: 20px;
   background: #000;
@@ -59,8 +60,10 @@
     text-align: left;
   }
 
+  /* constrain the heading so it wraps to three lines, matching the source */
   .k811-cta .k811-cta-text {
-    flex: 1 1 50%;
+    flex: 0 1 auto;
+    max-width: 560px;
   }
 
   .k811-cta .k811-cta-title {
@@ -68,15 +71,15 @@
     line-height: 52px;
   }
 
-  /* the phone illustration breaks out of the black box (per the source):
-     it is enlarged and bleeds past the box's right and bottom edges. */
+  /* the phone illustration is a small, vertically-centered icon set in from the
+     right edge (per the source), with black space to its right. */
   .k811-cta .k811-cta-media {
     flex: 0 0 auto;
-    align-self: flex-end;
-    margin: -40px -32px -72px 0;
+    align-self: center;
+    margin: 0 40px 0 0;
   }
 
   .k811-cta .k811-cta-media img {
-    max-height: 320px;
+    max-height: 150px;
   }
 }
