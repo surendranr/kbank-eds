@@ -90,11 +90,23 @@
 
 /* ---- Dark section adaptation (.section.dark) ----------------------
    The project has no global .section.dark background, so the feature
-   block paints its own full-bleed dark band and flips text to light. */
+   block paints its own dark band and flips text to light. Per the
+   reference this is a CONTAINED, rounded box with side margins — not a
+   full-bleed band. */
 .section.dark:has(.k811-feature) {
   background-color: var(--text-color); /* near-black brand dark */
-  margin: 0;
+  margin: 24px auto;
   padding: 40px 0;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+@media (width >= 900px) {
+  .section.dark:has(.k811-feature) {
+    max-width: 1170px;
+    margin: 40px auto;
+    padding: 48px 0;
+  }
 }
 
 .section.dark .k811-feature h2,
@@ -103,8 +115,24 @@
 }
 
 .section.dark .k811-feature a:any-link {
-  color: var(--background-color);
+  color: var(--k811-link, #d1101f); /* brand red inline link, per reference */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.section.dark .k811-feature a:any-link:hover {
   text-decoration: underline;
+}
+
+/* Product-card image in a dark feature (e.g. "credit cards get easy") is a
+   near-square hero render, not a wide photo — show it uncropped so the whole
+   card is visible, matching the reference. The QR/app-download variant keeps
+   its own small square rule. */
+.section.dark .k811-feature:not(.k811-feature-qr) .k811-feature-img-col img {
+  aspect-ratio: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 0;
 }
 
 /* Scroll-reveal is handled by the shared kotak811 design guide
@@ -181,4 +209,44 @@
   .section.light.k811-feature-container .k811-feature > div {
     min-height: inherit;
   }
+
+  /* reference layout: text on the LEFT, phone/card image on the RIGHT
+     (overrides the automatic alternation for this section only) */
+  .section.light.k811-feature-container .k811-feature .k811-feature-text-col {
+    order: 0;
+  }
+
+  .section.light.k811-feature-container .k811-feature .k811-feature-img-col {
+    order: 1;
+  }
+
+  /* show the FULL phone/card mockup (source image is ~near-square). Override
+     the wide 780/384 crop used by the generic feature photos so nothing is
+     clipped top/bottom, per the reference. */
+  .section.light.k811-feature-container .k811-feature .k811-feature-img-col img {
+    aspect-ratio: auto;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 0;
+  }
+}
+
+/* CTA on the light (virtual-card) feature is a solid blue pill button per the
+   reference, unlike the plain inline links on the dark feature sections. */
+.section.light.k811-feature-container .k811-feature .k811-feature-text-col a:any-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 10px 28px;
+  border-radius: 8px;
+  background: #3b63fb;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.section.light.k811-feature-container .k811-feature .k811-feature-text-col a:any-link:hover {
+  background: #2d4fe0;
+  text-decoration: none;
 }

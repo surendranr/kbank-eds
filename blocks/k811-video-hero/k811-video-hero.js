@@ -144,7 +144,9 @@ export default function decorate(block) {
   }
 
   block.textContent = '';
-  block.append(media, content);
+  // Matches the source layout: text block on the solid dark background first,
+  // then the video band below it (NOT a full-bleed video behind the copy).
+  block.append(content, media);
 
   // Lazy-attach the video once the hero nears the viewport (protects LCP).
   if (desktopSrc || mobileSrc) {
