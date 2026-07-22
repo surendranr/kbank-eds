@@ -1200,9 +1200,11 @@
         "valueType": "string"
       },
       {
-        "component": "aem-content",
+        "component": "richtext",
         "name": "applyCta",
-        "label": "Apply CTA"
+        "label": "Apply CTA (link — keeps its label)",
+        "value": "",
+        "valueType": "string"
       }
     ]
   },
@@ -1666,9 +1668,10 @@
         "value": ""
       },
       {
-        "component": "aem-content",
+        "component": "richtext",
         "name": "primaryCta",
-        "label": "Primary CTA"
+        "label": "Primary CTA (link — keeps its label)",
+        "value": ""
       }
     ]
   },

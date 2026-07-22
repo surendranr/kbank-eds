@@ -162,4 +162,23 @@
     width: 180px;
     border-radius: 12px;
   }
+
+  /* Virtual-card feature (the only LIGHT feature section) is full-screen and
+     flush, matching the adjacent full-screen promo bands. Dark feature
+     sections (credit-cards, download-app) are unaffected. */
+  .section.light.k811-feature-container {
+    margin: 0;
+    padding: 0;
+  }
+
+  .section.light.k811-feature-container .k811-feature {
+    min-height: 100svh;
+    min-height: 100dvh;
+    max-width: var(--k811-content-max, 1120px);
+    padding: 0 24px;
+  }
+
+  .section.light.k811-feature-container .k811-feature > div {
+    min-height: inherit;
+  }
 }
