@@ -3,11 +3,12 @@
  * Scoped to .kotak811 pages; inherits Manrope + tokens from styles/kotak811.css.
  */
 
+/* Vertical stack matching the source: text block on solid black, then the
+   video band below it (not a full-bleed video behind the copy). */
 .k811-video-hero {
   position: relative;
   display: flex;
-  align-items: center;
-  min-height: 420px;
+  flex-direction: column;
   overflow: hidden;
   background: #000;
   color: #fff;
@@ -18,20 +19,19 @@
   max-width: none;
 }
 
+/* video band, below the copy, in normal flow */
 .k811-video-hero-media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+  position: relative;
+  width: 100%;
+  line-height: 0;
 }
 
 .k811-video-hero-media picture,
 .k811-video-hero-media img,
 .k811-video-hero-video {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
 }
 
 .k811-video-hero-content {
@@ -40,7 +40,7 @@
   width: 100%;
   max-width: var(--k811-content-max, 1120px);
   margin: 0 auto;
-  padding: 48px 24px;
+  padding: 56px 24px 40px;
   text-align: center;
 }
 
@@ -123,12 +123,8 @@
 }
 
 @media (width >= 900px) {
-  .k811-video-hero {
-    min-height: 560px;
-  }
-
   .k811-video-hero-content {
-    padding: 80px 40px;
+    padding: 96px 40px 48px;
   }
 
   .k811-video-hero .k811-video-hero-content h1 {
