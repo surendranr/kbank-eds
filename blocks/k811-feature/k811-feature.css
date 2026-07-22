@@ -280,3 +280,28 @@
   background: #2d4fe0;
   text-decoration: none;
 }
+
+/* ---- App-download section: dark navy band with white text ----------
+   The QR download promo sits on a dark navy background (matches the
+   source). Applies at all widths; scoped to the section wrapping the QR
+   feature so no other feature/section is affected. */
+.section.k811-feature-container:has(.k811-feature-qr) {
+  background-color: #253844;
+  margin: 0;
+  padding: 56px 0 72px;
+}
+
+/* overlap: the toll-free CTA band above extends ~half of its box down over
+   this section. Pull this section up and add matching top padding so the QR
+   content still clears the overlapping black box. */
+@media (width >= 900px) {
+  .section.k811-feature-container:has(.k811-feature-qr) {
+    margin-top: -120px;
+    padding-top: 180px;
+  }
+}
+
+.section.k811-feature-container:has(.k811-feature-qr) .k811-feature h2,
+.section.k811-feature-container:has(.k811-feature-qr) .k811-feature p {
+  color: #fff;
+}

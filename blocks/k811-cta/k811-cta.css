@@ -2,8 +2,17 @@
    A contained rounded black box: heading on the left, promo graphic on the
    right. Stacks and centers on mobile. Values matched from the source band. */
 
+/* the toll-free band sits on the same dark navy as the app-download section
+   below it, so the black CTA box floats on a continuous navy field */
+.section.k811-cta-container:has(.k811-cta) {
+  background-color: #253844;
+  margin: 0;
+  padding: 56px 0 0;
+}
+
 .k811-cta {
   position: relative;
+  z-index: 2; /* float above the app-download section it overlaps into */
   max-width: 1120px;
   margin: 0 auto;
   border-radius: 20px;
