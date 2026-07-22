@@ -8,6 +8,20 @@ header .nav-wrapper {
   box-shadow: 0 1px 4px rgb(0 0 0 / 16%);
 }
 
+/* Desktop: make the header element itself sticky. `position: sticky` only
+   sticks within its containing block; when only .nav-wrapper was sticky, its
+   parent <header> was a short 64px box at the top of <body>, so the wrapper
+   unstuck as soon as the page scrolled past that height. Sticking <header>
+   (a direct child of the body scroll container) keeps the bar pinned for the
+   whole page. Mobile keeps the bottom-docked fixed nav below. */
+@media (width >= 900px) {
+  header.header-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+}
+
 /* mobile: dock the header to the bottom of the viewport */
 @media (width < 900px) {
   header .nav-wrapper {
