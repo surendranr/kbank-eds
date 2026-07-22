@@ -296,8 +296,8 @@
    content still clears the overlapping black box. */
 @media (width >= 900px) {
   .section.k811-feature-container:has(.k811-feature-qr) {
-    margin-top: -120px;
-    padding-top: 180px;
+    margin-top: -160px;
+    padding-top: 220px;
   }
 }
 

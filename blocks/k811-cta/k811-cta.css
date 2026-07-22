@@ -60,8 +60,10 @@
     text-align: left;
   }
 
+  /* constrain the heading so it wraps to three lines, matching the source */
   .k811-cta .k811-cta-text {
-    flex: 1 1 50%;
+    flex: 0 1 auto;
+    max-width: 560px;
   }
 
   .k811-cta .k811-cta-title {
@@ -70,14 +72,14 @@
   }
 
   /* the phone illustration breaks out of the black box (per the source):
-     it is enlarged and bleeds past the box's right and bottom edges. */
+     a small icon that bleeds past the box's right and bottom edges. */
   .k811-cta .k811-cta-media {
     flex: 0 0 auto;
     align-self: flex-end;
-    margin: -40px -32px -72px 0;
+    margin: -40px -24px -56px 0;
   }
 
   .k811-cta .k811-cta-media img {
-    max-height: 320px;
+    max-height: 200px;
   }
 }
