@@ -299,8 +299,8 @@
   color: #fff;
 }
 
-/* mobile: center the app-download copy (QR on top, centered headings below),
-   matching the reference */
+/* mobile: centered headings + a blue "Download App" button, no QR image
+   (matches the reference — the scannable QR is desktop-only) */
 @media (width < 900px) {
   .k811-feature-qr > div {
     align-items: center;
@@ -309,5 +309,29 @@
 
   .k811-feature-qr .k811-feature-text-col {
     text-align: center;
+  }
+
+  /* hide the QR image on mobile */
+  .k811-feature-qr .k811-feature-img-col {
+    display: none;
+  }
+
+  /* show the download link as a solid blue pill button */
+  .section.k811-feature-container:has(.k811-feature-qr) .k811-feature-text-col a:any-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    margin-top: 20px;
+    padding: 12px 40px;
+    border-radius: 10px;
+    background: #3b63fb;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .section.k811-feature-container:has(.k811-feature-qr) .k811-feature-text-col a:any-link:hover {
+    background: #2d4fe0;
   }
 }
