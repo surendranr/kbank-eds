@@ -302,6 +302,11 @@
 /* mobile: centered headings + a blue "Download App" button, no QR image
    (matches the reference — the scannable QR is desktop-only) */
 @media (width < 900px) {
+  /* gap between the full-width toll-free CTA above and this navy band */
+  .section.k811-feature-container:has(.k811-feature-qr) {
+    margin-top: 24px;
+  }
+
   .k811-feature-qr > div {
     align-items: center;
     text-align: center;
