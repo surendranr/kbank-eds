@@ -126,7 +126,20 @@ export default function decorate(block) {
   const lottieSrc = lottieFromText || lottieFromVideo || lottieFromImage;
   if (lottieSrc) {
     block.classList.add('k811-feature-has-lottie');
-    mountLottie(media, lottieSrc);
+    // The "Next-gen security" logo Lottie is a doubly-nested precomp that our
+    // bundled lottie-player can't render inside this block (blank output). The
+    // source shows it essentially static, so render the equivalent static SVG
+    // logo instead. Other feature Lotties (flat) still animate via mountLottie.
+    if (/security[^/]*\.json(\?|$)/i.test(lottieSrc)) {
+      const img = document.createElement('img');
+      img.src = '/blocks/k811-feature/security-logo.svg';
+      img.alt = '';
+      img.loading = 'lazy';
+      img.className = 'k811-feature-logo';
+      media.append(img);
+    } else {
+      mountLottie(media, lottieSrc);
+    }
   }
 
   // AOS-faithful reveal: pure opacity fade-in, 400ms ease-in, re-triggers on
