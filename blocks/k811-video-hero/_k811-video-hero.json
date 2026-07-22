@@ -39,9 +39,10 @@
           "value": ""
         },
         {
-          "component": "aem-content",
+          "component": "richtext",
           "name": "primaryCta",
-          "label": "Primary CTA"
+          "label": "Primary CTA (link — keeps its label)",
+          "value": ""
         }
       ]
     }
