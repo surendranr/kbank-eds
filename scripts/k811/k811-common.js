@@ -26,89 +26,52 @@ function loadDesignGuide() {
   }
 }
 
-// ---- AOS (self-hosted) --------------------------------------------------
-// Loaded lazily so it never blocks LCP. UMD build → attaches window.AOS.
-let aosPromise;
-function loadAOS() {
-  if (aosPromise) return aosPromise;
-  aosPromise = new Promise((resolve) => {
-    if (window.AOS) { resolve(window.AOS); return; }
-    // stylesheet
-    if (!document.querySelector('link[data-k811-aos-css]')) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/scripts/k811/aos.css';
-      link.setAttribute('data-k811-aos-css', '');
-      document.head.append(link);
-    }
-    // script (classic; UMD sets window.AOS with `this` = window)
-    const s = document.createElement('script');
-    s.src = '/scripts/k811/aos.min.js';
-    s.async = true;
-    s.addEventListener('load', () => {
-      if (window.AOS) {
-        window.AOS.init({
-          duration: 400,
-          easing: 'ease-in',
-          delay: 0,
-          once: false, // re-trigger on scroll in/out, matching the source
-          offset: 80,
-          disableMutationObserver: true,
-        });
-      }
-      resolve(window.AOS);
-    });
-    s.addEventListener('error', () => resolve(null));
-    document.head.append(s);
-  });
-  return aosPromise;
-}
-
-// Failsafe observer, used only if AOS fails to load: re-triggers (matches AOS
-// `once: false`) by toggling the class as elements enter/leave the viewport.
+// ---- Scroll reveal (IntersectionObserver) -------------------------------
+// A pure opacity fade-in (matching the source's AOS "fade" effect) driven by a
+// single IntersectionObserver. We deliberately do NOT use the AOS library: its
+// stylesheet sets `opacity:0` unconditionally on every `[data-aos]` element and
+// relies on scroll events to reveal them, which misfires on mobile (momentum
+// scroll, restored scroll position, no-scroll captures) and left below-the-fold
+// feature/promo sections stuck transparent — rendering as blank/black boxes.
+//
+// The IntersectionObserver is reliable on mobile and reveals each element once,
+// then stops observing so content is never re-hidden. The hidden state is gated
+// on `.k811-aos-ready` (added here by JS), so if JS ever fails to run the
+// content simply stays visible (opacity 1) rather than invisible.
 let observer;
 function getObserver() {
   if (observer) return observer;
   if (typeof IntersectionObserver === 'undefined') return null;
   observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      entry.target.classList.toggle('k811-aos-in', entry.isIntersecting);
+      if (entry.isIntersecting) {
+        entry.target.classList.add('k811-aos-in');
+        observer.unobserve(entry.target);
+      }
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
   return observer;
 }
 
-let refreshQueued = false;
-
 /**
- * Register an element (or elements) for the fade-in reveal, driven by the real
- * AOS library. Falls back to the IntersectionObserver reveal if AOS is
- * unavailable so content is never left hidden.
+ * Register an element (or elements) for the fade-in reveal. Each element fades
+ * in once when it scrolls into view and then stays visible.
  * @param {Element|Element[]} targets
  */
 export function revealOnScroll(targets) {
   const list = (Array.isArray(targets) ? targets : [targets]).filter(Boolean);
-  // AOS's built-in "fade" = pure opacity 0->1 (the source's fade-in effect).
-  // `data-k811-aos` drives our failsafe IntersectionObserver reveal if AOS
-  // can't load.
+  const io = getObserver();
   list.forEach((el) => {
-    el.setAttribute('data-aos', 'fade');
     el.setAttribute('data-k811-aos', 'fade-in');
-  });
-
-  loadAOS().then((AOS) => {
-    if (AOS && typeof AOS.refreshHard === 'function') {
-      if (!refreshQueued) {
-        refreshQueued = true;
-        requestAnimationFrame(() => { refreshQueued = false; AOS.refreshHard(); });
-      }
-      return;
+    if (io) {
+      el.classList.add('k811-aos-ready');
+      // If already in (or above) the viewport at register time, reveal
+      // immediately so first-paint / above-the-fold content is never hidden.
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      if (r.top < vh * 0.92) el.classList.add('k811-aos-in');
+      io.observe(el);
     }
-    // Failsafe: AOS didn't load — use the IntersectionObserver reveal.
-    const io = getObserver();
-    list.forEach((el) => {
-      if (io) { el.classList.add('k811-aos-ready'); io.observe(el); }
-    });
   });
 }
 

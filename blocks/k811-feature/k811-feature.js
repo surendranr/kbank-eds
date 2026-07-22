@@ -83,26 +83,44 @@ export default function decorate(block) {
   block.textContent = '';
   block.append(newRow);
 
-  // QR / app-download variant: the image is a small square (QR code) rather
-  // than a wide hero photo. Flag it so CSS keeps it compact and centered.
-  const qrImg = picture ? picture.querySelector('img') : null;
-  const w = qrImg ? Number(qrImg.getAttribute('width')) : 0;
-  const h = qrImg ? Number(qrImg.getAttribute('height')) : 0;
-  const looksSquare = w && h && Math.abs(w - h) / Math.max(w, h) < 0.2;
-  const hasDownloadCta = /download/i.test(text.textContent || '');
-  if (looksSquare || (hasDownloadCta && block.querySelectorAll('h2').length > 1)) {
+  // QR / app-download variant: a genuinely square QR image (e.g. 3000x3000)
+  // plus the download-app copy. The QR is exactly 1:1 — use a tight tolerance
+  // so near-square product-card renders (e.g. 2240x1960 debit card) are NOT
+  // misclassified as QR (which would force the centered column layout).
+  // The download-app promo has the distinctive copy "Download the app" +
+  // "Download your bank" (two headings). This signal is reliable in both the
+  // deployed and import environments (unlike the QR image's width/height, which
+  // the importer strips). Near-square product-card photos must NOT match.
+  const hasDownloadCopy = /download/i.test(text.textContent || '')
+    && block.querySelectorAll('h2').length > 1;
+  if (hasDownloadCopy) {
     block.classList.add('k811-feature-qr');
   }
 
-  // Decorative Lottie animation: only when an author explicitly provides a
-  // trailing plain <p> whose text is a Lottie JSON url. Lazy-mounted into the
-  // media column so it never blocks LCP.
+  // Decorative Lottie animation. The Lottie JSON path may arrive as: a plain
+  // <p> with the url as text, an auto-linked <p><a href="....json">, the video
+  // field, or the image field (see lottieFromImage above). Match a .json in the
+  // paragraph text OR an anchor href, from the text column, and remove that
+  // paragraph so the raw url never renders as a visible link. Lazy-mounted into
+  // the media column so it never blocks LCP.
+  const JSON_RE = /(?:https?:\/\/\S+|\/\S+)\.json(?:\?\S*)?$/i;
+  let lottieFromText = '';
   const lottieP = [...text.querySelectorAll('p')].find((p) => {
     const t = (p.textContent || '').trim();
-    return /^(https?:\/\/\S+|\/\S+)\.json$/i.test(t) && !p.querySelector('a');
+    const a = p.querySelector('a');
+    const href = a ? (a.getAttribute('href') || '').trim() : '';
+    return JSON_RE.test(t) || JSON_RE.test(href);
   });
-  const lottieSrc = (lottieP && lottieP.textContent.trim()) || lottieFromImage;
-  if (lottieP) lottieP.remove();
+  if (lottieP) {
+    const a = lottieP.querySelector('a');
+    lottieFromText = (a && JSON_RE.test((a.getAttribute('href') || '').trim()))
+      ? a.getAttribute('href').trim()
+      : lottieP.textContent.trim();
+    lottieP.remove();
+  }
+  // the video field may also carry a .json Lottie path (JCR generation path)
+  const lottieFromVideo = JSON_RE.test(videoHref) ? videoHref : '';
+  const lottieSrc = lottieFromText || lottieFromVideo || lottieFromImage;
   if (lottieSrc) {
     block.classList.add('k811-feature-has-lottie');
     mountLottie(media, lottieSrc);

@@ -40,12 +40,14 @@ export default function parse(element, { document }) {
   if (cta) textFrag.appendChild(cta);
 
   // The security section shows a decorative Lottie the scraper/cleanup strips
-  // out. Re-attach the bundled Lottie as a trailing plain-text .json path so
-  // the block JS mounts it as a media-first animation.
+  // out. Re-attach the source CDN Lottie as a trailing plain-text .json path so
+  // the block JS mounts it as a media-first animation. Use the absolute source
+  // URL (not a repo-relative /blocks path) so it resolves in every environment
+  // — including the AEM author render, which does not serve static block assets.
   const headingText = headings.map((h) => h.textContent).join(' ');
   if (/next-gen security/i.test(headingText)) {
     const p = document.createElement('p');
-    p.textContent = '/blocks/k811-feature/lottie/security.json';
+    p.textContent = 'https://d2gwgwt9a7yxle.cloudfront.net/lf30_cbskvcfq_ae22272012.json';
     textFrag.appendChild(p);
   }
   cells.push([textFrag]);
