@@ -118,28 +118,51 @@ main > .section:has(> .k811-promo-band-wrapper) {
   }
 }
 
-/* ---- Mobile: anchor the copy to the top of the band and use a blue,
-   centered CTA (matches the reference). The copy sits over the empty top of
-   the photo rather than over the subject's face. ---- */
+/* ---- Mobile: stack the copy ABOVE the full, uncropped photo (matches the
+   reference). The heading, paragraph and blue centered CTA sit on the light
+   section background at the top; the whole image shows below at its natural
+   aspect ratio so the subject is never clipped by the copy. ---- */
 @media (width < 900px) {
-  /* taller band + top-anchored image so the empty ceiling shows at the top and
-     the subject's head sits BELOW the copy (matches the reference — the current
-     340px band cropped her face up into the text). */
   .k811-promo-band {
-    align-items: flex-start;
-    min-height: 540px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  /* copy first (on the light background), image second */
+  .k811-promo-band .k811-promo-band-content {
+    order: 0;
+    position: static;
+    box-sizing: border-box;
+    max-width: none;
+    margin: 0;
+    padding: 32px 24px;
+    text-align: left;
+  }
+
+  /* full, uncropped image below the copy */
+  .k811-promo-band .k811-promo-band-media {
+    order: 1;
+    position: static;
+    inset: auto;
   }
 
   .k811-promo-band .k811-promo-band-media img {
-    object-position: 50% 0%;
+    height: auto;
+    object-fit: contain;
   }
 
-  .k811-promo-band .k811-promo-band-content {
-    padding-top: 40px;
+  /* copy now sits on the light section background (not over the photo), so both
+     variants use dark text for legibility */
+  .k811-promo-band .k811-promo-band-content,
+  .k811-promo-band-left .k811-promo-band-content,
+  .k811-promo-band-left .k811-promo-band-content :is(h1, h2, h3, h4, p) {
+    color: var(--k811-text, #222);
   }
 
-  /* the "811 Current Account" band's CTA is a solid blue, centered pill on
-     mobile (per the reference), not the red left-aligned button */
+  /* solid blue, centered CTA pill (per the reference), not the red button */
   .k811-promo-band .k811-promo-band-actions {
     text-align: center;
   }
