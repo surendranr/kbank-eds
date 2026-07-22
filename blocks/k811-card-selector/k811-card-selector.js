@@ -121,7 +121,9 @@ export default function decorate(block) {
 
   info.append(activeName, tabs, panel);
 
-  // Right column: layered card deck (all cards stacked; active on top).
+  // Right column: fanned card deck. The active card is pulled to the front
+  // (full size + brightness); every other card recedes upward, scaled down and
+  // darkened — matching the source's translate/scale/brightness model.
   const media = document.createElement('div');
   media.className = 'k811-card-selector-media';
 
@@ -131,6 +133,22 @@ export default function decorate(block) {
 
   const panels = [];
   const mediaEls = [];
+  const activators = [];
+  const n = variants.length;
+
+  // Fan geometry (percentages/scale per depth step), tuned to the live deck:
+  // depth 0 = active card in front; deeper cards sit further up and smaller.
+  const BASE_Y = 40; // active card's upward shift (% of its own height)
+  const STEP_Y = 12; // extra upward shift per depth step
+  const STEP_SCALE = 0.08; // shrink per depth step
+  const applyFan = (activeIdx) => {
+    mediaEls.forEach((el, idx) => {
+      const depth = (idx - activeIdx + n) % n; // 0 = active, then wraps
+      el.style.transform = `translate(-50%, -${BASE_Y + depth * STEP_Y}%) scale(${(1 - depth * STEP_SCALE).toFixed(3)})`;
+      el.style.filter = depth === 0 ? 'brightness(1)' : 'brightness(0.2)';
+      el.style.zIndex = String(n - depth);
+    });
+  };
 
   variants.forEach((v, i) => {
     const tab = document.createElement('button');
@@ -184,12 +202,17 @@ export default function decorate(block) {
       mediaItem.classList.add('is-active');
       panelItem.classList.add('is-active');
       activeName.textContent = v.name;
+      applyFan(i);
     };
     tab.addEventListener('click', activate);
-    if (i === 0) activate();
+    activators.push(activate);
 
     tabs.append(tab);
   });
+
+  // Activate the first variant only AFTER all cards exist, so the fan geometry
+  // is computed against the full deck (not a partially-built one).
+  if (activators.length) activators[0]();
 
   wrap.append(stage);
   revealOnScroll(block);

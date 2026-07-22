@@ -120,37 +120,31 @@
   text-decoration: underline;
 }
 
-/* right column: layered card deck -------------------------------------- */
+/* right column: fanned card deck --------------------------------------- */
 .k811-card-selector-media {
   order: 1;
   position: relative;
-  min-height: 260px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 300px;
 }
 
+/* Every card is anchored to the same bottom-center point; JS sets its
+   translate/scale/brightness/z-index per depth. The active card is in front at
+   full brightness; deeper cards fan upward, smaller and darkened. */
 .k811-card-selector-card {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(12px) scale(0.96);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  pointer-events: none;
+  left: 50%;
+  bottom: 0;
+  width: 100%;
+  transform-origin: center bottom;
+  transform: translate(-50%, -40%);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease;
+  will-change: transform, filter;
 }
 
-.k811-card-selector-card.is-active {
-  position: relative;
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-}
-
-.k811-card-selector-card img {
-  max-width: 100%;
+.k811-card-selector-card img,
+.k811-card-selector-card picture {
+  display: block;
+  width: 100%;
   height: auto;
 }
 
