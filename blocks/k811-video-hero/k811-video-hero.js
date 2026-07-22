@@ -65,13 +65,33 @@ export default function decorate(block) {
   let copyCell = null;
   const linkCells = [];
 
+  // A video cell's content is one or more .mp4/.webm/.mov URLs (desktop first,
+  // optional mobile second). The URLs may be authored as separate cells OR
+  // stacked as multiple lines/paragraphs in a single richtext cell, and the
+  // authoring system may auto-wrap a bare URL in an <a>. Collect every URL we
+  // find, in document order, from anchors and from plain-text lines.
+  const urlsInCell = (c) => {
+    const found = [];
+    c.querySelectorAll('a[href]').forEach((a) => {
+      const href = a.getAttribute('href').trim();
+      if (URL_RE.test(href)) found.push(href);
+    });
+    // plain-text lines (e.g. two <p>s each holding a bare URL)
+    (c.querySelectorAll('p').length ? [...c.querySelectorAll('p')] : [c])
+      .forEach((el) => {
+        const t = (el.textContent || '').trim();
+        if (URL_RE.test(t) && !found.includes(t)) found.push(t);
+      });
+    return found;
+  };
+
   cells.forEach((c) => {
     const txt = cellText(c);
     const hasPicture = !!c.querySelector('picture, img');
-    const hasLink = !!c.querySelector('a');
-    if (URL_RE.test(txt) && !hasLink) {
-      videoUrls.push(txt);
-    } else if (hasLink) {
+    const found = urlsInCell(c);
+    if (found.length) {
+      found.forEach((u) => videoUrls.push(u));
+    } else if (c.querySelector('a')) {
       linkCells.push(c);
     } else if (hasPicture && !posterCell) {
       posterCell = c;
