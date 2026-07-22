@@ -166,13 +166,14 @@ function home() {
   // trailing .json (also placed in the text cell) and mounts it as a Lottie in
   // the media column. The two field rows keep md2jcr recognising this as a
   // block rather than flattening it to default content.
+  const securityLottie = `${CDN}/lf30_cbskvcfq_ae22272012.json`;
   parts.push(gridTable('K811 Feature', [
-    [['<!-- field:video -->', '', '/blocks/k811-feature/lottie/security.json']],
+    [['<!-- field:video -->', '', securityLottie]],
     [[
       '<!-- field:text -->', '',
       '## Next-gen security meets age-old trust', '',
       'Governed by RBI regulations, Kotak811 guards your money with top-notch security, so you can save and spend worry-free, through your phone.', '',
-      '/blocks/k811-feature/lottie/security.json',
+      securityLottie,
     ]],
   ]) + '\n\n' + sectionMeta('light'));
 

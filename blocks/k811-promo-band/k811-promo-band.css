@@ -85,6 +85,18 @@ main > .section:has(> .k811-promo-band-wrapper) {
   filter: brightness(0.92);
 }
 
+/* right variant ("811 Current Account"): blue CTA at all breakpoints
+   (matches the reference site, where this band's button is blue not red).
+   Both block classes are chained to outweigh the base red button rule. */
+.k811-promo-band.k811-promo-band-right .k811-promo-band-btn:any-link {
+  background: #3b63fb;
+}
+
+.k811-promo-band.k811-promo-band-right .k811-promo-band-btn:any-link:hover {
+  background: #2d4fe0;
+  filter: none;
+}
+
 /* left variant: white copy over the darker left side of the photo */
 .k811-promo-band-left .k811-promo-band-content {
   color: #fff;
@@ -115,6 +127,44 @@ main > .section:has(> .k811-promo-band-wrapper) {
   .k811-promo-band .k811-promo-band-content.k811-aos-ready {
     opacity: 1;
     transition: none;
+  }
+}
+
+/* ---- Mobile ------------------------------------------------------------
+   Both variants overlay the copy INSIDE the image, in the empty area at the
+   top with the subject below (matching the reference):
+   - LEFT ("nearest bank"): white text over the grey ceiling. No CTA.
+   - RIGHT ("811 Current Account"): dark text over the light top area, plus a
+     blue centered CTA. */
+@media (width < 900px) {
+  /* both variants: taller band, copy anchored to the top, image top-anchored so
+     the empty top of the photo shows behind the copy and the subject sits below */
+  .k811-promo-band {
+    align-items: flex-start;
+    min-height: 540px;
+  }
+
+  /* the "811 Current Account" photo has the subject lower in frame, so give it a
+     taller band to keep the copy + CTA clear of her head (per the reference) */
+  .k811-promo-band-right {
+    min-height: 640px;
+  }
+
+  .k811-promo-band .k811-promo-band-media img {
+    object-position: 50% 0%;
+  }
+
+  .k811-promo-band .k811-promo-band-content {
+    padding-top: 40px;
+  }
+
+  /* RIGHT variant: dark text (light photo top) + blue centered CTA */
+  .k811-promo-band-right .k811-promo-band-content {
+    color: var(--k811-text, #222);
+  }
+
+  .k811-promo-band-right .k811-promo-band-actions {
+    text-align: center;
   }
 }
 
