@@ -44,6 +44,15 @@
   mask-image: linear-gradient(to bottom, transparent 0, #000 18%);
 }
 
+/* Mobile/tablet (<900px) uses the art-directed portrait clip (~750x660). The
+   desktop 1920/598 band would crop it to a thin strip and cut off the cards, so
+   match the mobile clip's ratio here (mirrors the live mobile hero band). */
+@media (width < 900px) {
+  .k811-video-hero-media {
+    aspect-ratio: 750 / 660;
+  }
+}
+
 .k811-video-hero-media picture,
 .k811-video-hero-media img,
 .k811-video-hero-video {
