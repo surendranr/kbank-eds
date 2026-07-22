@@ -99,6 +99,48 @@
   line-height: 1.5;
 }
 
+/* ---- Mobile: horizontal side-swipeable carousel (one card + peek of next),
+   overlapping the black hero as in the reference ---- */
+@media (width < 600px) {
+  /* lift the carousel so the card tops straddle the black hero above; z-index
+     (set on the base section rule) keeps the cards above the hero. Extra top
+     padding leaves room for the overlapping card tops. */
+  .kotak811 .section:has(> .k811-offers-overlap-wrapper) {
+    margin-top: -56px;
+    padding: 0 0 32px;
+  }
+
+  .k811-offers-overlap-wrapper {
+    max-width: none;
+  }
+
+  .k811-offers-overlap > ul {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 16px;
+
+    /* first card aligns to the gutter; trailing space lets the last card snap
+       fully into view */
+    padding: 0 16px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .k811-offers-overlap > ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* one card visible with ~20% of the next peeking at the right edge */
+  .k811-offers-overlap > ul > li {
+    flex: 0 0 auto;
+    width: 80%;
+    scroll-snap-align: start;
+  }
+}
+
 /* ---- Tablet: two columns, begin the overlap ---- */
 @media (width >= 600px) {
   .k811-offers-overlap > ul {

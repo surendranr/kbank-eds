@@ -377,13 +377,17 @@ main > .section > .k811-hero-wrapper {
    heading + subheading, and an "Apply Now" pill with an animated metallic
    ring. Mobile stacks the art-directed image with the copy below on black. */
 .k811-hero.metal {
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: #000;
 }
 
-/* mobile: image on top (art-directed mobile source), copy below on black */
+/* mobile: copy on top, fanned-cards image below on black (matches the source).
+   DOM order is image-then-content (LCP preload intact); `order` flips the
+   visual order without touching the DOM. */
 .k811-hero.metal .k811-hero-image {
   grid-area: auto;
+  order: 1;
   position: static;
   height: auto;
   line-height: 0;
@@ -403,6 +407,7 @@ main > .section > .k811-hero-wrapper {
 
 .k811-hero.metal .k811-hero-content {
   grid-area: auto;
+  order: 0;
   position: static;
   align-self: center;
   width: 100%;
