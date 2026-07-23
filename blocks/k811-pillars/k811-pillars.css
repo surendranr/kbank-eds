@@ -1,6 +1,7 @@
-/* K811 Pillars — "We always serve by the rules." Static grid of value pillar
- * cards, each with its own always-on Lottie above a heading + description.
- * Faithful to kotak811.bank.in/about-us. Inherits Manrope from .kotak811. */
+/* K811 Pillars — "We always serve by the rules." Faithful to
+ * kotak811.bank.in/about-us. Desktop: a shared animation stage above a row of
+ * four left-aligned text tabs. Mobile: stacked cards, each with its own
+ * always-on animation. Inherits Manrope from .kotak811. */
 
 .k811-pillars {
   max-width: var(--k811-content-max, 1120px);
@@ -11,27 +12,40 @@
 .k811-pillars-title {
   text-align: center;
   font-size: 28px;
+  line-height: 34px;
   font-weight: 700;
   color: #222;
   margin: 0 0 32px;
 }
 
-/* mobile-first: single column, Lottie on top of each card */
-.k811-pillars-grid {
+/* Desktop shared animation stage — hidden on mobile. */
+.k811-pillars-stage {
+  display: none;
+}
+
+/* mobile-first: tabs stack into cards, each with its own animation on top */
+.k811-pillars-tabs {
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
 }
 
-.k811-pillars-card {
+.k811-pillars-tab {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: default;
 }
 
-.k811-pillars-media {
+.k811-pillars-tab-media {
   width: 100%;
   max-width: 220px;
   aspect-ratio: 1 / 1;
@@ -40,7 +54,7 @@
   justify-content: center;
 }
 
-.k811-pillars-media .k811-lottie {
+.k811-pillars-tab-media .k811-lottie {
   width: 100%;
   height: 100%;
 }
@@ -49,7 +63,7 @@
   margin: 0;
   font-size: 18px;
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 26px;
   color: #222;
 }
 
@@ -61,15 +75,7 @@
   color: #222;
 }
 
-/* tablet (600-899px): 2-up grid */
-@media (width >= 600px) {
-  .k811-pillars-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 48px 32px;
-  }
-}
-
-/* desktop (>=900px): 4-up row, larger title */
+/* desktop (>=900px): shared stage on top, four left-aligned text tabs below */
 @media (width >= 900px) {
   .k811-pillars {
     padding: 56px 40px;
@@ -77,16 +83,40 @@
 
   .k811-pillars-title {
     font-size: 44px;
-    margin: 0 0 56px;
+    line-height: 52px;
+    margin: 0 0 40px;
   }
 
-  .k811-pillars-grid {
+  .k811-pillars-stage {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1120 / 386;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .k811-pillars-stage .k811-lottie {
+    width: 100%;
+    height: 100%;
+  }
+
+  .k811-pillars-tabs {
     grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
+    gap: 30px;
     align-items: start;
   }
 
-  .k811-pillars-media {
-    max-width: 200px;
+  .k811-pillars-tab {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  /* the per-card animation belongs to mobile only */
+  .k811-pillars-tab-media {
+    display: none;
   }
 }
