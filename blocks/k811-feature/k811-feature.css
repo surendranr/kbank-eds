@@ -49,10 +49,21 @@
 .k811-feature h2 {
   margin: 0 0 9px;
   font-family: var(--heading-font-family);
-  font-size: var(--heading-font-size-xl); /* 36px desktop */
-  font-weight: 600;
-  line-height: 1.25;
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 52px;
+  letter-spacing: -0.025em;
+  text-align: left;
   color: var(--text-color);
+}
+
+@media (width < 600px) {
+  .k811-feature h2 {
+    font-size: 28px;
+    line-height: 39px;
+    padding: 50px 24px 0;
+  }
 }
 
 .k811-feature p {
