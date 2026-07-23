@@ -2,7 +2,10 @@
 
 .k811-story {
   position: relative;
-  min-height: 560px;
+
+  /* mobile: shorter panel so the ultra-wide (2.4:1) image is cropped far less;
+     desktop restores the taller banner below */
+  min-height: 380px;
   display: flex;
 
   /* mobile: text sits at the TOP of the image; desktop re-centers below */
