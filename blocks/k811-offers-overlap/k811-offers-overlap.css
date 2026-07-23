@@ -157,10 +157,13 @@
   }
 }
 
-/* ---- Desktop: four separate cards in one row, straddling the hero ---- */
+/* ---- Desktop: four separate cards in one row, straddling the hero.
+   Constrained to ~half the content width and centered. ---- */
 @media (width >= 900px) {
   .k811-offers-overlap > ul {
     grid-template-columns: repeat(4, 1fr);
+    max-width: 600px;
+    margin: 0 auto;
   }
 
   /* lift the cards so ~half of each overlaps the black hero above */
