@@ -74,6 +74,15 @@
 }
 
 @media (width >= 900px) {
+  /* overlap upward: pull the CTA section up so its black box straddles the
+     bottom of the feature section above it. position + z-index keep the box
+     floating above that feature. */
+  main > .section:has(> .k811-cta-wrapper) {
+    position: relative;
+    z-index: 2;
+    margin-top: -120px;
+  }
+
   .k811-cta .k811-cta-inner {
     flex-direction: row;
     align-items: center;
