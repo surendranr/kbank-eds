@@ -8,8 +8,9 @@
  *
  * Faithful to the source:
  *   - Font: Manrope (self-hosted, variable, latin + latin-ext subsets)
- *   - Motion: AOS "fade-in" — pure opacity 0->1, 400ms ease-in, re-triggers on
- *     scroll into view (NOT once, NO translate/slide).
+ *   - Motion: sections reveal on scroll into view with a combined fade +
+ *     scale-up + upward unmask (opacity 0->1, scale .96->1, translateY 24->0),
+ *     re-triggering as each section enters the viewport.
  */
 
 /* ---- Manrope (self-hosted variable font) -------------------------------- */
@@ -53,8 +54,8 @@
   --k811-link: #d1101f;               /* brand red for inline text links */
   --k811-section-pad-y: 48px;
   --k811-content-max: 1120px;
-  --k811-fade-duration: 400ms;
-  --k811-fade-easing: ease-in;
+  --k811-fade-duration: 600ms;
+  --k811-fade-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   font-family: var(--k811-font);
   color: var(--k811-text);
@@ -146,20 +147,26 @@
   margin: 0;
 }
 
-/* ---- AOS-faithful fade-in reveal ---------------------------------------
- * Elements marked `data-k811-aos="fade-in"` start transparent and fade to
- * opaque when the shared IntersectionObserver adds `.k811-aos-in`.
+/* ---- Scroll-reveal (fade + scale-up + unmask) --------------------------
+ * Elements marked `data-k811-aos="fade-in"` start transparent, slightly
+ * scaled down and pushed down, then settle to their resting state when the
+ * shared IntersectionObserver adds `.k811-aos-in` as they enter the viewport.
  * The hidden state is gated on `.k811-aos-ready` (added by JS) so a JS failure
  * can never leave content permanently invisible. Honors reduced-motion.
  */
 @media (prefers-reduced-motion: no-preference) {
   .kotak811 .k811-aos-ready[data-k811-aos='fade-in'] {
     opacity: 0;
-    transition: opacity var(--k811-fade-duration) var(--k811-fade-easing);
+    transform: scale(0.96) translateY(24px);
+    transition:
+      opacity var(--k811-fade-duration) var(--k811-fade-easing),
+      transform var(--k811-fade-duration) var(--k811-fade-easing);
+    will-change: opacity, transform;
   }
 
   .kotak811 [data-k811-aos='fade-in'].k811-aos-in {
     opacity: 1;
+    transform: none;
   }
 }
 
