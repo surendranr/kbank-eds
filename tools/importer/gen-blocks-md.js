@@ -396,7 +396,7 @@ function about() {
   // K811 Story x3 (image, imageAlt via alt on image, text, align)
   const stories = [
     ['Innovators first, bankers next', 'Turning footsteps to a bank to finger taps on the phone - we innovate for comfort.', 'innovater_first_ebaed783f6.jpg', 'left'],
-    ['Inspired by change, to set in a revolution', 'When 8/11/2016 ushered in the unknown, Kotak811 gave India the power to step into the new, with the trusted companion - Kotak Mahindra Bank.', 'revolution_2a9f9e26b5.jpg', 'right'],
+    ['Inspired by change, to set in a revolution', 'When 8/11/2016 ushered in the unknown, Kotak811 gave India the power to step into the new, with the trusted companion - Kotak Mahindra Bank.', 'revolution_2a9f9e26b5.jpg', 'left'],
     ['Dedicated to inquire, innovate and inspire', 'In the Kotak811 way of banking, the customer comes first, every step of the way.', 'Dedicated_bd051625b5.jpg', 'left'],
   ];
   stories.forEach(([h, t, ic, align]) => {
