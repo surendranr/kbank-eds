@@ -157,14 +157,43 @@
   }
 }
 
-/* ---- Desktop: four separate cards in one row, straddling the hero ---- */
+/* ---- Desktop: four separate compact cards in one row, centered and
+   straddling the hero (narrower than the content width, per the reference) ---- */
 @media (width >= 900px) {
   .k811-offers-overlap > ul {
     grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 720px;
+    margin: 0 auto;
   }
 
   /* lift the cards so ~half of each overlaps the black hero above */
   .kotak811 .section:has(> .k811-offers-overlap-wrapper) {
     margin-top: -120px;
+  }
+
+  /* compact card padding + smaller image/type to suit the narrower cards */
+  .k811-offers-overlap > ul > li {
+    padding: 18px 16px 20px;
+    border-radius: 16px;
+  }
+
+  .k811-offers-overlap .k811-offers-card-image {
+    margin-bottom: 14px;
+  }
+
+  .k811-offers-overlap .k811-offers-card-image img {
+    height: 56px;
+  }
+
+  .k811-offers-overlap .k811-offers-card-body h2,
+  .k811-offers-overlap .k811-offers-card-body h3,
+  .k811-offers-overlap .k811-offers-card-body h4 {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .k811-offers-overlap .k811-offers-card-body p {
+    font-size: 13px;
   }
 }
