@@ -8,9 +8,8 @@
  *
  * Faithful to the source:
  *   - Font: Manrope (self-hosted, variable, latin + latin-ext subsets)
- *   - Motion: sections reveal on scroll into view with a combined fade +
- *     scale-up + upward unmask (opacity 0->1, scale .96->1, translateY 24->0),
- *     re-triggering as each section enters the viewport.
+ *   - Motion: each section reveals once as it enters the viewport with a fade
+ *     + upward translate (opacity 0->1, translateY 40->0) over 0.8s.
  */
 
 /* ---- Manrope (self-hosted variable font) -------------------------------- */
@@ -54,7 +53,7 @@
   --k811-link: #d1101f;               /* brand red for inline text links */
   --k811-section-pad-y: 48px;
   --k811-content-max: 1120px;
-  --k811-fade-duration: 600ms;
+  --k811-fade-duration: 800ms;
   --k811-fade-easing: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   font-family: var(--k811-font);
@@ -147,17 +146,18 @@
   margin: 0;
 }
 
-/* ---- Scroll-reveal (fade + scale-up + unmask) --------------------------
- * Elements marked `data-k811-aos="fade-in"` start transparent, slightly
- * scaled down and pushed down, then settle to their resting state when the
- * shared IntersectionObserver adds `.k811-aos-in` as they enter the viewport.
+/* ---- Scroll-reveal (fade + upward translate, once) ---------------------
+ * Elements marked `data-k811-aos="fade-in"` start transparent and pushed
+ * down 40px, then fade + rise to their resting state when the shared
+ * IntersectionObserver adds `.k811-aos-in` the first time they enter the
+ * viewport (the observer unobserves after, so it animates only once).
  * The hidden state is gated on `.k811-aos-ready` (added by JS) so a JS failure
  * can never leave content permanently invisible. Honors reduced-motion.
  */
 @media (prefers-reduced-motion: no-preference) {
   .kotak811 .k811-aos-ready[data-k811-aos='fade-in'] {
     opacity: 0;
-    transform: scale(0.96) translateY(24px);
+    transform: translateY(40px);
     transition:
       opacity var(--k811-fade-duration) var(--k811-fade-easing),
       transform var(--k811-fade-duration) var(--k811-fade-easing);
