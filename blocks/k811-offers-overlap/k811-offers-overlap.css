@@ -141,7 +141,7 @@
      right edge (matches the reference) */
   .k811-offers-overlap > ul > li {
     flex: 0 0 auto;
-    width: 62%;
+    width: 72%;
     scroll-snap-align: start;
   }
 }
