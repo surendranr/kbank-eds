@@ -1,30 +1,25 @@
-/* K811 Story — full-bleed image + text overlay. Inherits Manrope. */
+/* K811 Story — Inherits Manrope.
+ * Mobile-first: a STACKED card — dark heading + copy on white at the top, the
+ * full uncropped image below (no overlap). At >=900px it becomes the
+ * full-bleed banner with the copy overlaid on the image (see media query). */
 
 .k811-story {
-  position: relative;
-
-  /* mobile: shorter panel so the ultra-wide (2.4:1) image is cropped far less;
-     desktop restores the taller banner below */
-  min-height: 380px;
   display: flex;
-
-  /* mobile: text sits at the TOP of the image; desktop re-centers below */
-  align-items: flex-start;
+  flex-direction: column;
   overflow: hidden;
-  color: #fff;
+  background: #fff;
+  color: #222;
 }
 
+/* image sits BELOW the text on mobile, shown in full (natural aspect ratio) */
 .k811-story-media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+  order: 2;
 }
 
 .k811-story-media picture,
 .k811-story-media img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
 }
 
@@ -40,12 +35,13 @@
 }
 
 .k811-story-content {
+  order: 1;
   position: relative;
   z-index: 1;
   width: 100%;
   max-width: var(--k811-content-max, 1120px);
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: 32px 24px;
 }
 
 .k811-story-content h2,
@@ -54,7 +50,7 @@
   line-height: 34px;
   font-weight: 700;
   margin: 0 0 12px;
-  color: #fff;
+  color: #222;
   max-width: 520px;
 }
 
@@ -62,7 +58,7 @@
   font-size: 14px;
   line-height: 1.6;
   margin: 0;
-  color: #fff;
+  color: #555;
   max-width: 480px;
 }
 
@@ -92,12 +88,31 @@
 }
 
 @media (width >= 900px) {
+  /* desktop: full-bleed banner with the copy overlaid on the image */
   .k811-story {
+    position: relative;
     min-height: 600px;
+    flex-direction: row;
     align-items: center;
+    background: none;
+    color: #fff;
+  }
+
+  .k811-story-media {
+    order: 0;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .k811-story-media picture,
+  .k811-story-media img {
+    height: 100%;
+    object-fit: cover;
   }
 
   .k811-story-content {
+    order: 0;
     padding: 64px 40px;
   }
 
@@ -105,9 +120,11 @@
   .k811-story-content h3 {
     font-size: 44px;
     line-height: 52px;
+    color: #fff;
   }
 
   .k811-story-content p {
     font-size: 14px;
+    color: #f0f0f0;
   }
 }
